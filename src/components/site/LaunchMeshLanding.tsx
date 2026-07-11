@@ -1,5 +1,6 @@
 import { motion, useScroll, useTransform, useMotionValue, useSpring } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
+import { useRouter } from "@tanstack/react-router";
 import {
   ArrowRight, Play, Sparkles, Brain, Network, Handshake, Package, MessageSquare,
   BarChart3, ShieldCheck, Check, Zap, Rocket, Users, Bot, TrendingUp, Layers, Star,
@@ -63,6 +64,7 @@ function MagneticButton({ children, variant = "primary", className = "", ...prop
 /* ————————————————————————————————————— HERO ————————————————————————————————————— */
 function Hero() {
   const ref = useRef<HTMLDivElement>(null);
+  const router = useRouter();
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
   const y = useTransform(scrollYProgress, [0, 1], [0, 200]);
   const opacity = useTransform(scrollYProgress, [0, 1], [1, 0]);
@@ -103,7 +105,7 @@ function Hero() {
 
           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
             className="mt-8 flex flex-wrap items-center gap-3">
-            <MagneticButton variant="primary" onClick={() => window.location.href = "/explore"}>
+            <MagneticButton variant="primary" onClick={() => router.navigate({ to: "/explore" })}>
               Start free <ArrowRight className="h-4 w-4" />
             </MagneticButton>
             <MagneticButton variant="ghost">
@@ -659,6 +661,7 @@ function Pricing() {
 
 /* ————————————————————————————————————— FINAL CTA ————————————————————————————————————— */
 function FinalCTA() {
+  const router = useRouter();
   return (
     <section id="cta" className="relative py-32 container mx-auto max-w-7xl px-6">
       <div className="relative rounded-[36px] overflow-hidden glass-strong shadow-elevated">
@@ -686,7 +689,7 @@ function FinalCTA() {
             Join the founders turning solo launches into a network of compounding growth.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
-            <MagneticButton variant="primary" onClick={() => window.location.href = "/explore"}>Find my first growth partner <ArrowRight className="h-4 w-4" /></MagneticButton>
+            <MagneticButton variant="primary" onClick={() => router.navigate({ to: "/explore" })}>Find my first growth partner <ArrowRight className="h-4 w-4" /></MagneticButton>
             <MagneticButton variant="ghost">Book a demo</MagneticButton>
           </div>
         </div>
