@@ -662,25 +662,27 @@ function FinalCTA() {
   return (
     <section id="cta" className="relative py-32 container mx-auto max-w-7xl px-6">
       <div className="relative rounded-[36px] overflow-hidden glass-strong shadow-elevated">
-        <div className="absolute inset-0 grid-bg opacity-30 radial-fade z-0" />
-        {/* ambient glow — pushed to bottom-right corner, well away from text */}
-        <div className="absolute -bottom-20 -right-20 h-[400px] w-[400px] rounded-full z-0 opacity-40"
+        <div className="absolute inset-0 grid-bg opacity-40 radial-fade z-0" />
+        {/* orb */}
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-[520px] w-[520px] rounded-full z-0"
           style={{
-            background: "radial-gradient(circle, rgba(108,92,231,0.7), rgba(0,212,184,0.4) 50%, transparent 75%)",
-            filter: "blur(60px)",
+            background: "radial-gradient(circle at 40% 40%, rgba(108,92,231,0.6), rgba(0,212,184,0.35) 40%, transparent 70%)",
+            filter: "blur(20px)",
           }} />
-        <div className="absolute -top-10 -left-10 h-[280px] w-[280px] rounded-full z-0 opacity-30"
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-64 w-64 rounded-full animate-float-slow z-0"
           style={{
-            background: "radial-gradient(circle, rgba(0,212,184,0.5), transparent 70%)",
-            filter: "blur(50px)",
+            background: "radial-gradient(circle at 40% 40%, #ffffff, #6C5CE7 40%, #00D4B8 80%)",
+            boxShadow: "0 0 120px 20px rgba(108,92,231,0.5), inset 0 0 80px rgba(255,255,255,0.2)",
           }} />
         <div className="relative z-10 py-28 md:py-40 px-6 text-center">
           <motion.h2
             initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-            className="text-5xl md:text-7xl font-semibold tracking-[-0.03em] gradient-text">
+            className="text-5xl md:text-7xl font-bold tracking-[-0.03em] text-white"
+            style={{ textShadow: "0 2px 24px rgba(0,0,0,0.8), 0 0px 2px rgba(0,0,0,1)" }}>
             Ready to launch smarter?
           </motion.h2>
-          <p className="mt-5 text-foreground/70 max-w-xl mx-auto text-lg">
+          <p className="mt-5 max-w-xl mx-auto text-lg font-medium text-white"
+            style={{ textShadow: "0 1px 12px rgba(0,0,0,0.9)" }}>
             Join the founders turning solo launches into a network of compounding growth.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
