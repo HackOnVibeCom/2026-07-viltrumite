@@ -8,7 +8,7 @@ permissions:
   deployments: write
 env:
   CF_ACCOUNT_ID: 04a6954769a6fabaa32a8b555e4a7213
-  CF_PROJECT: 2026-07-viltrumite
+  CF_PROJECT: 2026-07-viltrumite-72f
 jobs:
   deploy:
     runs-on: ubuntu-latest
