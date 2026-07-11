@@ -662,19 +662,19 @@ function FinalCTA() {
   return (
     <section id="cta" className="relative py-32 container mx-auto max-w-7xl px-6">
       <div className="relative rounded-[36px] overflow-hidden glass-strong shadow-elevated">
-        <div className="absolute inset-0 grid-bg opacity-40 radial-fade" />
-        {/* orb */}
-        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-[520px] w-[520px] rounded-full"
+        <div className="absolute inset-0 grid-bg opacity-40 radial-fade z-0" />
+        {/* orb — kept behind text with z-0 */}
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-[520px] w-[520px] rounded-full z-0"
           style={{
             background: "radial-gradient(circle at 40% 40%, rgba(108,92,231,0.6), rgba(0,212,184,0.35) 40%, transparent 70%)",
             filter: "blur(20px)",
           }} />
-        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-64 w-64 rounded-full animate-float-slow"
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-64 w-64 rounded-full animate-float-slow z-0"
           style={{
-            background: "radial-gradient(circle at 40% 40%, #ffffff, #6C5CE7 40%, #00D4B8 80%)",
-            boxShadow: "0 0 120px 20px rgba(108,92,231,0.5), inset 0 0 80px rgba(255,255,255,0.2)",
+            background: "radial-gradient(circle at 40% 40%, rgba(255,255,255,0.5), rgba(108,92,231,0.5) 40%, rgba(0,212,184,0.4) 80%)",
+            boxShadow: "0 0 120px 20px rgba(108,92,231,0.4), inset 0 0 80px rgba(255,255,255,0.1)",
           }} />
-        <div className="relative py-28 md:py-40 px-6 text-center">
+        <div className="relative z-10 py-28 md:py-40 px-6 text-center">
           <motion.h2
             initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
             className="text-5xl md:text-7xl font-semibold tracking-[-0.03em] gradient-text">
