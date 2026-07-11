@@ -28,7 +28,7 @@ function Nav() {
             </a>
           ))}
         </div>
-        <a href="#cta" className="relative overflow-hidden rounded-full bg-white text-background text-sm font-medium px-4 py-1.5 hover:scale-[1.02] transition-transform">
+        <a href="/explore" className="relative overflow-hidden rounded-full bg-white text-background text-sm font-medium px-4 py-1.5 hover:scale-[1.02] transition-transform">
           Start Free
         </a>
       </nav>
@@ -103,7 +103,7 @@ function Hero() {
 
           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
             className="mt-8 flex flex-wrap items-center gap-3">
-            <MagneticButton variant="primary">
+            <MagneticButton variant="primary" onClick={() => window.location.href = "/explore"}>
               Start free <ArrowRight className="h-4 w-4" />
             </MagneticButton>
             <MagneticButton variant="ghost">
@@ -686,7 +686,7 @@ function FinalCTA() {
             Join the founders turning solo launches into a network of compounding growth.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
-            <MagneticButton variant="primary">Find my first growth partner <ArrowRight className="h-4 w-4" /></MagneticButton>
+            <MagneticButton variant="primary" onClick={() => window.location.href = "/explore"}>Find my first growth partner <ArrowRight className="h-4 w-4" /></MagneticButton>
             <MagneticButton variant="ghost">Book a demo</MagneticButton>
           </div>
         </div>

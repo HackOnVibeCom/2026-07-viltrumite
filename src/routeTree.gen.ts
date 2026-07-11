@@ -9,38 +9,236 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as FounderRouteImport } from './routes/founder'
+import { Route as ExploreRouteImport } from './routes/explore'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ExploreIndexRouteImport } from './routes/explore/index'
+import { Route as ExploreUpcomingRouteImport } from './routes/explore/upcoming'
+import { Route as ExploreTrendingRouteImport } from './routes/explore/trending'
+import { Route as ExploreTopRouteImport } from './routes/explore/top'
+import { Route as ExploreSettingsRouteImport } from './routes/explore/settings'
+import { Route as ExploreProfileRouteImport } from './routes/explore/profile'
+import { Route as ExploreNotificationsRouteImport } from './routes/explore/notifications'
+import { Route as ExploreHelpRouteImport } from './routes/explore/help'
+import { Route as ExploreFollowingRouteImport } from './routes/explore/following'
+import { Route as ExploreFeedbackRouteImport } from './routes/explore/feedback'
+import { Route as ExploreCategoriesRouteImport } from './routes/explore/categories'
+import { Route as ExploreBrowseRouteImport } from './routes/explore/browse'
+import { Route as ExploreAppIdRouteImport } from './routes/explore/app.$id'
 
+const FounderRoute = FounderRouteImport.update({
+  id: '/founder',
+  path: '/founder',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExploreRoute = ExploreRouteImport.update({
+  id: '/explore',
+  path: '/explore',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ExploreIndexRoute = ExploreIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => ExploreRoute,
+} as any)
+const ExploreUpcomingRoute = ExploreUpcomingRouteImport.update({
+  id: '/upcoming',
+  path: '/upcoming',
+  getParentRoute: () => ExploreRoute,
+} as any)
+const ExploreTrendingRoute = ExploreTrendingRouteImport.update({
+  id: '/trending',
+  path: '/trending',
+  getParentRoute: () => ExploreRoute,
+} as any)
+const ExploreTopRoute = ExploreTopRouteImport.update({
+  id: '/top',
+  path: '/top',
+  getParentRoute: () => ExploreRoute,
+} as any)
+const ExploreSettingsRoute = ExploreSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => ExploreRoute,
+} as any)
+const ExploreProfileRoute = ExploreProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => ExploreRoute,
+} as any)
+const ExploreNotificationsRoute = ExploreNotificationsRouteImport.update({
+  id: '/notifications',
+  path: '/notifications',
+  getParentRoute: () => ExploreRoute,
+} as any)
+const ExploreHelpRoute = ExploreHelpRouteImport.update({
+  id: '/help',
+  path: '/help',
+  getParentRoute: () => ExploreRoute,
+} as any)
+const ExploreFollowingRoute = ExploreFollowingRouteImport.update({
+  id: '/following',
+  path: '/following',
+  getParentRoute: () => ExploreRoute,
+} as any)
+const ExploreFeedbackRoute = ExploreFeedbackRouteImport.update({
+  id: '/feedback',
+  path: '/feedback',
+  getParentRoute: () => ExploreRoute,
+} as any)
+const ExploreCategoriesRoute = ExploreCategoriesRouteImport.update({
+  id: '/categories',
+  path: '/categories',
+  getParentRoute: () => ExploreRoute,
+} as any)
+const ExploreBrowseRoute = ExploreBrowseRouteImport.update({
+  id: '/browse',
+  path: '/browse',
+  getParentRoute: () => ExploreRoute,
+} as any)
+const ExploreAppIdRoute = ExploreAppIdRouteImport.update({
+  id: '/app/$id',
+  path: '/app/$id',
+  getParentRoute: () => ExploreRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/explore': typeof ExploreRouteWithChildren
+  '/founder': typeof FounderRoute
+  '/explore/browse': typeof ExploreBrowseRoute
+  '/explore/categories': typeof ExploreCategoriesRoute
+  '/explore/feedback': typeof ExploreFeedbackRoute
+  '/explore/following': typeof ExploreFollowingRoute
+  '/explore/help': typeof ExploreHelpRoute
+  '/explore/notifications': typeof ExploreNotificationsRoute
+  '/explore/profile': typeof ExploreProfileRoute
+  '/explore/settings': typeof ExploreSettingsRoute
+  '/explore/top': typeof ExploreTopRoute
+  '/explore/trending': typeof ExploreTrendingRoute
+  '/explore/upcoming': typeof ExploreUpcomingRoute
+  '/explore/': typeof ExploreIndexRoute
+  '/explore/app/$id': typeof ExploreAppIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/founder': typeof FounderRoute
+  '/explore/browse': typeof ExploreBrowseRoute
+  '/explore/categories': typeof ExploreCategoriesRoute
+  '/explore/feedback': typeof ExploreFeedbackRoute
+  '/explore/following': typeof ExploreFollowingRoute
+  '/explore/help': typeof ExploreHelpRoute
+  '/explore/notifications': typeof ExploreNotificationsRoute
+  '/explore/profile': typeof ExploreProfileRoute
+  '/explore/settings': typeof ExploreSettingsRoute
+  '/explore/top': typeof ExploreTopRoute
+  '/explore/trending': typeof ExploreTrendingRoute
+  '/explore/upcoming': typeof ExploreUpcomingRoute
+  '/explore': typeof ExploreIndexRoute
+  '/explore/app/$id': typeof ExploreAppIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/explore': typeof ExploreRouteWithChildren
+  '/founder': typeof FounderRoute
+  '/explore/browse': typeof ExploreBrowseRoute
+  '/explore/categories': typeof ExploreCategoriesRoute
+  '/explore/feedback': typeof ExploreFeedbackRoute
+  '/explore/following': typeof ExploreFollowingRoute
+  '/explore/help': typeof ExploreHelpRoute
+  '/explore/notifications': typeof ExploreNotificationsRoute
+  '/explore/profile': typeof ExploreProfileRoute
+  '/explore/settings': typeof ExploreSettingsRoute
+  '/explore/top': typeof ExploreTopRoute
+  '/explore/trending': typeof ExploreTrendingRoute
+  '/explore/upcoming': typeof ExploreUpcomingRoute
+  '/explore/': typeof ExploreIndexRoute
+  '/explore/app/$id': typeof ExploreAppIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/explore'
+    | '/founder'
+    | '/explore/browse'
+    | '/explore/categories'
+    | '/explore/feedback'
+    | '/explore/following'
+    | '/explore/help'
+    | '/explore/notifications'
+    | '/explore/profile'
+    | '/explore/settings'
+    | '/explore/top'
+    | '/explore/trending'
+    | '/explore/upcoming'
+    | '/explore/'
+    | '/explore/app/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/founder'
+    | '/explore/browse'
+    | '/explore/categories'
+    | '/explore/feedback'
+    | '/explore/following'
+    | '/explore/help'
+    | '/explore/notifications'
+    | '/explore/profile'
+    | '/explore/settings'
+    | '/explore/top'
+    | '/explore/trending'
+    | '/explore/upcoming'
+    | '/explore'
+    | '/explore/app/$id'
+  id:
+    | '__root__'
+    | '/'
+    | '/explore'
+    | '/founder'
+    | '/explore/browse'
+    | '/explore/categories'
+    | '/explore/feedback'
+    | '/explore/following'
+    | '/explore/help'
+    | '/explore/notifications'
+    | '/explore/profile'
+    | '/explore/settings'
+    | '/explore/top'
+    | '/explore/trending'
+    | '/explore/upcoming'
+    | '/explore/'
+    | '/explore/app/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ExploreRoute: typeof ExploreRouteWithChildren
+  FounderRoute: typeof FounderRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/founder': {
+      id: '/founder'
+      path: '/founder'
+      fullPath: '/founder'
+      preLoaderRoute: typeof FounderRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/explore': {
+      id: '/explore'
+      path: '/explore'
+      fullPath: '/explore'
+      preLoaderRoute: typeof ExploreRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,11 +246,139 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/explore/': {
+      id: '/explore/'
+      path: '/'
+      fullPath: '/explore/'
+      preLoaderRoute: typeof ExploreIndexRouteImport
+      parentRoute: typeof ExploreRoute
+    }
+    '/explore/upcoming': {
+      id: '/explore/upcoming'
+      path: '/upcoming'
+      fullPath: '/explore/upcoming'
+      preLoaderRoute: typeof ExploreUpcomingRouteImport
+      parentRoute: typeof ExploreRoute
+    }
+    '/explore/trending': {
+      id: '/explore/trending'
+      path: '/trending'
+      fullPath: '/explore/trending'
+      preLoaderRoute: typeof ExploreTrendingRouteImport
+      parentRoute: typeof ExploreRoute
+    }
+    '/explore/top': {
+      id: '/explore/top'
+      path: '/top'
+      fullPath: '/explore/top'
+      preLoaderRoute: typeof ExploreTopRouteImport
+      parentRoute: typeof ExploreRoute
+    }
+    '/explore/settings': {
+      id: '/explore/settings'
+      path: '/settings'
+      fullPath: '/explore/settings'
+      preLoaderRoute: typeof ExploreSettingsRouteImport
+      parentRoute: typeof ExploreRoute
+    }
+    '/explore/profile': {
+      id: '/explore/profile'
+      path: '/profile'
+      fullPath: '/explore/profile'
+      preLoaderRoute: typeof ExploreProfileRouteImport
+      parentRoute: typeof ExploreRoute
+    }
+    '/explore/notifications': {
+      id: '/explore/notifications'
+      path: '/notifications'
+      fullPath: '/explore/notifications'
+      preLoaderRoute: typeof ExploreNotificationsRouteImport
+      parentRoute: typeof ExploreRoute
+    }
+    '/explore/help': {
+      id: '/explore/help'
+      path: '/help'
+      fullPath: '/explore/help'
+      preLoaderRoute: typeof ExploreHelpRouteImport
+      parentRoute: typeof ExploreRoute
+    }
+    '/explore/following': {
+      id: '/explore/following'
+      path: '/following'
+      fullPath: '/explore/following'
+      preLoaderRoute: typeof ExploreFollowingRouteImport
+      parentRoute: typeof ExploreRoute
+    }
+    '/explore/feedback': {
+      id: '/explore/feedback'
+      path: '/feedback'
+      fullPath: '/explore/feedback'
+      preLoaderRoute: typeof ExploreFeedbackRouteImport
+      parentRoute: typeof ExploreRoute
+    }
+    '/explore/categories': {
+      id: '/explore/categories'
+      path: '/categories'
+      fullPath: '/explore/categories'
+      preLoaderRoute: typeof ExploreCategoriesRouteImport
+      parentRoute: typeof ExploreRoute
+    }
+    '/explore/browse': {
+      id: '/explore/browse'
+      path: '/browse'
+      fullPath: '/explore/browse'
+      preLoaderRoute: typeof ExploreBrowseRouteImport
+      parentRoute: typeof ExploreRoute
+    }
+    '/explore/app/$id': {
+      id: '/explore/app/$id'
+      path: '/app/$id'
+      fullPath: '/explore/app/$id'
+      preLoaderRoute: typeof ExploreAppIdRouteImport
+      parentRoute: typeof ExploreRoute
+    }
   }
 }
 
+interface ExploreRouteChildren {
+  ExploreBrowseRoute: typeof ExploreBrowseRoute
+  ExploreCategoriesRoute: typeof ExploreCategoriesRoute
+  ExploreFeedbackRoute: typeof ExploreFeedbackRoute
+  ExploreFollowingRoute: typeof ExploreFollowingRoute
+  ExploreHelpRoute: typeof ExploreHelpRoute
+  ExploreNotificationsRoute: typeof ExploreNotificationsRoute
+  ExploreProfileRoute: typeof ExploreProfileRoute
+  ExploreSettingsRoute: typeof ExploreSettingsRoute
+  ExploreTopRoute: typeof ExploreTopRoute
+  ExploreTrendingRoute: typeof ExploreTrendingRoute
+  ExploreUpcomingRoute: typeof ExploreUpcomingRoute
+  ExploreIndexRoute: typeof ExploreIndexRoute
+  ExploreAppIdRoute: typeof ExploreAppIdRoute
+}
+
+const ExploreRouteChildren: ExploreRouteChildren = {
+  ExploreBrowseRoute: ExploreBrowseRoute,
+  ExploreCategoriesRoute: ExploreCategoriesRoute,
+  ExploreFeedbackRoute: ExploreFeedbackRoute,
+  ExploreFollowingRoute: ExploreFollowingRoute,
+  ExploreHelpRoute: ExploreHelpRoute,
+  ExploreNotificationsRoute: ExploreNotificationsRoute,
+  ExploreProfileRoute: ExploreProfileRoute,
+  ExploreSettingsRoute: ExploreSettingsRoute,
+  ExploreTopRoute: ExploreTopRoute,
+  ExploreTrendingRoute: ExploreTrendingRoute,
+  ExploreUpcomingRoute: ExploreUpcomingRoute,
+  ExploreIndexRoute: ExploreIndexRoute,
+  ExploreAppIdRoute: ExploreAppIdRoute,
+}
+
+const ExploreRouteWithChildren =
+  ExploreRoute._addFileChildren(ExploreRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ExploreRoute: ExploreRouteWithChildren,
+  FounderRoute: FounderRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
