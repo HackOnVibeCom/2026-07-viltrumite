@@ -294,3 +294,25 @@
   animation: glow-pulse 3s infinite ease-in-out;
   filter: drop-shadow(0 0 4px var(--primary));
 }
+
+
+/* ——— Native select/option theme fix ——— */
+/* Light mode: white background, dark text */
+.light-dashboard select,
+.light-dashboard select option {
+  background-color: #ffffff;
+  color: #111827;
+}
+
+/* Dark mode: dark background, light text */
+.dark-dashboard select,
+.dark-dashboard select option {
+  background-color: #181822;
+  color: #ffffff;
+}
+
+/* Default (root dark theme) */
+select option {
+  background-color: var(--card, #181822);
+  color: var(--foreground, #ffffff);
+}
