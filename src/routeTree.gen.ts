@@ -12,7 +12,15 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as FounderRouteImport } from './routes/founder'
 import { Route as ExploreRouteImport } from './routes/explore'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as FounderIndexRouteImport } from './routes/founder/index'
 import { Route as ExploreIndexRouteImport } from './routes/explore/index'
+import { Route as FounderSettingsRouteImport } from './routes/founder/settings'
+import { Route as FounderPactsRouteImport } from './routes/founder/pacts'
+import { Route as FounderMatchesRouteImport } from './routes/founder/matches'
+import { Route as FounderCopilotRouteImport } from './routes/founder/copilot'
+import { Route as FounderBundlesRouteImport } from './routes/founder/bundles'
+import { Route as FounderAudienceRouteImport } from './routes/founder/audience'
+import { Route as FounderAnalyticsRouteImport } from './routes/founder/analytics'
 import { Route as ExploreUpcomingRouteImport } from './routes/explore/upcoming'
 import { Route as ExploreTrendingRouteImport } from './routes/explore/trending'
 import { Route as ExploreTopRouteImport } from './routes/explore/top'
@@ -41,10 +49,50 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const FounderIndexRoute = FounderIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => FounderRoute,
+} as any)
 const ExploreIndexRoute = ExploreIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => ExploreRoute,
+} as any)
+const FounderSettingsRoute = FounderSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => FounderRoute,
+} as any)
+const FounderPactsRoute = FounderPactsRouteImport.update({
+  id: '/pacts',
+  path: '/pacts',
+  getParentRoute: () => FounderRoute,
+} as any)
+const FounderMatchesRoute = FounderMatchesRouteImport.update({
+  id: '/matches',
+  path: '/matches',
+  getParentRoute: () => FounderRoute,
+} as any)
+const FounderCopilotRoute = FounderCopilotRouteImport.update({
+  id: '/copilot',
+  path: '/copilot',
+  getParentRoute: () => FounderRoute,
+} as any)
+const FounderBundlesRoute = FounderBundlesRouteImport.update({
+  id: '/bundles',
+  path: '/bundles',
+  getParentRoute: () => FounderRoute,
+} as any)
+const FounderAudienceRoute = FounderAudienceRouteImport.update({
+  id: '/audience',
+  path: '/audience',
+  getParentRoute: () => FounderRoute,
+} as any)
+const FounderAnalyticsRoute = FounderAnalyticsRouteImport.update({
+  id: '/analytics',
+  path: '/analytics',
+  getParentRoute: () => FounderRoute,
 } as any)
 const ExploreUpcomingRoute = ExploreUpcomingRouteImport.update({
   id: '/upcoming',
@@ -110,7 +158,7 @@ const ExploreAppIdRoute = ExploreAppIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/explore': typeof ExploreRouteWithChildren
-  '/founder': typeof FounderRoute
+  '/founder': typeof FounderRouteWithChildren
   '/explore/browse': typeof ExploreBrowseRoute
   '/explore/categories': typeof ExploreCategoriesRoute
   '/explore/feedback': typeof ExploreFeedbackRoute
@@ -122,12 +170,19 @@ export interface FileRoutesByFullPath {
   '/explore/top': typeof ExploreTopRoute
   '/explore/trending': typeof ExploreTrendingRoute
   '/explore/upcoming': typeof ExploreUpcomingRoute
+  '/founder/analytics': typeof FounderAnalyticsRoute
+  '/founder/audience': typeof FounderAudienceRoute
+  '/founder/bundles': typeof FounderBundlesRoute
+  '/founder/copilot': typeof FounderCopilotRoute
+  '/founder/matches': typeof FounderMatchesRoute
+  '/founder/pacts': typeof FounderPactsRoute
+  '/founder/settings': typeof FounderSettingsRoute
   '/explore/': typeof ExploreIndexRoute
+  '/founder/': typeof FounderIndexRoute
   '/explore/app/$id': typeof ExploreAppIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/founder': typeof FounderRoute
   '/explore/browse': typeof ExploreBrowseRoute
   '/explore/categories': typeof ExploreCategoriesRoute
   '/explore/feedback': typeof ExploreFeedbackRoute
@@ -139,14 +194,22 @@ export interface FileRoutesByTo {
   '/explore/top': typeof ExploreTopRoute
   '/explore/trending': typeof ExploreTrendingRoute
   '/explore/upcoming': typeof ExploreUpcomingRoute
+  '/founder/analytics': typeof FounderAnalyticsRoute
+  '/founder/audience': typeof FounderAudienceRoute
+  '/founder/bundles': typeof FounderBundlesRoute
+  '/founder/copilot': typeof FounderCopilotRoute
+  '/founder/matches': typeof FounderMatchesRoute
+  '/founder/pacts': typeof FounderPactsRoute
+  '/founder/settings': typeof FounderSettingsRoute
   '/explore': typeof ExploreIndexRoute
+  '/founder': typeof FounderIndexRoute
   '/explore/app/$id': typeof ExploreAppIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/explore': typeof ExploreRouteWithChildren
-  '/founder': typeof FounderRoute
+  '/founder': typeof FounderRouteWithChildren
   '/explore/browse': typeof ExploreBrowseRoute
   '/explore/categories': typeof ExploreCategoriesRoute
   '/explore/feedback': typeof ExploreFeedbackRoute
@@ -158,7 +221,15 @@ export interface FileRoutesById {
   '/explore/top': typeof ExploreTopRoute
   '/explore/trending': typeof ExploreTrendingRoute
   '/explore/upcoming': typeof ExploreUpcomingRoute
+  '/founder/analytics': typeof FounderAnalyticsRoute
+  '/founder/audience': typeof FounderAudienceRoute
+  '/founder/bundles': typeof FounderBundlesRoute
+  '/founder/copilot': typeof FounderCopilotRoute
+  '/founder/matches': typeof FounderMatchesRoute
+  '/founder/pacts': typeof FounderPactsRoute
+  '/founder/settings': typeof FounderSettingsRoute
   '/explore/': typeof ExploreIndexRoute
+  '/founder/': typeof FounderIndexRoute
   '/explore/app/$id': typeof ExploreAppIdRoute
 }
 export interface FileRouteTypes {
@@ -178,12 +249,19 @@ export interface FileRouteTypes {
     | '/explore/top'
     | '/explore/trending'
     | '/explore/upcoming'
+    | '/founder/analytics'
+    | '/founder/audience'
+    | '/founder/bundles'
+    | '/founder/copilot'
+    | '/founder/matches'
+    | '/founder/pacts'
+    | '/founder/settings'
     | '/explore/'
+    | '/founder/'
     | '/explore/app/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/founder'
     | '/explore/browse'
     | '/explore/categories'
     | '/explore/feedback'
@@ -195,7 +273,15 @@ export interface FileRouteTypes {
     | '/explore/top'
     | '/explore/trending'
     | '/explore/upcoming'
+    | '/founder/analytics'
+    | '/founder/audience'
+    | '/founder/bundles'
+    | '/founder/copilot'
+    | '/founder/matches'
+    | '/founder/pacts'
+    | '/founder/settings'
     | '/explore'
+    | '/founder'
     | '/explore/app/$id'
   id:
     | '__root__'
@@ -213,14 +299,22 @@ export interface FileRouteTypes {
     | '/explore/top'
     | '/explore/trending'
     | '/explore/upcoming'
+    | '/founder/analytics'
+    | '/founder/audience'
+    | '/founder/bundles'
+    | '/founder/copilot'
+    | '/founder/matches'
+    | '/founder/pacts'
+    | '/founder/settings'
     | '/explore/'
+    | '/founder/'
     | '/explore/app/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ExploreRoute: typeof ExploreRouteWithChildren
-  FounderRoute: typeof FounderRoute
+  FounderRoute: typeof FounderRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -246,12 +340,68 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/founder/': {
+      id: '/founder/'
+      path: '/'
+      fullPath: '/founder/'
+      preLoaderRoute: typeof FounderIndexRouteImport
+      parentRoute: typeof FounderRoute
+    }
     '/explore/': {
       id: '/explore/'
       path: '/'
       fullPath: '/explore/'
       preLoaderRoute: typeof ExploreIndexRouteImport
       parentRoute: typeof ExploreRoute
+    }
+    '/founder/settings': {
+      id: '/founder/settings'
+      path: '/settings'
+      fullPath: '/founder/settings'
+      preLoaderRoute: typeof FounderSettingsRouteImport
+      parentRoute: typeof FounderRoute
+    }
+    '/founder/pacts': {
+      id: '/founder/pacts'
+      path: '/pacts'
+      fullPath: '/founder/pacts'
+      preLoaderRoute: typeof FounderPactsRouteImport
+      parentRoute: typeof FounderRoute
+    }
+    '/founder/matches': {
+      id: '/founder/matches'
+      path: '/matches'
+      fullPath: '/founder/matches'
+      preLoaderRoute: typeof FounderMatchesRouteImport
+      parentRoute: typeof FounderRoute
+    }
+    '/founder/copilot': {
+      id: '/founder/copilot'
+      path: '/copilot'
+      fullPath: '/founder/copilot'
+      preLoaderRoute: typeof FounderCopilotRouteImport
+      parentRoute: typeof FounderRoute
+    }
+    '/founder/bundles': {
+      id: '/founder/bundles'
+      path: '/bundles'
+      fullPath: '/founder/bundles'
+      preLoaderRoute: typeof FounderBundlesRouteImport
+      parentRoute: typeof FounderRoute
+    }
+    '/founder/audience': {
+      id: '/founder/audience'
+      path: '/audience'
+      fullPath: '/founder/audience'
+      preLoaderRoute: typeof FounderAudienceRouteImport
+      parentRoute: typeof FounderRoute
+    }
+    '/founder/analytics': {
+      id: '/founder/analytics'
+      path: '/analytics'
+      fullPath: '/founder/analytics'
+      preLoaderRoute: typeof FounderAnalyticsRouteImport
+      parentRoute: typeof FounderRoute
     }
     '/explore/upcoming': {
       id: '/explore/upcoming'
@@ -375,10 +525,35 @@ const ExploreRouteChildren: ExploreRouteChildren = {
 const ExploreRouteWithChildren =
   ExploreRoute._addFileChildren(ExploreRouteChildren)
 
+interface FounderRouteChildren {
+  FounderAnalyticsRoute: typeof FounderAnalyticsRoute
+  FounderAudienceRoute: typeof FounderAudienceRoute
+  FounderBundlesRoute: typeof FounderBundlesRoute
+  FounderCopilotRoute: typeof FounderCopilotRoute
+  FounderMatchesRoute: typeof FounderMatchesRoute
+  FounderPactsRoute: typeof FounderPactsRoute
+  FounderSettingsRoute: typeof FounderSettingsRoute
+  FounderIndexRoute: typeof FounderIndexRoute
+}
+
+const FounderRouteChildren: FounderRouteChildren = {
+  FounderAnalyticsRoute: FounderAnalyticsRoute,
+  FounderAudienceRoute: FounderAudienceRoute,
+  FounderBundlesRoute: FounderBundlesRoute,
+  FounderCopilotRoute: FounderCopilotRoute,
+  FounderMatchesRoute: FounderMatchesRoute,
+  FounderPactsRoute: FounderPactsRoute,
+  FounderSettingsRoute: FounderSettingsRoute,
+  FounderIndexRoute: FounderIndexRoute,
+}
+
+const FounderRouteWithChildren =
+  FounderRoute._addFileChildren(FounderRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ExploreRoute: ExploreRouteWithChildren,
-  FounderRoute: FounderRoute,
+  FounderRoute: FounderRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
