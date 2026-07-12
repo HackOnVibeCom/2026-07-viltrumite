@@ -82,11 +82,7 @@ export async function handleCopilotChatRequest(
   const message = request.message as string;
   
   // Support both conversationHistory and history for compatibility
-  const conversationHistory = (request.conversationHistory || request.history) as Array<{
-    role: "user" | "assistant" | string;
-    content?: string;
-    text?: string;
-  }> | undefined;
+  let conversationHistory = (request.conversationHistory || request.history) as Array<any> | undefined;
 
   if (!message || typeof message !== "string" || !message.trim()) {
     throw new Error("Missing required field: message");
@@ -94,10 +90,15 @@ export async function handleCopilotChatRequest(
 
   try {
     // Transform history format to match expected API format
-    const apiHistory = conversationHistory?.map(msg => ({
-      role: msg.role === "user" ? "user" : msg.role === "ai" ? "assistant" : "assistant",
-      content: msg.content || msg.text || "",
-    }));
+    let apiHistory: Array<{ role: "user" | "assistant"; content: string }> | undefined;
+    
+    if (conversationHistory && Array.isArray(conversationHistory) && conversationHistory.length > 0) {
+      apiHistory = conversationHistory.map(msg => {
+        const role = msg.role === "user" ? "user" : msg.role === "ai" ? "assistant" : "assistant";
+        const content = msg.content || msg.text || "";
+        return { role, content };
+      });
+    }
 
     const response = await callOxloCopilotAPI(
       message,
