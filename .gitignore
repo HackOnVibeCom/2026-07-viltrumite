@@ -6,5 +6,8 @@ dist/
 .wrangler/
 tsconfig.tsbuildinfo
 .tanstack/
+# Ignore CSV files except those needed at runtime in public/mock-db/
 *.csv
+!public/mock-db/*.csv
+!2026-07-viltrumite/public/mock-db/*.csv
 .oxcode-memory/

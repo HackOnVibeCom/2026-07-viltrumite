@@ -1,0 +1,31 @@
+pact_id,match_id,campaign_type,start_date,status,shared_conversions
+PCT-001,MCH-001,Newsletter Swap,2026-07-16,Completed,322
+PCT-002,MCH-002,Newsletter Swap,2026-07-30,Completed,463
+PCT-003,MCH-003,Discount Bundle,2026-08-15,Proposed,206
+PCT-004,MCH-004,Social Media Takeover,2026-07-26,Active,85
+PCT-005,MCH-005,Newsletter Swap,2026-08-27,Active,408
+PCT-006,MCH-006,Social Media Takeover,2026-07-15,Active,421
+PCT-007,MCH-007,Social Media Takeover,2026-07-04,Proposed,137
+PCT-008,MCH-008,Newsletter Swap,2026-07-30,Active,420
+PCT-009,MCH-009,Social Media Takeover,2026-08-12,Proposed,296
+PCT-010,MCH-010,Co-Marketing Webinar,2026-08-30,Completed,323
+PCT-011,MCH-011,Social Media Takeover,2026-08-23,Proposed,238
+PCT-012,MCH-012,Discount Bundle,2026-08-17,Completed,240
+PCT-013,MCH-013,Co-Marketing Webinar,2026-08-18,Active,440
+PCT-014,MCH-014,Co-Marketing Webinar,2026-08-19,Proposed,258
+PCT-015,MCH-015,Discount Bundle,2026-07-18,Completed,49
+PCT-016,MCH-016,Co-Marketing Webinar,2026-07-16,Completed,181
+PCT-017,MCH-017,Co-Marketing Webinar,2026-08-27,Proposed,51
+PCT-018,MCH-018,Discount Bundle,2026-07-10,Active,206
+PCT-019,MCH-019,Discount Bundle,2026-08-15,Active,42
+PCT-020,MCH-020,Social Media Takeover,2026-07-27,Completed,287
+PCT-021,MCH-021,Social Media Takeover,2026-07-27,Active,115
+PCT-022,MCH-022,Social Media Takeover,2026-07-25,Proposed,494
+PCT-023,MCH-023,Newsletter Swap,2026-08-24,Proposed,204
+PCT-024,MCH-024,Social Media Takeover,2026-07-01,Completed,162
+PCT-025,MCH-025,Social Media Takeover,2026-08-24,Completed,285
+PCT-026,MCH-026,Discount Bundle,2026-08-01,Active,149
+PCT-027,MCH-027,Social Media Takeover,2026-08-01,Active,209
+PCT-028,MCH-028,Co-Marketing Webinar,2026-08-12,Proposed,418
+PCT-029,MCH-029,Social Media Takeover,2026-08-16,Active,440
+PCT-030,MCH-030,Social Media Takeover,2026-08-28,Active,328

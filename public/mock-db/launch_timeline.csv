@@ -1,0 +1,61 @@
+milestone_id,app_id,milestone_title,target_date,status
+MLS-001,APP-001,PromptCraft - Beta Open Registration,2026-07-21,In Progress
+MLS-002,APP-001,PromptCraft - v1.0 Release Candidate,2026-07-13,Planned
+MLS-003,APP-002,TaskFlow - Beta Open Registration,2026-09-11,Planned
+MLS-004,APP-002,TaskFlow - v1.0 Release Candidate,2026-09-24,In Progress
+MLS-005,APP-003,LedgerLy - Beta Open Registration,2026-08-09,In Progress
+MLS-006,APP-003,LedgerLy - v1.0 Release Candidate,2026-08-11,Planned
+MLS-007,APP-004,CalmPulse - Beta Open Registration,2026-08-12,Completed
+MLS-008,APP-004,CalmPulse - v1.0 Release Candidate,2026-08-22,In Progress
+MLS-009,APP-005,CodeSpark - Beta Open Registration,2026-08-02,Completed
+MLS-010,APP-005,CodeSpark - v1.0 Release Candidate,2026-08-08,Planned
+MLS-011,APP-006,ApiShield - Beta Open Registration,2026-08-02,Completed
+MLS-012,APP-006,ApiShield - v1.0 Release Candidate,2026-08-17,In Progress
+MLS-013,APP-007,MockupMagic - Beta Open Registration,2026-08-23,Completed
+MLS-014,APP-007,MockupMagic - v1.0 Release Candidate,2026-08-20,Planned
+MLS-015,APP-008,QuestBound - Beta Open Registration,2026-07-20,Completed
+MLS-016,APP-008,QuestBound - v1.0 Release Candidate,2026-07-11,Planned
+MLS-017,APP-009,RoamWise - Beta Open Registration,2026-07-27,In Progress
+MLS-018,APP-009,RoamWise - v1.0 Release Candidate,2026-08-02,Planned
+MLS-019,APP-010,CartDrop - Beta Open Registration,2026-08-17,In Progress
+MLS-020,APP-010,CartDrop - v1.0 Release Candidate,2026-08-29,Planned
+MLS-021,APP-011,AuthLock - Beta Open Registration,2026-08-04,In Progress
+MLS-022,APP-011,AuthLock - v1.0 Release Candidate,2026-07-31,In Progress
+MLS-023,APP-012,ResumeRise - Beta Open Registration,2026-09-15,Completed
+MLS-024,APP-012,ResumeRise - v1.0 Release Candidate,2026-09-15,Planned
+MLS-025,APP-013,VibeCheck - Beta Open Registration,2026-07-18,Completed
+MLS-026,APP-013,VibeCheck - v1.0 Release Candidate,2026-07-21,Completed
+MLS-027,APP-014,BeatWeave - Beta Open Registration,2026-08-07,Planned
+MLS-028,APP-014,BeatWeave - v1.0 Release Candidate,2026-08-21,Planned
+MLS-029,APP-015,BiteTrack - Beta Open Registration,2026-08-23,In Progress
+MLS-030,APP-015,BiteTrack - v1.0 Release Candidate,2026-08-14,In Progress
+MLS-031,APP-016,SynapseNote - Beta Open Registration,2026-08-04,Completed
+MLS-032,APP-016,SynapseNote - v1.0 Release Candidate,2026-08-05,In Progress
+MLS-033,APP-017,TaxBuddy - Beta Open Registration,2026-08-07,Planned
+MLS-034,APP-017,TaxBuddy - v1.0 Release Candidate,2026-08-05,In Progress
+MLS-035,APP-018,SleepSage - Beta Open Registration,2026-08-15,Completed
+MLS-036,APP-018,SleepSage - v1.0 Release Candidate,2026-08-11,Planned
+MLS-037,APP-019,LogBuddy - Beta Open Registration,2026-08-13,In Progress
+MLS-038,APP-019,LogBuddy - v1.0 Release Candidate,2026-08-13,In Progress
+MLS-039,APP-020,ColorWave - Beta Open Registration,2026-08-08,Completed
+MLS-040,APP-020,ColorWave - v1.0 Release Candidate,2026-07-27,In Progress
+MLS-041,APP-021,PixelForge - Beta Open Registration,2026-08-03,Completed
+MLS-042,APP-021,PixelForge - v1.0 Release Candidate,2026-07-27,Completed
+MLS-043,APP-022,StayLocal - Beta Open Registration,2026-09-17,Completed
+MLS-044,APP-022,StayLocal - v1.0 Release Candidate,2026-08-29,Planned
+MLS-045,APP-023,DealRadar - Beta Open Registration,2026-08-27,Completed
+MLS-046,APP-023,DealRadar - v1.0 Release Candidate,2026-08-31,Planned
+MLS-047,APP-024,CryptGuard - Beta Open Registration,2026-09-16,In Progress
+MLS-048,APP-024,CryptGuard - v1.0 Release Candidate,2026-09-16,Completed
+MLS-049,APP-025,JobSync - Beta Open Registration,2026-09-04,Planned
+MLS-050,APP-025,JobSync - v1.0 Release Candidate,2026-09-11,Planned
+MLS-051,APP-026,PingMe - Beta Open Registration,2026-08-31,Completed
+MLS-052,APP-026,PingMe - v1.0 Release Candidate,2026-09-15,Planned
+MLS-053,APP-027,LyricLab - Beta Open Registration,2026-08-18,Completed
+MLS-054,APP-027,LyricLab - v1.0 Release Candidate,2026-08-04,Planned
+MLS-055,APP-028,ChefBot - Beta Open Registration,2026-07-30,Completed
+MLS-056,APP-028,ChefBot - v1.0 Release Candidate,2026-08-03,Planned
+MLS-057,APP-029,InsightAI - Beta Open Registration,2026-07-27,Planned
+MLS-058,APP-029,InsightAI - v1.0 Release Candidate,2026-07-28,Completed
+MLS-059,APP-030,FocusGrid - Beta Open Registration,2026-08-11,Planned
+MLS-060,APP-030,FocusGrid - v1.0 Release Candidate,2026-08-12,In Progress
