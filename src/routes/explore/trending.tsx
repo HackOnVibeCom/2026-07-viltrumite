@@ -29,9 +29,14 @@ function TrendingPage() {
         {trending.slice(0, 3).map((app, i) => (
           <motion.div key={app.id}
             initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1 }}
-            className="relative">
-            <div className="absolute -top-3 left-4 z-10">
-              <span className="text-2xl">{i === 0 ? "🥇" : i === 1 ? "🥈" : "🥉"}</span>
+            className="flex flex-col">
+            {/* Medal row with gradient underline */}
+            <div className="px-1 pb-2">
+              <div className="flex items-center gap-1.5 mb-2">
+                <span className="text-lg">{i === 0 ? "🥇" : i === 1 ? "🥈" : "🥉"}</span>
+                <span className="text-xs font-bold text-muted-foreground">#{i + 1}</span>
+              </div>
+              <div className={`h-[2px] w-full rounded-full bg-gradient-to-r ${app.gradient}`} />
             </div>
             <AppCard app={app} index={i} />
           </motion.div>

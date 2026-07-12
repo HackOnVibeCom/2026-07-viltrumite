@@ -11,7 +11,7 @@ const STATUS_STYLES = {
   trending: "bg-accent/15 text-accent border-accent/30",
 };
 
-export function AppCard({ app, index = 0 }: { app: App; index?: number }) {
+export function AppCard({ app, index = 0, rank }: { app: App; index?: number; rank?: number }) {
   const [liked, setLiked] = useState(false);
   const [bookmarked, setBookmarked] = useState(false);
   const [notified, setNotified] = useState(false);
@@ -24,8 +24,13 @@ export function AppCard({ app, index = 0 }: { app: App; index?: number }) {
       whileHover={{ y: -4 }}
       className="group relative rounded-2xl overflow-hidden border border-border/60 hover:border-primary/40 hover:shadow-lg transition-all duration-300 dot-bg bg-card/45 flex flex-col justify-between min-h-[220px]">
 
-      {/* Top border indicator strip */}
-      <div className={`h-[3px] w-full bg-gradient-to-r ${app.gradient}`} />
+      {/* Rank badge — only shown when rank prop passed */}
+      {rank !== undefined && (
+        <div className="absolute top-3 right-3 z-10 flex items-center gap-1 glass-strong rounded-full px-2 py-1 border border-border/40">
+          <span className="text-sm">{rank === 0 ? "🥇" : rank === 1 ? "🥈" : "🥉"}</span>
+          <span className="text-[10px] font-bold text-muted-foreground">#{rank + 1}</span>
+        </div>
+      )}
 
       <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
         <div className="flex items-start gap-4">
