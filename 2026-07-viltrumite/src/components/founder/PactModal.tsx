@@ -152,7 +152,7 @@ export function PactModal({ isOpen, onClose, partner, onSuccess }: Props) {
         <div className="px-6 py-4 border-b border-border/40 bg-surface/40 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Sparkles className="h-5 w-5 text-accent animate-pulse" />
-            <h2 className="text-lg font-bold text-white">Create Growth Pact</h2>
+            <h2 className="text-lg font-bold text-foreground">Create Growth Pact</h2>
           </div>
           <button onClick={onClose} className="h-8 w-8 rounded-lg glass grid place-items-center text-muted-foreground hover:text-foreground cursor-pointer transition-colors">
             <X className="h-4 w-4" />
@@ -170,7 +170,7 @@ export function PactModal({ isOpen, onClose, partner, onSuccess }: Props) {
               <div className="h-12 w-12 rounded-2xl bg-gradient-to-br from-violet-500 to-purple-700 grid place-items-center text-2xl mx-auto">
                 {profile.appIcon || "🚀"}
               </div>
-              <p className="text-xs font-bold text-white truncate">{profile.appName}</p>
+              <p className="text-xs font-bold text-foreground truncate">{profile.appName}</p>
               <p className="text-[10px] text-muted-foreground uppercase">{profile.category}</p>
             </div>
 
@@ -182,7 +182,7 @@ export function PactModal({ isOpen, onClose, partner, onSuccess }: Props) {
               <div className="inline-block px-3 py-1 rounded-full text-xs font-extrabold text-accent border border-accent/20 bg-accent/10">
                 {partner.match}% Match
               </div>
-              <p className="text-[10px] text-muted-foreground">Trust Score: <strong className="text-white">{partner.trustScore}</strong></p>
+              <p className="text-[10px] text-muted-foreground">Trust Score: <strong className="text-foreground">{partner.trustScore}</strong></p>
             </div>
 
             {/* Partner App */}
@@ -190,7 +190,7 @@ export function PactModal({ isOpen, onClose, partner, onSuccess }: Props) {
               <div className={`h-12 w-12 rounded-2xl bg-gradient-to-br ${partner.gradient} grid place-items-center text-2xl mx-auto`}>
                 {partner.icon}
               </div>
-              <p className="text-xs font-bold text-white truncate">{partner.name}</p>
+              <p className="text-xs font-bold text-foreground truncate">{partner.name}</p>
               <p className="text-[10px] text-muted-foreground uppercase">{partner.tags?.[0] || "Cross-promo"}</p>
             </div>
           </div>
@@ -199,7 +199,7 @@ export function PactModal({ isOpen, onClose, partner, onSuccess }: Props) {
             <div className="py-16 text-center space-y-4">
               <Loader2 className="h-10 w-10 animate-spin text-accent mx-auto" />
               <div>
-                <p className="text-sm font-semibold text-white animate-pulse">LaunchMesh AI is drafting terms...</p>
+                <p className="text-sm font-semibold text-foreground animate-pulse">LaunchMesh AI is drafting terms...</p>
                 <p className="text-xs text-muted-foreground mt-1">Analyzing cross-promotion slots and subscriber reach compatibility</p>
               </div>
             </div>
@@ -221,17 +221,17 @@ export function PactModal({ isOpen, onClose, partner, onSuccess }: Props) {
               <div className="grid grid-cols-3 gap-3">
                 <div className="glass rounded-xl p-3 border border-border/40 text-center">
                   <TrendingUp className="h-4 w-4 text-accent mx-auto mb-1" />
-                  <p className="text-lg font-bold text-white">+{pactData.expectedInstalls}</p>
+                  <p className="text-lg font-bold text-foreground">+{pactData.expectedInstalls}</p>
                   <p className="text-[9px] text-muted-foreground uppercase tracking-widest mt-0.5">Est. Installs</p>
                 </div>
                 <div className="glass rounded-xl p-3 border border-border/40 text-center">
                   <Users className="h-4 w-4 text-primary mx-auto mb-1" />
-                  <p className="text-lg font-bold text-white">{partner.overlap}</p>
+                  <p className="text-lg font-bold text-foreground">{partner.overlap}</p>
                   <p className="text-[9px] text-muted-foreground uppercase tracking-widest mt-0.5">Audience Overlap</p>
                 </div>
                 <div className="glass rounded-xl p-3 border border-border/40 text-center">
                   <ShieldCheck className="h-4 w-4 text-accent mx-auto mb-1" />
-                  <p className="text-lg font-bold text-white">{pactData.successProbability}</p>
+                  <p className="text-lg font-bold text-foreground">{pactData.successProbability}</p>
                   <p className="text-[9px] text-muted-foreground uppercase tracking-widest mt-0.5">Success Prob.</p>
                 </div>
               </div>
@@ -281,7 +281,7 @@ export function PactModal({ isOpen, onClose, partner, onSuccess }: Props) {
                 {editing ? (
                   <textarea
                     rows={6}
-                    className="w-full glass bg-white/5 border border-primary/40 focus:border-primary/60 outline-none rounded-2xl p-4 text-sm text-white resize-none font-mono"
+                    className="w-full glass bg-white/5 border border-primary/40 focus:border-primary/60 outline-none rounded-2xl p-4 text-sm text-foreground resize-none font-mono"
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                   />

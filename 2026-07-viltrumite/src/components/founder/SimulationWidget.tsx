@@ -119,7 +119,7 @@ export function SimulationWidget() {
               <div className="flex items-center justify-between mb-5 border-b border-border/40 pb-4">
                 <div className="flex items-center gap-2">
                   <Sparkles className="h-4 w-4 text-accent animate-pulse" />
-                  <h3 className="text-base font-bold text-white">Partner Inbox View: {selectedPact.partnerName}</h3>
+                  <h3 className="text-base font-bold text-foreground">Partner Inbox View: {selectedPact.partnerName}</h3>
                 </div>
                 <button onClick={() => setModalOpen(false)} className="h-7 w-7 glass rounded-lg grid place-items-center text-muted-foreground hover:text-white cursor-pointer transition-colors">
                   ✕
@@ -130,7 +130,7 @@ export function SimulationWidget() {
                 <div className="p-4 rounded-xl bg-accent/10 border border-accent/25 flex gap-3">
                   <Bell className="h-5 w-5 text-accent shrink-0 mt-0.5" />
                   <div>
-                    <h4 className="text-xs font-bold text-white uppercase tracking-wider">New Growth Pact Request</h4>
+                    <h4 className="text-xs font-bold text-foreground uppercase tracking-wider">New Growth Pact Request</h4>
                     <p className="text-xs text-muted-foreground mt-1">
                       Alex (founder of StudyPal) has requested a partnership matching your launch windows.
                     </p>
@@ -152,7 +152,7 @@ export function SimulationWidget() {
                     { label: "Campaign", value: selectedPact.campaignType }
                   ].map((stat) => (
                     <div key={stat.label} className="glass rounded-xl p-2.5 text-center border border-border/40">
-                      <p className="text-xs font-bold text-white">{stat.value}</p>
+                      <p className="text-xs font-bold text-foreground">{stat.value}</p>
                       <p className="text-[9px] text-muted-foreground mt-0.5 truncate">{stat.label}</p>
                     </div>
                   ))}
