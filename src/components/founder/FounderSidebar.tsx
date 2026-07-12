@@ -16,7 +16,7 @@ const NAV = [
   { icon: Handshake, label: "Growth Pacts", to: "/founder/pacts" },
   { icon: Package, label: "Bundle Builder", to: "/founder/bundles" },
   { icon: BarChart3, label: "Analytics", to: "/founder/analytics" },
-  { icon: Bot, label: "AI Copilot", to: "/founder/copilot" },
+  { icon: Bot, label: "AI GTM Copilot", to: "/founder/copilot" },
   { icon: Settings, label: "Settings", to: "/founder/settings" },
 ];
 
