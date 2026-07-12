@@ -21,9 +21,8 @@ function analyzeAppApiPlugin(apiKey: string): Plugin {
       server.middlewares.use(async (req, res, next) => {
         const isAnalyze = req.url === "/api/analyze-app";
         const isGeneratePact = req.url === "/api/generate-pact";
-        const isCopilotChat = req.url === "/api/copilot-chat";
 
-        if (!isAnalyze && !isGeneratePact && !isCopilotChat) {
+        if (!isAnalyze && !isGeneratePact) {
           next();
           return;
         }
@@ -46,9 +45,6 @@ function analyzeAppApiPlugin(apiKey: string): Plugin {
           } else if (isGeneratePact) {
             const { handleGeneratePactRequest } = await import("./server/handle-generate-pact");
             result = await handleGeneratePactRequest(body, apiKey);
-          } else if (isCopilotChat) {
-            const { handleCopilotChatRequest } = await import("./server/handle-copilot-chat");
-            result = await handleCopilotChatRequest(body, apiKey);
           }
 
           res.statusCode = 200;
