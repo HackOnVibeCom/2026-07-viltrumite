@@ -68,7 +68,7 @@ export function SearchPalette({ open, onClose }: { open: boolean; onClose: () =>
                   {results.map(app => (
                     <Link key={app.id} to={`/explore/app/${app.id}`} onClick={onClose}>
                       <motion.div whileHover={{ x: 4 }}
-                        className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/5 transition-colors">
+                        className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-muted transition-colors">
                         <span className="text-xl">{app.icon}</span>
                         <div>
                           <p className="text-sm font-medium">{app.name}</p>

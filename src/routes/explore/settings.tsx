@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { User, Palette, Bell, Lock, Globe, Trash2, Link2, ChevronRight } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
+import { useTheme } from "@/context/ThemeContext";
 
 export const Route = createFileRoute("/explore/settings")({
   component: SettingsPage,
@@ -19,6 +20,7 @@ const SECTIONS = [
 ];
 
 function SettingsPage() {
+  const { theme, setTheme } = useTheme();
   const [active, setActive] = useState("profile");
   const [name, setName] = useState("Your Name");
   const [bio, setBio] = useState("Explorer on LaunchMesh");
@@ -40,7 +42,7 @@ function SettingsPage() {
           {SECTIONS.map(({ id, icon: Icon, label, desc }) => (
             <button key={id} onClick={() => setActive(id)} className={cn(
               "w-full flex items-center gap-3 px-3 py-3 rounded-xl text-left transition-colors",
-              active === id ? "bg-primary/15 text-primary" : "text-muted-foreground hover:text-foreground hover:bg-white/5"
+              active === id ? "bg-primary/15 text-primary" : "text-muted-foreground hover:text-foreground hover:bg-muted"
             )}>
               <Icon className="h-4 w-4 shrink-0" />
               <div>
@@ -104,7 +106,7 @@ function SettingsPage() {
                     <p className="text-xs text-muted-foreground">{desc}</p>
                   </div>
                   <button onClick={() => setter(!value)}
-                    className={cn("h-6 w-11 rounded-full transition-colors relative", value ? "bg-primary" : "bg-white/10")}>
+                    className={cn("h-6 w-11 rounded-full transition-colors relative", value ? "bg-primary" : "bg-muted")}>
                     <motion.div animate={{ x: value ? 20 : 2 }}
                       className="absolute top-0.5 h-5 w-5 rounded-full bg-white shadow" />
                   </button>
@@ -119,11 +121,22 @@ function SettingsPage() {
               <div>
                 <p className="text-sm font-medium text-muted-foreground mb-3">Theme</p>
                 <div className="flex gap-3">
-                  {["Dark", "Light (Coming Soon)"].map((t, i) => (
-                    <div key={t} className={cn("px-4 py-3 rounded-xl border text-sm cursor-pointer transition-colors",
-                      i === 0 ? "border-primary/40 bg-primary/10 text-primary" : "border-border/40 text-muted-foreground opacity-50 cursor-not-allowed")}>
-                      {t}
-                    </div>
+                  {[
+                    { id: "dark", label: "Dark" },
+                    { id: "light", label: "Light" },
+                  ].map((t) => (
+                    <button
+                      key={t.id}
+                      onClick={() => setTheme(t.id as any)}
+                      className={cn(
+                        "px-5 py-3.5 rounded-xl border text-sm font-medium cursor-pointer transition-all duration-200",
+                        theme === t.id
+                          ? "border-primary/40 bg-primary/10 text-primary shadow-sm"
+                          : "border-border/40 text-muted-foreground hover:bg-muted"
+                      )}
+                    >
+                      {t.label}
+                    </button>
                   ))}
                 </div>
               </div>

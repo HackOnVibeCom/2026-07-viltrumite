@@ -72,6 +72,103 @@
   color-scheme: dark;
 }
 
+.light-dashboard {
+  --radius: 1rem;
+
+  --background: #F4F6F9;
+  --surface: #F8FAFC;
+  --card: #FFFFFF;
+  --card-foreground: #111827;
+  --foreground: #111827;
+  --muted: #E2E8F0;
+  --muted-foreground: #687280;
+  --secondary: #F1F5F9;
+  --secondary-foreground: #111827;
+  --border: #E5E7EB;
+  --input: #F1F5F9;
+  --ring: #2563EB;
+
+  --primary: #2563EB;
+  --primary-foreground: #FFFFFF;
+  --primary-glow: rgba(37, 99, 235, 0.15);
+
+  --accent: #2563EB;
+  --accent-foreground: #FFFFFF;
+
+  --destructive: #EF4444;
+  --destructive-foreground: #FFFFFF;
+
+  --sidebar-bg: #FFFFFF;
+  --header-bg: rgba(248, 250, 252, 0.85);
+
+  --glass-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.5));
+  --glass-border: rgba(0, 0, 0, 0.08);
+  --glass-strong-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.8));
+  --glass-strong-border: rgba(0, 0, 0, 0.1);
+
+  --gradient-text-start: #111827;
+  --gradient-text-end: #4B5563;
+
+  /* Override Tailwind V4 colors scoped to light dashboard */
+  --color-emerald-400: #10B981;
+  --color-accent: #2563EB;
+  --color-accent-foreground: #FFFFFF;
+
+  color-scheme: light;
+}
+
+.dark-dashboard {
+  --radius: 1rem;
+
+  --background: #080415;        /* Deepest navy-indigo-black */
+  --surface: #0F0A23;           /* Dark slate-purple surface */
+  --card: #140E2D;              /* Synaptix style card background */
+  --card-foreground: #FFFFFF;
+  --foreground: #FFFFFF;
+  --muted: #1D143D;             /* Rich muted navy-purple */
+  --muted-foreground: #9F97C7;  /* Soft lavender-grey text */
+  --secondary: #191238;
+  --secondary-foreground: #FFFFFF;
+  --border: rgba(159, 122, 234, 0.15); /* Translucent glowing purple outline */
+  --input: #191238;
+  --ring: #9F7AEA;              /* Glowing active ring */
+
+  --primary: #9F7AEA;           /* Synaptix purple accent */
+  --primary-foreground: #FFFFFF;
+  --primary-glow: rgba(159, 122, 234, 0.25);
+
+  --accent: #10B981;            /* Neon green upvote/trending accent */
+  --accent-foreground: #080415;
+
+  --destructive: #EF4444;
+  --destructive-foreground: #FFFFFF;
+
+  --sidebar-bg: linear-gradient(180deg, #0C0720 0%, #070415 100%);
+  --header-bg: rgba(8, 4, 21, 0.85);
+
+  --glass-bg: linear-gradient(135deg, rgba(25, 20, 50, 0.5) 0%, rgba(15, 10, 35, 0.3) 100%);
+  --glass-border: rgba(159, 122, 234, 0.2);
+  --glass-strong-bg: linear-gradient(135deg, rgba(25, 20, 50, 0.6) 0%, rgba(15, 10, 35, 0.4) 100%);
+  --glass-strong-border: rgba(159, 122, 234, 0.25);
+
+  --gradient-text-start: #FFFFFF;
+  --gradient-text-end: #C5BFE3;
+
+  /* Deep space navy-purple gradient background with a soft ambient flow */
+  background: linear-gradient(135deg, #0A051D 0%, #060212 50%, #150A2F 100%) !important;
+  color-scheme: dark;
+}
+
+/* Smooth theme transition */
+.light-dashboard, .dark-dashboard,
+.light-dashboard aside, .dark-dashboard aside,
+.light-dashboard header, .dark-dashboard header,
+.light-dashboard main, .dark-dashboard main,
+.light-dashboard [class*="bg-card"], .dark-dashboard [class*="bg-card"],
+.light-dashboard [class*="glass"], .dark-dashboard [class*="glass"] {
+  transition: color 250ms cubic-bezier(0.4, 0, 0.2, 1), background-color 250ms cubic-bezier(0.4, 0, 0.2, 1), border-color 250ms cubic-bezier(0.4, 0, 0.2, 1), box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 @layer base {
   * {
     border-color: var(--color-border);
@@ -90,17 +187,17 @@
 
 /* ——— Utilities ——— */
 @utility glass {
-  background: linear-gradient(135deg, rgb(255 255 255 / 0.04), rgb(255 255 255 / 0.01));
+  background: var(--glass-bg, linear-gradient(135deg, rgb(255 255 255 / 0.04), rgb(255 255 255 / 0.01)));
   backdrop-filter: blur(16px) saturate(140%);
-  border: 1px solid rgb(255 255 255 / 0.08);
+  border: 1px solid var(--glass-border, rgb(255 255 255 / 0.08));
 }
 @utility glass-strong {
-  background: linear-gradient(135deg, rgb(255 255 255 / 0.06), rgb(255 255 255 / 0.02));
+  background: var(--glass-strong-bg, linear-gradient(135deg, rgb(255 255 255 / 0.06), rgb(255 255 255 / 0.02)));
   backdrop-filter: blur(24px) saturate(160%);
-  border: 1px solid rgb(255 255 255 / 0.1);
+  border: 1px solid var(--glass-strong-border, rgb(255 255 255 / 0.1));
 }
 @utility gradient-text {
-  background: linear-gradient(180deg, #ffffff 0%, #A4A4B5 100%);
+  background: linear-gradient(180deg, var(--gradient-text-start, #ffffff) 0%, var(--gradient-text-end, #A4A4B5) 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -170,4 +267,30 @@
   background: linear-gradient(120deg, #6C5CE7, #00D4B8, #6C5CE7);
   background-size: 200% 200%;
   animation: gradient-shift 8s ease infinite;
+}
+
+@utility dot-bg {
+  background-image: radial-gradient(var(--border) 1px, transparent 1px);
+  background-size: 16px 16px;
+}
+
+@keyframes line-draw {
+  from { stroke-dashoffset: 1000; }
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes glow-pulse {
+  0%, 100% { opacity: 0.75; }
+  50% { opacity: 1; }
+}
+
+@utility animate-line-draw {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  animation: line-draw 2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+@utility animate-glow-pulse {
+  animation: glow-pulse 3s infinite ease-in-out;
+  filter: drop-shadow(0 0 4px var(--primary));
 }

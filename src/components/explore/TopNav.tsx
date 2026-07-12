@@ -1,46 +1,75 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, Bell, MessageSquare, ChevronDown, Zap } from "lucide-react";
-import { Link } from "@tanstack/react-router";
+import { Search, Bell, MessageSquare, ChevronDown, Zap, Sun, Moon, Menu, ArrowLeft } from "lucide-react";
+import { Link, useLocation } from "@tanstack/react-router";
 import { NOTIFICATIONS } from "@/data/mock";
+import { useTheme } from "@/context/ThemeContext";
 
 function useCountdown(targetDate: string) {
   const target = new Date(targetDate).getTime();
-  const now = Date.now();
-  const diff = Math.max(0, target - now);
-  const d = Math.floor(diff / 86400000);
-  const h = Math.floor((diff % 86400000) / 3600000);
-  const m = Math.floor((diff % 3600000) / 60000);
-  const s = Math.floor((diff % 60000) / 1000);
-  return { d, h, m, s };
+  const [timeLeft, setTimeLeft] = useState(target - Date.now());
+
+  useState(() => {
+    const timer = setInterval(() => {
+      setTimeLeft(Math.max(0, target - Date.now()));
+    }, 60000);
+    return () => clearInterval(timer);
+  });
+
+  const diff = timeLeft;
+  return {
+    d: Math.floor(diff / 86400000),
+    h: Math.floor((diff % 86400000) / 3600000),
+    m: Math.floor((diff % 3600000) / 60000),
+  };
 }
 
 function CountdownUnit({ value, label }: { value: number; label: string }) {
   return (
-    <div className="flex flex-col items-center min-w-[28px]">
-      <span className="text-sm font-bold tabular-nums text-foreground">{String(value).padStart(2, "0")}</span>
-      <span className="text-[9px] uppercase tracking-wider text-muted-foreground">{label}</span>
-    </div>
+    <span className="tabular-nums font-semibold text-foreground text-xs">
+      {String(value).padStart(2, "0")}
+      <span className="text-[10px] text-muted-foreground ml-0.5 uppercase tracking-wide">{label}</span>
+    </span>
   );
 }
 
-export function TopNav({ onSearchOpen }: { onSearchOpen: () => void }) {
+export function TopNav({ onSearchOpen, onMenuToggle }: { onSearchOpen: () => void; onMenuToggle: () => void }) {
+  const { theme, toggleTheme } = useTheme();
+  const { pathname } = useLocation();
   const [showNotifs, setShowNotifs] = useState(false);
   const unread = NOTIFICATIONS.filter((n) => !n.read).length;
   const { d, h, m } = useCountdown("2026-07-20T00:00:00");
 
   return (
-    <header className="fixed top-0 left-64 right-0 h-16 z-30 flex items-center gap-4 px-6 border-b border-border/40"
-      style={{ background: "rgba(10,10,15,0.85)", backdropFilter: "blur(20px)" }}>
+    <header className="fixed top-0 left-0 lg:left-64 right-0 h-16 z-30 flex items-center gap-3 md:gap-4 px-4 md:px-6 border-b border-border/40"
+      style={{ background: "var(--header-bg, rgba(10,10,15,0.85))", backdropFilter: "blur(20px)" }}>
+
+      {/* Mobile menu trigger */}
+      <button onClick={onMenuToggle} className="lg:hidden h-9 w-9 rounded-xl grid place-items-center text-muted-foreground hover:text-foreground bg-muted/30 border border-border/30 shrink-0 transition-colors">
+        <Menu className="h-4 w-4" />
+      </button>
+
+      {/* Dynamic back links based on page path */}
+      {pathname !== "/explore" && pathname !== "/explore/" ? (
+        <Link to="/explore" className="flex items-center gap-1.5 text-xs font-bold text-muted-foreground hover:text-foreground transition-colors shrink-0 mr-1 sm:mr-2">
+          <ArrowLeft className="h-4 w-4 text-primary" />
+          <span className="hidden sm:inline">Back to Dashboard</span>
+        </Link>
+      ) : (
+        <Link to="/" className="flex items-center gap-1.5 text-xs font-bold text-muted-foreground hover:text-foreground transition-colors shrink-0 mr-1 sm:mr-2">
+          <ArrowLeft className="h-4 w-4 text-primary" />
+          <span className="hidden sm:inline">Landing Page</span>
+        </Link>
+      )}
 
       {/* Search trigger */}
       <motion.button
         whileHover={{ scale: 1.01 }}
         onClick={onSearchOpen}
-        className="flex-1 max-w-md flex items-center gap-3 glass rounded-xl px-4 py-2.5 text-sm text-muted-foreground hover:text-foreground transition-colors cursor-text">
-        <Search className="h-4 w-4 shrink-0" />
-        <span>Search apps, founders, collections...</span>
-        <span className="ml-auto text-xs glass px-1.5 py-0.5 rounded-md">⌘K</span>
+        className="flex-1 max-w-sm sm:max-w-md flex items-center gap-2 md:gap-3 glass rounded-xl px-3.5 py-2.5 text-xs md:text-sm text-muted-foreground hover:text-foreground transition-colors cursor-text">
+        <Search className="h-3.5 w-3.5 md:h-4 md:w-4 shrink-0" />
+        <span className="truncate">Search apps, founders...</span>
+        <span className="ml-auto text-[9px] glass px-1.5 py-0.5 rounded-md hidden sm:inline">⌘K</span>
       </motion.button>
 
       <div className="flex items-center gap-2 ml-auto">
@@ -56,6 +85,14 @@ export function TopNav({ onSearchOpen }: { onSearchOpen: () => void }) {
             <CountdownUnit value={m} label="m" />
           </div>
         </div>
+
+        {/* Theme Toggle */}
+        <motion.button whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}
+          onClick={toggleTheme}
+          className="relative h-9 w-9 glass rounded-xl grid place-items-center text-muted-foreground hover:text-foreground transition-colors"
+          title={`Switch to ${theme === "light" ? "dark" : "light"} mode`}>
+          {theme === "light" ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
+        </motion.button>
 
         {/* Messages */}
         <motion.button whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}
@@ -90,7 +127,7 @@ export function TopNav({ onSearchOpen }: { onSearchOpen: () => void }) {
                 <div className="max-h-80 overflow-y-auto">
                   {NOTIFICATIONS.map((n) => (
                     <Link key={n.id} to={`/explore/app/${n.appId}`}>
-                      <div className={`px-4 py-3 hover:bg-white/5 transition-colors border-b border-border/30 last:border-0 ${!n.read ? "bg-primary/5" : ""}`}>
+                      <div className={`px-4 py-3 hover:bg-muted transition-colors border-b border-border/30 last:border-0 ${!n.read ? "bg-primary/5" : ""}`}>
                         <p className="text-sm text-foreground">{n.message}</p>
                         <p className="text-xs text-muted-foreground mt-0.5">{n.time}</p>
                       </div>

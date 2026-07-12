@@ -42,7 +42,7 @@ function AppDetailPage() {
       <div className="relative overflow-hidden">
         {/* Background gradient */}
         <div className={`absolute inset-0 bg-gradient-to-br ${app.gradient} opacity-15`} />
-        <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, transparent 40%, #0a0a0f 100%)" }} />
+        <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, transparent 40%, var(--background) 100%)" }} />
         <div className="absolute top-0 right-0 h-80 w-80 rounded-full opacity-20 blur-3xl animate-float-slow"
           style={{ background: `radial-gradient(circle, ${app.accent}, transparent 70%)` }} />
 
@@ -71,7 +71,7 @@ function AppDetailPage() {
                     {app.status}
                   </span>
                 </div>
-                <h1 className="text-3xl md:text-4xl font-bold text-white">{app.name}</h1>
+                <h1 className="text-3xl md:text-4xl font-bold text-foreground">{app.name}</h1>
                 <p className="text-lg text-muted-foreground mt-1">{app.tagline}</p>
 
                 <div className="flex items-center gap-4 mt-3 text-sm text-muted-foreground">
@@ -96,7 +96,7 @@ function AppDetailPage() {
               </motion.button>
               <motion.button whileHover={{ scale: 1.04 }} onClick={() => setFollowed(!followed)}
                 className={cn("flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold border transition-all",
-                  followed ? "bg-white/10 border-white/20 text-white" : "glass border-border/60 text-muted-foreground hover:text-foreground")}>
+                  followed ? "bg-muted border-border/80 text-foreground" : "glass border-border/60 text-muted-foreground hover:text-foreground")}>
                 {followed ? "Following ✓" : "Follow"}
               </motion.button>
               <motion.button whileHover={{ scale: 1.04 }} onClick={() => setLiked(!liked)}
@@ -189,7 +189,7 @@ function AppDetailPage() {
                     initial={{ opacity: 0, x: -12 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.07 }}
                     className="flex items-center gap-4 glass-strong rounded-2xl p-4 border border-border/60">
                     <div className={cn("h-8 w-8 rounded-full grid place-items-center shrink-0",
-                      item.done ? "bg-accent/20 text-accent" : "bg-white/5 text-muted-foreground")}>
+                      item.done ? "bg-accent/20 text-accent" : "bg-muted text-muted-foreground")}>
                       {item.done ? <CheckCircle2 className="h-4 w-4" /> : <div className="h-2 w-2 rounded-full bg-current" />}
                     </div>
                     <span className={cn("text-sm font-medium", !item.done && "text-muted-foreground")}>{item.label}</span>
@@ -282,7 +282,7 @@ function AppDetailPage() {
                 {APPS.filter(a => a.id !== app.id && a.category === app.category).slice(0, 3).map(a => (
                   <Link key={a.id} to={`/explore/app/${a.id}`}>
                     <motion.div whileHover={{ x: 3 }}
-                      className="flex items-center gap-3 hover:bg-white/5 rounded-xl p-1.5 transition-colors">
+                      className="flex items-center gap-3 hover:bg-muted rounded-xl p-1.5 transition-colors">
                       <div className={`h-8 w-8 rounded-xl bg-gradient-to-br ${a.gradient} grid place-items-center text-base shrink-0`}>{a.icon}</div>
                       <div className="flex-1 min-w-0">
                         <p className="text-xs font-semibold truncate">{a.name}</p>

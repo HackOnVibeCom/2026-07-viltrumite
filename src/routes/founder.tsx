@@ -2,13 +2,16 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { ArrowLeft, Rocket, Sparkles } from "lucide-react";
 
+import { ThemeProvider, useTheme } from "@/context/ThemeContext";
+
 export const Route = createFileRoute("/founder")({
   component: FounderPlaceholder,
 });
 
-function FounderPlaceholder() {
+function FounderPlaceholderContent() {
+  const { theme } = useTheme();
   return (
-    <div className="min-h-screen bg-background text-foreground flex flex-col items-center justify-center px-6">
+    <div className={`min-h-screen bg-background text-foreground flex flex-col items-center justify-center px-6 transition-colors duration-200 ${theme === "light" ? "light-dashboard" : ""}`}>
       {/* Background orbs */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/4 left-1/4 h-96 w-96 rounded-full opacity-20 blur-3xl"
@@ -57,5 +60,13 @@ function FounderPlaceholder() {
         </motion.div>
       </div>
     </div>
+  );
+}
+
+function FounderPlaceholder() {
+  return (
+    <ThemeProvider>
+      <FounderPlaceholderContent />
+    </ThemeProvider>
   );
 }
