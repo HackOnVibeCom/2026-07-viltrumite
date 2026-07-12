@@ -12,7 +12,7 @@ function BundlesPage() {
   const [creating, setCreating] = useState(false);
   const { data: bundles = [] } = useBundles();
 
-  return <div className="p-6 md:p-8 max-w-5xl">
+  return <div className="pt-20 md:pt-24 px-6 md:px-8 pb-6 md:pb-8 max-w-5xl">
     <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
       <div className="flex items-center justify-between flex-wrap gap-4"><div className="flex items-center gap-3"><div className="h-10 w-10 rounded-2xl bg-primary/20 grid place-items-center"><Package className="h-5 w-5 text-primary" /></div><div><h1 className="text-2xl font-bold">Bundle Builder</h1><p className="text-sm text-muted-foreground">Themed multi-app launch campaigns</p></div></div><motion.button whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }} onClick={() => setCreating(!creating)} className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold text-white" style={{ background: "linear-gradient(135deg, #6C5CE7, #00D4B8)", boxShadow: "0 0 24px -8px rgba(108,92,231,0.5)" }}><Plus className="h-4 w-4" /> New Bundle</motion.button></div>
     </motion.div>

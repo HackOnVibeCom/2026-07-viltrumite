@@ -30,7 +30,7 @@ function MiniBar({ value, max, day, i }: { value: number; max: number; day: stri
 function AnalyticsPage() {
   const max = Math.max(...WEEK_DATA);
   return (
-    <div className="p-6 md:p-8 max-w-5xl">
+    <div className="pt-20 md:pt-24 px-6 md:px-8 pb-6 md:pb-8 max-w-5xl">
       <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
         <div className="flex items-center gap-3">
           <div className="h-10 w-10 rounded-2xl bg-primary/20 grid place-items-center">

@@ -127,7 +127,7 @@ function FounderDashboard() {
   ];
 
   return (
-    <div className="p-6 md:p-8 space-y-8 max-w-6xl">
+    <div className="pt-20 md:pt-24 px-6 md:px-8 pb-6 md:pb-8 space-y-8 max-w-6xl">
       {/* Welcome header */}
       <motion.div
         initial={{ opacity: 0, y: -12 }}
