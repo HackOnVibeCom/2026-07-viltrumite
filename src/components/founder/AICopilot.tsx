@@ -1,7 +1,14 @@
+/**
+ * ⚠️ HACKATHON / DEMO ONLY ⚠️
+ * The AI Copilot calls the Oxlo API directly from the browser via
+ * copilotService. The API key is embedded in the client bundle.
+ * Before production, move all AI calls to a secure backend.
+ */
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Bot, X, Send, Sparkles, ChevronDown } from "lucide-react";
-import { useAppProfile } from "@/context/AppProfileContext";
+import { useAppProfile } from "../../context/AppProfileContext";
+import { sendCopilotMessage, type CopilotMessage } from "@/services/copilotService";
 
 type Message = { role: "user" | "ai"; text: string };
 
@@ -44,17 +51,10 @@ function formatMessage(text: string) {
 }
 
 export function AICopilot() {
-  const { profile } = useAppProfile();
   const [open, setOpen] = useState(false);
-  const [messages, setMessages] = useState<Message[]>([]);
-  
-  // Set initial message once profile is loaded
-  useEffect(() => {
-    setMessages([
-      { role: "ai", text: `Hey! I'm your AI growth copilot 🚀\n\n${profile ? `I see you are working on launching **${profile.appName}** in the **${profile.category}** space. ` : ""}How can I help you optimize your launch strategy, find growth partners, or write copy today?` }
-    ]);
-  }, [profile]);
-
+  const [messages, setMessages] = useState<Message[]>([
+    { role: "ai", text: "Hey! I'm your AI growth copilot 🚀\n\nI can help you analyze your app, find the best growth partners, and build your launch strategy. What would you like to do?" },
+  ]);
   const [input, setInput] = useState("");
   const [typing, setTyping] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
@@ -65,36 +65,31 @@ export function AICopilot() {
 
   const send = async (text: string) => {
     if (!text.trim()) return;
-    
-    // Add user message to history
-    const updatedMessages = [...messages, { role: "user" as const, text }];
-    setMessages(updatedMessages);
+    setMessages(m => [...m, { role: "user", text }]);
     setInput("");
     setTyping(true);
-
+    
     try {
-      const response = await fetch("/api/copilot-chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          message: text,
-          history: messages.slice(-10), // Send last 10 messages of context
-          profile
-        })
-      });
+      // Build conversation history in the format expected by copilotService
+      const conversationHistory: CopilotMessage[] = messages.map(msg => ({
+        role: msg.role === "user" ? ("user" as const) : ("assistant" as const),
+        content: msg.text,
+      }));
 
-      const data = await response.json();
+      // Call Oxlo directly via the copilot service (no backend proxy)
+      const result = await sendCopilotMessage(text, conversationHistory);
+
       setTyping(false);
 
-      if (response.ok && data.reply) {
-        setMessages(m => [...m, { role: "ai", text: data.reply }]);
+      if (result.success) {
+        setMessages(m => [...m, { role: "ai", text: result.response || "I couldn't generate a response. Please try again." }]);
       } else {
-        const errorMsg = data.error || "Failed to generate AI reply";
-        setMessages(m => [...m, { role: "ai", text: `⚠️ **AI Copilot Connection Error:**\n\n${errorMsg}` }]);
+        throw new Error(result.error || "Copilot request failed");
       }
-    } catch (err: any) {
+    } catch (error) {
       setTyping(false);
-      setMessages(m => [...m, { role: "ai", text: `⚠️ **AI Copilot Connection Error:**\n\nFailed to establish connection. Reverting to local fallback:\n\nBased on your app description, I suggest focusing on initial launch newsletter cross-promotions with matched category apps.` }]);
+      const errorMsg = error instanceof Error ? error.message : "Connection error";
+      setMessages(m => [...m, { role: "ai", text: `⚠️ **AI Copilot Connection Error:**\n\n${errorMsg}\n\nFalling back to local suggestions: Based on your app profile, I recommend focusing on audience overlap first. Your strongest growth lever is a newsletter swap with a complementary app.` }]);
     }
   };
 
@@ -147,7 +142,7 @@ export function AICopilot() {
             </div>
 
             {/* Messages */}
-            <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4" data-lenis-prevent>
+            <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4">
               {messages.map((msg, i) => (
                 <motion.div key={i} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
                   className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>

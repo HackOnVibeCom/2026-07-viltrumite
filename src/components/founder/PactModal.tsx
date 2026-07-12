@@ -1,13 +1,19 @@
+/**
+ * ⚠️ HACKATHON / DEMO ONLY ⚠️
+ * This component calls the Slack Web API directly from the browser.
+ * The access token is embedded in the client bundle.
+ * Before production, move Slack calls to a secure backend.
+ */
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAppProfile } from "@/context/AppProfileContext";
 import { generatePact, type PactResult } from "@/lib/api/generate-pact";
+import { sendSlackMessage } from "@/lib/slack";
 import {
   Sparkles, Check, Send, AlertTriangle, Loader2,
   TrendingUp, Users, ShieldCheck, Mail, Edit3, X, Calendar
 } from "lucide-react";
 import { toast } from "sonner";
-import { dispatchAllIntegrations } from "@/lib/api/integrations";
 
 type Props = {
   isOpen: boolean;
@@ -23,6 +29,7 @@ type Props = {
     reason: string;
     gradient: string;
     category?: string;
+    tags?: string[];
   } | null;
   onSuccess?: () => void;
 };
@@ -61,7 +68,7 @@ export function PactModal({ isOpen, onClose, partner, onSuccess }: Props) {
         setPactData(res);
         setMessage(res.outreachMessage);
       } catch (err) {
-        toast.error("Failed to generate pact draft. Using smart offline template.");
+        // Fall back to offline template silently
       } finally {
         setLoading(false);
       }
@@ -104,17 +111,27 @@ export function PactModal({ isOpen, onClose, partner, onSuccess }: Props) {
 
     localStorage.setItem("lm_pacts", JSON.stringify([...currentPacts, newPact]));
     
-    // Dispatch Slack/Discord/Telegram notifications
-    dispatchAllIntegrations(
-      `🤝 *New LaunchMesh AI Growth Pact Proposal!*\n\n*From:* ${userName} (${profile.appName})\n*Partner:* ${partner.name}\n*Audience Overlap:* ${partner.overlap}\n*Compatibility:* ${partner.match}%\n\n*Outreach Message:* ${message}`
-    );
-
     // Trigger callback if provided
     if (onSuccess) onSuccess();
 
     toast.success(`Partnership request sent to ${partner.name}!`, {
       description: "You can track their response in the Growth Pacts hub."
     });
+
+    // ⚠️ HACKATHON ONLY: Fire-and-forget Slack notification.
+    // Attempt to post the partnership request to a Slack channel.
+    // Uses the VITE_SLACK_ACCESS_TOKEN from .env. If the token is not set
+    // or is invalid, the Slack client will show its own error toast —
+    // we catch here to avoid breaking the main flow.
+    const slackToken = import.meta.env.VITE_SLACK_ACCESS_TOKEN;
+    if (slackToken && slackToken !== "YOUR_SLACK_BOT_TOKEN") {
+      const slackChannelId = import.meta.env.VITE_SLACK_CHANNEL_ID || "general";
+      const slackText = `🚀 *New LaunchMesh Growth Pact Request*\n\n*From:* ${profile.appName}\n*To:* ${partner.name}\n*Match:* ${partner.match}%\n*Expected Installs:* ${pactData?.expectedInstalls ?? "350"}\n\n${message}`;
+
+      sendSlackMessage(slackChannelId, slackText).catch(() => {
+        // Slack client already shows a toast on failure, no extra handling needed
+      });
+    }
     
     onClose();
   };
@@ -143,10 +160,13 @@ export function PactModal({ isOpen, onClose, partner, onSuccess }: Props) {
         </div>
 
         {/* Modal Scroll Body */}
-        <div className="flex-1 overflow-y-auto p-6 md:p-8 space-y-6" data-lenis-prevent>
+        <div className="flex-1 overflow-y-auto p-6 md:p-8 space-y-6">
           
           {/* Product Comparison Header */}
-          <div className="grid grid-cols-3 items-center gap-4 p-4 rounded-2xl glass border border-border/40">
+          <div className="grid grid-cols-3 items-center gap-4 p-4 rounded-2xl glass border border-border/40 relative">
+            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#12121A] border border-border/50 h-8 w-8 rounded-full grid place-items-center z-10 text-[10px] font-bold text-muted-foreground">
+              VS
+            </div>
 
             {/* My App */}
             <div className="text-center space-y-1">
@@ -159,11 +179,10 @@ export function PactModal({ isOpen, onClose, partner, onSuccess }: Props) {
 
             {/* Match Affinities */}
             <div className="text-center space-y-1.5 z-0">
-              <span className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest block mb-0.5">VS</span>
               <div className="inline-block px-3 py-1 rounded-full text-xs font-extrabold text-accent border border-accent/20 bg-accent/10">
                 {partner.match}% Match
               </div>
-              <p className="text-[10px] text-muted-foreground mt-1">Trust Score: <strong className="text-white">{partner.trustScore}</strong></p>
+              <p className="text-[10px] text-muted-foreground">Trust Score: <strong className="text-white">{partner.trustScore}</strong></p>
             </div>
 
             {/* Partner App */}
@@ -172,7 +191,7 @@ export function PactModal({ isOpen, onClose, partner, onSuccess }: Props) {
                 {partner.icon}
               </div>
               <p className="text-xs font-bold text-white truncate">{partner.name}</p>
-              <p className="text-[10px] text-muted-foreground uppercase">{partner.category || "Cross-promo"}</p>
+              <p className="text-[10px] text-muted-foreground uppercase">{partner.tags?.[0] || "Cross-promo"}</p>
             </div>
           </div>
 
