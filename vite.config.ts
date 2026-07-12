@@ -82,5 +82,14 @@ export default defineConfig(({ mode }) => {
       tsconfigPaths(),
       analyzeAppApiPlugin(apiKey),
     ],
+    server: {
+      proxy: {
+        "/slack-api": {
+          target: "https://slack.com/api",
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/slack-api/, ""),
+        },
+      },
+    },
   };
 });
