@@ -8,6 +8,7 @@ import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Bot, X, Send, Sparkles, ChevronDown } from "lucide-react";
 import { useAppProfile } from "../../context/AppProfileContext";
+import { sendCopilotMessage, type CopilotMessage } from "@/services/copilotService";
 
 type Message = { role: "user" | "ai"; text: string };
 
@@ -68,17 +69,28 @@ export function AICopilot() {
     setInput("");
     setTyping(true);
     
-    // Use mock responses — swap sendCopilotMessage for Oxlo API when key is available
-    setTimeout(() => {
-      const key = Object.keys(MOCK_RESPONSES).find(k =>
-        text.toLowerCase().includes(k.toLowerCase().split(" ")[0])
-      );
-      const reply = key
-        ? MOCK_RESPONSES[key]
-        : "Great question! Based on your app profile, I'd recommend focusing on audience overlap first. Your strongest growth lever right now is a newsletter swap with a complementary app in the productivity space.\n\nWant me to find the top 3 candidates?";
+    try {
+      // Build conversation history in the format expected by copilotService
+      const conversationHistory: CopilotMessage[] = messages.map(msg => ({
+        role: msg.role === "user" ? ("user" as const) : ("assistant" as const),
+        content: msg.text,
+      }));
+
+      // Call Oxlo directly via the copilot service (no backend proxy)
+      const result = await sendCopilotMessage(text, conversationHistory);
+
       setTyping(false);
-      setMessages(m => [...m, { role: "ai", text: reply }]);
-    }, 1200);
+
+      if (result.success) {
+        setMessages(m => [...m, { role: "ai", text: result.response || "I couldn't generate a response. Please try again." }]);
+      } else {
+        throw new Error(result.error || "Copilot request failed");
+      }
+    } catch (error) {
+      setTyping(false);
+      const errorMsg = error instanceof Error ? error.message : "Connection error";
+      setMessages(m => [...m, { role: "ai", text: `⚠️ **AI Copilot Connection Error:**\n\n${errorMsg}\n\nFalling back to local suggestions: Based on your app profile, I recommend focusing on audience overlap first. Your strongest growth lever is a newsletter swap with a complementary app.` }]);
+    }
   };
 
   return (
