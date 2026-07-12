@@ -28,6 +28,7 @@ export async function callOxloAnalysis(
         { role: "system", content: config.systemPrompt },
         { role: "user", content: buildAnalysisUserPrompt(profile) },
       ],
+      response_format: { type: "json_object" },
       max_tokens: config.maxTokens,
     }),
   });

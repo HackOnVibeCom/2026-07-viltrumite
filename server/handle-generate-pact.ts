@@ -140,6 +140,7 @@ Alex`;
             content: buildPactUserPrompt(myApp, partnerApp)
           }
         ],
+        response_format: { type: "json_object" },
         max_tokens: 800,
       }),
     });
