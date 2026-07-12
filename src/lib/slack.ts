@@ -18,7 +18,7 @@ import { toast } from "sonner";
 // Constants
 // ---------------------------------------------------------------------------
 
-const SLACK_POST_MESSAGE_URL = "https://slack.com/api/chat.postMessage";
+const SLACK_POST_MESSAGE_URL = "/slack-api/chat.postMessage";
 
 // ---------------------------------------------------------------------------
 // Types

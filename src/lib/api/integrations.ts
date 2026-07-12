@@ -9,7 +9,7 @@ export async function dispatchSlackMessage(text: string) {
 
     try {
       // 1. Attempt to fetch conversations list to find general channel ID
-      const listRes = await fetch("https://slack.com/api/conversations.list?types=public_channel", {
+      const listRes = await fetch("/slack-api/conversations.list?types=public_channel", {
         headers: {
           Authorization: `Bearer ${SLACK_ACCESS_TOKEN}`,
         },
@@ -27,7 +27,7 @@ export async function dispatchSlackMessage(text: string) {
     }
 
     // 2. Post message directly to channel ID or '#general' name
-    const postRes = await fetch("https://slack.com/api/chat.postMessage", {
+    const postRes = await fetch("/slack-api/chat.postMessage", {
       method: "POST",
       headers: {
         "Content-Type": "application/json; charset=utf-8",
