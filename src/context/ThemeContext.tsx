@@ -13,7 +13,7 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setThemeState] = useState<Theme>(() => {
     const saved = localStorage.getItem("dashboard-theme");
-    return (saved as Theme) || "light"; // Default to light mode (the current theme)
+    return (saved as Theme) || "light";
   });
 
   const setTheme = (newTheme: Theme) => {
