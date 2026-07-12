@@ -21,8 +21,10 @@ function analyzeAppApiPlugin(apiKey: string): Plugin {
       server.middlewares.use(async (req, res, next) => {
         const isAnalyze = req.url === "/api/analyze-app";
         const isGeneratePact = req.url === "/api/generate-pact";
+        const isCopilotChat = req.url === "/api/copilot-chat";
+        const isLaunchKit = req.url === "/api/launch-kit";
 
-        if (!isAnalyze && !isGeneratePact) {
+        if (!isAnalyze && !isGeneratePact && !isCopilotChat && !isLaunchKit) {
           next();
           return;
         }
@@ -45,6 +47,12 @@ function analyzeAppApiPlugin(apiKey: string): Plugin {
           } else if (isGeneratePact) {
             const { handleGeneratePactRequest } = await import("./server/handle-generate-pact");
             result = await handleGeneratePactRequest(body, apiKey);
+          } else if (isLaunchKit) {
+            const { handleLaunchKitRequest } = await import("./server/handle-launch-kit");
+            result = await handleLaunchKitRequest(body, apiKey);
+          } else {
+            const { handleCopilotChatRequest } = await import("./server/handle-copilot-chat");
+            result = await handleCopilotChatRequest(body, apiKey);
           }
 
           res.statusCode = 200;
@@ -64,7 +72,7 @@ function analyzeAppApiPlugin(apiKey: string): Plugin {
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "");
-  const apiKey = env.OXLO_API_KEY ?? process.env.OXLO_API_KEY ?? "";
+  const apiKey = env.GROQ_API_KEY ?? process.env.GROQ_API_KEY ?? "";
 
   return {
     plugins: [

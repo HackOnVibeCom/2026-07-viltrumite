@@ -5,7 +5,7 @@ import {
 } from "../../server/handle-generate-pact";
 
 interface Env {
-  OXLO_API_KEY: string;
+  GROQ_API_KEY: string;
 }
 
 type PagesContext = {
@@ -16,7 +16,7 @@ type PagesContext = {
 export async function onRequestPost(context: PagesContext): Promise<Response> {
   try {
     const body = await context.request.json();
-    const result = await handleGeneratePactRequest(body, context.env.OXLO_API_KEY);
+    const result = await handleGeneratePactRequest(body, context.env.GROQ_API_KEY);
     return jsonResponse(result);
   } catch (error) {
     const message = error instanceof Error ? error.message : "Pact generation failed";

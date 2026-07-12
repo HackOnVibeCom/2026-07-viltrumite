@@ -2,5 +2,5 @@ name = "viltrumite"
 pages_build_output_dir = "dist"
 compatibility_date = "2024-09-23"
 
-# Set OXLO_API_KEY in Cloudflare Pages dashboard:
-# Settings → Environment variables → OXLO_API_KEY
+# Set GROQ_API_KEY in Cloudflare Pages dashboard:
+# Settings → Environment variables → GROQ_API_KEY

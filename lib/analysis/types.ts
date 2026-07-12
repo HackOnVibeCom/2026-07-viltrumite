@@ -47,9 +47,9 @@ export type OxloConfig = {
 };
 
 export const DEFAULT_OXLO_CONFIG: OxloConfig = {
-  apiUrl: "https://api.oxlo.ai/v1/chat/completions",
-  model: "deepseek-v4-pro",
-  maxTokens: 1200,
+  apiUrl: "https://api.groq.com/openai/v1/chat/completions",
+  model: "llama-3.3-70b-versatile",
+  maxTokens: 2048,
   systemPrompt:
     "You are LaunchMesh AI, an expert startup growth strategist specializing in mobile app launches, audience matching, cross-promotions, and growth partnerships.",
 };

@@ -13,7 +13,7 @@ export async function callOxloAnalysis(
   config: OxloConfig = DEFAULT_OXLO_CONFIG,
 ): Promise<OxloAnalysisResponse> {
   if (!apiKey) {
-    throw new Error("Server is missing OXLO_API_KEY configuration");
+    throw new Error("Server is missing GROQ_API_KEY configuration");
   }
 
   const response = await fetch(config.apiUrl, {
