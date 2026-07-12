@@ -1,3 +1,3 @@
 ## Memories
 
-- [Durable Fact: CSV files are now ignored via `.gitignore](memories/durable-fact-csv-files-are-now-ignored-via-gitignore.md): Durable Fact: CSV files are now ignored via `.gitignore`
+- [CSV files are to be excluded from version control via g](memories/csv-files-are-to-be-excluded-from-version-control-via-g.md): CSV files are to be excluded from version control via gitignore
