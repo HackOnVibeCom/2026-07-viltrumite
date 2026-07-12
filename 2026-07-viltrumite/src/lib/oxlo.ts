@@ -161,6 +161,10 @@ export async function oxloChat(
     const timer = setTimeout(() => controller.abort(), timeoutMs);
 
     try {
+      console.log("OXLO KEY:", import.meta.env.VITE_OXLO_API_KEY);
+      if (typeof import.meta.env.VITE_OXLO_API_KEY === "undefined" || !import.meta.env.VITE_OXLO_API_KEY) {
+        console.log("VITE_OXLO_API_KEY is missing from the deployed environment.");
+      }
       console.log("Using Direct Oxlo API");
       console.log(`Request URL: ${OXLO_API_URL}`);
 
