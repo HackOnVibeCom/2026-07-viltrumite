@@ -398,7 +398,7 @@ function InteractiveNetwork() {
     { name: "Flashcards", overlap: 78, installs: 380, window: "In 10 days" },
     { name: "Resume Builder", overlap: 65, installs: 260, window: "Next month" },
   ];
-  const [active, setActive] = useState(2);
+  const [active, setActive] = useState<number | null>(null);
   return (
     <section className="relative py-32 container mx-auto max-w-7xl px-6">
       <SectionHeader eyebrow="Live network" title={<>Your app,<br />surrounded by allies.</>}
@@ -409,7 +409,11 @@ function InteractiveNetwork() {
         </div>
         <div className="space-y-3">
           {partners.map((p, i) => (
-            <button key={p.name} onMouseEnter={() => setActive(i)} onFocus={() => setActive(i)}
+            <button key={p.name} 
+              onMouseEnter={() => setActive(i)} 
+              onMouseLeave={() => setActive(null)}
+              onFocus={() => setActive(i)}
+              onBlur={() => setActive(null)}
               className={`w-full text-left rounded-2xl p-5 transition-all border ${active === i ? "glass-strong border-primary/40 shadow-glow" : "glass border-transparent hover:border-white/10"}`}>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
