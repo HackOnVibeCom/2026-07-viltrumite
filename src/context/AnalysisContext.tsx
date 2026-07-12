@@ -9,6 +9,7 @@ import {
 import { analyzeApp, AnalyzeAppError } from "@/lib/api/analyze-app";
 import type { AnalysisResult } from "@/lib/api/analyze-app";
 import { toAppProfileInput, useAppProfile } from "@/context/AppProfileContext";
+import { getAllApps } from "@/services/appService";
 
 type AnalysisStatus = "idle" | "loading" | "success" | "error";
 
@@ -23,19 +24,58 @@ type AnalysisContextValue = {
 const AnalysisContext = createContext<AnalysisContextValue | null>(null);
 
 export function AnalysisProvider({ children }: { children: ReactNode }) {
-  const { profile } = useAppProfile();
-  const [result, setResult] = useState<AnalysisResult | null>(null);
-  const [status, setStatus] = useState<AnalysisStatus>("idle");
+  const { profile, hasProduct } = useAppProfile();
+  
+  const [result, setResult] = useState<AnalysisResult | null>(() => {
+    const stored = localStorage.getItem("lm_analysis_result");
+    return stored ? JSON.parse(stored) : null;
+  });
+  
+  const [status, setStatus] = useState<AnalysisStatus>(() => {
+    return localStorage.getItem("lm_analysis_result") ? "success" : "idle";
+  });
+  
   const [error, setError] = useState<string | null>(null);
 
   const analyze = useCallback(async () => {
+    if (!profile) {
+      setError("No product launched yet.");
+      setStatus("error");
+      return null;
+    }
+
     setStatus("loading");
     setError(null);
 
     try {
-      const input = toAppProfileInput(profile);
+      // 1. Fetch all candidate apps in the system
+      const allApps = await getAllApps();
+
+      // 2. Filter non-competing candidate apps for AI matching
+      const candidates = allApps
+        .filter((app) => app.category.toLowerCase() !== profile.category.toLowerCase())
+        .map((app) => ({
+          id: app.id,
+          name: app.name,
+          tagline: app.tagline,
+          description: app.description,
+          category: app.category,
+          launchDate: app.launchDate,
+          platform: app.platforms?.join(", ") || "Web",
+          pricing: app.pricing,
+        }));
+
+      // 3. Perform analysis
+      const input = {
+        ...toAppProfileInput(profile),
+        candidateApps: candidates,
+      };
+
       const analysis = await analyzeApp(input);
       const enriched = { ...analysis, appIcon: profile.appIcon };
+      
+      // Save to localStorage
+      localStorage.setItem("lm_analysis_result", JSON.stringify(enriched));
       setResult(enriched);
       setStatus("success");
       return enriched;
@@ -55,6 +95,8 @@ export function AnalysisProvider({ children }: { children: ReactNode }) {
   const reset = useCallback(() => {
     setStatus("idle");
     setError(null);
+    setResult(null);
+    localStorage.removeItem("lm_analysis_result");
   }, []);
 
   const value = useMemo(

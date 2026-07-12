@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { ArrowRight, Bell, Sparkles, TrendingUp, Zap } from "lucide-react";
 import { Link } from "@tanstack/react-router";
-import { APPS, CATEGORIES, COLLECTIONS } from "@/data/mock";
+import { useApps, useCategories, useCollections, useFeaturedApp, useUpcomingApps } from "@/hooks/useMockDb";
 import { AppCard } from "@/components/explore/AppCard";
 import { cn } from "@/lib/utils";
 import { useTheme } from "@/context/ThemeContext";
@@ -43,9 +43,11 @@ function CountDown({ target }: { target: string }) {
 }
 
 function HeroBanner() {
-  const featured = APPS[6]; // DesignVault
+  const { data: featured } = useFeaturedApp();
   const [notified, setNotified] = useState(false);
   const [followed, setFollowed] = useState(false);
+
+  if (!featured) return null;
 
   return (
     <motion.div
@@ -120,6 +122,7 @@ function HeroBanner() {
 }
 
 function CategoryChips({ active, onSelect }: { active: string; onSelect: (id: string) => void }) {
+  const { data: categories = [] } = useCategories();
   return (
     <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none bg-muted/40 p-1.5 rounded-xl border border-border/30 max-w-max">
       <button onClick={() => onSelect("all")}
@@ -127,7 +130,7 @@ function CategoryChips({ active, onSelect }: { active: string; onSelect: (id: st
           active === "all" ? "bg-primary text-white shadow-sm" : "text-muted-foreground hover:text-foreground hover:bg-muted/50")}>
         All
       </button>
-      {CATEGORIES.map(c => (
+      {categories.map(c => (
         <button key={c.id} onClick={() => onSelect(c.id)}
           className={cn("text-xs px-3.5 py-1.5 rounded-lg transition-all flex items-center gap-1.5 font-semibold",
             active === c.id ? "bg-primary text-white shadow-sm" : "text-muted-foreground hover:text-foreground hover:bg-muted/50")}>
@@ -139,7 +142,7 @@ function CategoryChips({ active, onSelect }: { active: string; onSelect: (id: st
 }
 
 function UpcomingTimeline() {
-  const upcoming = APPS.filter(a => a.status === "upcoming");
+  const { data: upcoming = [] } = useUpcomingApps();
   const sections = [
     { label: "Tomorrow", apps: upcoming.slice(0, 1) },
     { label: "This Week", apps: upcoming.slice(1, 3) },
@@ -309,9 +312,10 @@ function LiveActivityFeed() {
 }
 
 function FeaturedCollections() {
+  const { data: collections = [] } = useCollections();
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
-      {COLLECTIONS.map((col, i) => (
+      {collections.map((col, i) => (
         <motion.div key={col.id}
           initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.07 }}
           whileHover={{ y: -4 }}
@@ -331,10 +335,11 @@ function FeaturedCollections() {
 
 export function DiscoverPage() {
   const [activeCategory, setActiveCategory] = useState("all");
+  const { data: apps = [] } = useApps();
 
   const filteredApps = activeCategory === "all"
-    ? APPS
-    : APPS.filter(a => a.category.toLowerCase().replace(/\s+/g, "") === activeCategory.replace(/\s+/g, ""));
+    ? apps
+    : apps.filter(a => a.category.toLowerCase().replace(/\s+/g, "") === activeCategory.replace(/\s+/g, ""));
 
   return (
     <div className="p-6 md:p-8 space-y-10 max-w-7xl mx-auto">

@@ -56,21 +56,6 @@ function trustFromMatch(match: number): string {
   return "C";
 }
 
-function toPartner(partner: OxloAnalysisResponse["topPartners"][number], index: number): PartnerMatch {
-  return {
-    id: slugify(partner.name) || `partner-${index}`,
-    icon: PARTNER_ICONS[index % PARTNER_ICONS.length],
-    name: partner.name,
-    match: Math.round(partner.match),
-    overlap: partner.audienceOverlap,
-    installs: formatInstalls(partner.expectedInstalls),
-    trustScore: trustFromMatch(partner.match),
-    reason: partner.reason,
-    gradient: PARTNER_GRADIENTS[index % PARTNER_GRADIENTS.length],
-    tags: ["Partnership", "Cross-promo"],
-  };
-}
-
 function totalExpectedInstalls(partners: OxloAnalysisResponse["topPartners"]): string {
   const total = partners.reduce((sum, p) => sum + (p.expectedInstalls || 0), 0);
   if (total > 0) return formatInstalls(total);
@@ -109,7 +94,79 @@ export function transformToAnalysisResult(
   response: OxloAnalysisResponse,
   appIcon = "🚀",
 ): AnalysisResult {
-  const topPartners = response.topPartners.slice(0, 5).map(toPartner);
+  const candidates = profile.candidateApps || [];
+
+  const topPartners = response.topPartners.slice(0, 5).map((partner, index) => {
+    const normalizedTarget = partner.name.toLowerCase().replace(/[^a-z0-9]/g, "");
+    
+    // Fuzzy matching against candidate apps
+    const candidate = candidates.find((c) => {
+      const normalizedCand = c.name.toLowerCase().replace(/[^a-z0-9]/g, "");
+      return (
+        normalizedCand === normalizedTarget ||
+        normalizedTarget.includes(normalizedCand) ||
+        normalizedCand.includes(normalizedTarget)
+      );
+    });
+
+    const slug = candidate ? candidate.id : slugify(partner.name) || `partner-${index}`;
+
+    const categoryIcons: Record<string, string> = {
+      AI: "🤖",
+      Productivity: "⚡",
+      Finance: "💳",
+      Health: "❤️",
+      Education: "📚",
+      "Developer Tools": "🛠️",
+      Design: "🎨",
+      Gaming: "🎮",
+      Travel: "✈️",
+      Shopping: "🛍️",
+      Security: "🔒",
+      Career: "💼",
+      Social: "💬",
+      Music: "🎵",
+      Food: "🍽️",
+    };
+
+    const icon = candidate ? categoryIcons[candidate.category] || "🚀" : PARTNER_ICONS[index % PARTNER_ICONS.length];
+
+    const categoryGradients: Record<string, string> = {
+      AI: "from-violet-500 to-purple-700",
+      Productivity: "from-cyan-500 to-teal-600",
+      Finance: "from-emerald-500 to-teal-600",
+      Health: "from-rose-500 to-fuchsia-600",
+      Education: "from-orange-500 to-yellow-500",
+      "Developer Tools": "from-slate-600 to-gray-700",
+      Design: "from-pink-500 to-rose-500",
+      Gaming: "from-violet-600 to-fuchsia-600",
+      Travel: "from-sky-500 to-indigo-600",
+      Shopping: "from-amber-500 to-red-500",
+      Security: "from-zinc-600 to-gray-700",
+      Career: "from-blue-500 to-violet-600",
+      Social: "from-pink-500 to-orange-500",
+      Music: "from-purple-500 to-fuchsia-600",
+      Food: "from-lime-500 to-emerald-600",
+    };
+
+    const gradient = candidate
+      ? categoryGradients[candidate.category] || PARTNER_GRADIENTS[index % PARTNER_GRADIENTS.length]
+      : PARTNER_GRADIENTS[index % PARTNER_GRADIENTS.length];
+
+    return {
+      id: slug,
+      icon,
+      name: candidate ? candidate.name : partner.name,
+      match: Math.round(partner.match),
+      overlap: partner.audienceOverlap,
+      installs: formatInstalls(partner.expectedInstalls),
+      trustScore: trustFromMatch(partner.match),
+      reason: partner.reason,
+      gradient,
+      tags: [candidate ? candidate.category : "Partnership", "Cross-promo"],
+    };
+  });
+
   const bundleLabel =
     response.recommendedBundle.length > 0
       ? response.recommendedBundle.join(" + ")

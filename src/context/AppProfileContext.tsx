@@ -1,5 +1,4 @@
-import { createContext, useContext, useMemo, useState, type ReactNode } from "react";
-import { APPS } from "@/data/mock";
+import { createContext, useContext, useMemo, useState, useEffect, type ReactNode } from "react";
 
 export type AppProfile = {
   appName: string;
@@ -10,38 +9,140 @@ export type AppProfile = {
   platform: string;
   pricing: string;
   appIcon: string;
-};
+  
+  // Step 2 pitch
+  longDescription: string;
+  problem: string;
+  solution: string;
+  website: string;
 
-const defaultApp = APPS.find((app) => app.id === "designvault") ?? APPS[0];
+  // Step 3 audience detail
+  ageGroup: string;
+  country: string;
+  interests: string;
+  userPersona: string;
 
-const DEFAULT_PROFILE: AppProfile = {
-  appName: defaultApp.name,
-  description: defaultApp.description,
-  category: defaultApp.category,
-  targetAudience: "Designers, Developers, Founders, Students",
-  launchDate: defaultApp.launchDate,
-  platform: defaultApp.platforms.join(", "),
-  pricing: defaultApp.pricing,
-  appIcon: defaultApp.icon,
+  // Step 4 media
+  screenshots: string[];
+  banner: string;
+  logoUrl?: string;
+  socialLinks?: {
+    twitter?: string;
+    github?: string;
+    linkedin?: string;
+  };
+
+  // Step 5 timing
+  launchTime: string;
+  timezone: string;
+  productStatus: "Upcoming" | "Beta" | "Launching Today" | "Live";
 };
 
 type AppProfileContextValue = {
-  profile: AppProfile;
+  profile: AppProfile | null;
+  hasProduct: boolean;
+  isLoggedIn: boolean;
+  role: "explorer" | "founder";
+  analysisComplete: boolean;
+  login: (role: "explorer" | "founder", userName?: string) => void;
+  logout: () => void;
+  setRole: (role: "explorer" | "founder") => void;
+  publishProduct: (newProduct: AppProfile) => void;
   updateProfile: (updates: Partial<AppProfile>) => void;
+  setAnalysisComplete: (complete: boolean) => void;
+  deleteProduct: () => void;
+  userName: string;
 };
 
 const AppProfileContext = createContext<AppProfileContextValue | null>(null);
 
 export function AppProfileProvider({ children }: { children: ReactNode }) {
-  const [profile, setProfile] = useState<AppProfile>(DEFAULT_PROFILE);
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(() => {
+    return localStorage.getItem("lm_is_logged_in") === "true";
+  });
+
+  const [role, setRoleState] = useState<"explorer" | "founder">((() => {
+    return (localStorage.getItem("lm_user_role") as "explorer" | "founder") || "explorer";
+  }));
+
+  const [profile, setProfile] = useState<AppProfile | null>(() => {
+    const stored = localStorage.getItem("lm_product");
+    return stored ? JSON.parse(stored) : null;
+  });
+
+  const [analysisComplete, setAnalysisCompleteState] = useState<boolean>(() => {
+    return localStorage.getItem("lm_analysis_complete") === "true";
+  });
+
+  const [userName, setUserName] = useState<string>(() => {
+    return localStorage.getItem("lm_user_name") || "Alex";
+  });
+
+  const hasProduct = useMemo(() => profile !== null, [profile]);
+
+  const login = (newRole: "explorer" | "founder", name = "Alex") => {
+    setIsLoggedIn(true);
+    setRoleState(newRole);
+    setUserName(name);
+    localStorage.setItem("lm_is_logged_in", "true");
+    localStorage.setItem("lm_user_role", newRole);
+    localStorage.setItem("lm_user_name", name);
+  };
+
+  const logout = () => {
+    setIsLoggedIn(false);
+    localStorage.removeItem("lm_is_logged_in");
+    localStorage.removeItem("lm_user_role");
+    localStorage.removeItem("lm_user_name");
+  };
+
+  const setRole = (newRole: "explorer" | "founder") => {
+    setRoleState(newRole);
+    localStorage.setItem("lm_user_role", newRole);
+  };
+
+  const publishProduct = (newProduct: AppProfile) => {
+    setProfile(newProduct);
+    localStorage.setItem("lm_product", JSON.stringify(newProduct));
+  };
+
+  const updateProfile = (updates: Partial<AppProfile>) => {
+    if (!profile) return;
+    const updated = { ...profile, ...updates };
+    setProfile(updated);
+    localStorage.setItem("lm_product", JSON.stringify(updated));
+  };
+
+  const setAnalysisComplete = (complete: boolean) => {
+    setAnalysisCompleteState(complete);
+    localStorage.setItem("lm_analysis_complete", complete ? "true" : "false");
+  };
+
+  const deleteProduct = () => {
+    setProfile(null);
+    setAnalysisCompleteState(false);
+    localStorage.removeItem("lm_product");
+    localStorage.removeItem("lm_analysis_complete");
+    localStorage.removeItem("lm_analysis_result");
+  };
 
   const value = useMemo(
     () => ({
       profile,
-      updateProfile: (updates: Partial<AppProfile>) =>
-        setProfile((current) => ({ ...current, ...updates })),
+      hasProduct,
+      isLoggedIn,
+      role,
+      analysisComplete,
+      login,
+      logout,
+      setRole,
+      publishProduct,
+      updateProfile,
+      setAnalysisComplete,
+      deleteProduct,
+      userName,
     }),
-    [profile],
+    [profile, hasProduct, isLoggedIn, role, analysisComplete, userName]
   );
 
   return <AppProfileContext.Provider value={value}>{children}</AppProfileContext.Provider>;

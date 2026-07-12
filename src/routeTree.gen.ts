@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as FounderRouteImport } from './routes/founder'
 import { Route as ExploreRouteImport } from './routes/explore'
 import { Route as IndexRouteImport } from './routes/index'
@@ -35,6 +36,11 @@ import { Route as ExploreCategoriesRouteImport } from './routes/explore/categori
 import { Route as ExploreBrowseRouteImport } from './routes/explore/browse'
 import { Route as ExploreAppIdRouteImport } from './routes/explore/app.$id'
 
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const FounderRoute = FounderRouteImport.update({
   id: '/founder',
   path: '/founder',
@@ -165,6 +171,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/explore': typeof ExploreRouteWithChildren
   '/founder': typeof FounderRouteWithChildren
+  '/login': typeof LoginRoute
   '/explore/browse': typeof ExploreBrowseRoute
   '/explore/categories': typeof ExploreCategoriesRoute
   '/explore/feedback': typeof ExploreFeedbackRoute
@@ -190,6 +197,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/login': typeof LoginRoute
   '/explore/browse': typeof ExploreBrowseRoute
   '/explore/categories': typeof ExploreCategoriesRoute
   '/explore/feedback': typeof ExploreFeedbackRoute
@@ -218,6 +226,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/explore': typeof ExploreRouteWithChildren
   '/founder': typeof FounderRouteWithChildren
+  '/login': typeof LoginRoute
   '/explore/browse': typeof ExploreBrowseRoute
   '/explore/categories': typeof ExploreCategoriesRoute
   '/explore/feedback': typeof ExploreFeedbackRoute
@@ -247,6 +256,7 @@ export interface FileRouteTypes {
     | '/'
     | '/explore'
     | '/founder'
+    | '/login'
     | '/explore/browse'
     | '/explore/categories'
     | '/explore/feedback'
@@ -272,6 +282,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/login'
     | '/explore/browse'
     | '/explore/categories'
     | '/explore/feedback'
@@ -299,6 +310,7 @@ export interface FileRouteTypes {
     | '/'
     | '/explore'
     | '/founder'
+    | '/login'
     | '/explore/browse'
     | '/explore/categories'
     | '/explore/feedback'
@@ -327,10 +339,18 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ExploreRoute: typeof ExploreRouteWithChildren
   FounderRoute: typeof FounderRouteWithChildren
+  LoginRoute: typeof LoginRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/founder': {
       id: '/founder'
       path: '/founder'
@@ -575,6 +595,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ExploreRoute: ExploreRouteWithChildren,
   FounderRoute: FounderRouteWithChildren,
+  LoginRoute: LoginRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

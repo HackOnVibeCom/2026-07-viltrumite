@@ -3,7 +3,8 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Rocket, Bell } from "lucide-react";
 import { Link } from "@tanstack/react-router";
-import { APPS } from "@/data/mock";
+import type { App } from "@/data/mock";
+import { useLiveApps, useUpcomingApps } from "@/hooks/useMockDb";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/explore/upcoming")({
@@ -22,7 +23,7 @@ function useCountdown(target: string) {
   };
 }
 
-function LaunchCard({ app, index }: { app: typeof APPS[0]; index: number }) {
+function LaunchCard({ app, index }: { app: App; index: number }) {
   const { d, h, m, s } = useCountdown(app.launchDate);
   const [notified, setNotified] = useState(false);
 
@@ -84,8 +85,8 @@ function LaunchCard({ app, index }: { app: typeof APPS[0]; index: number }) {
 }
 
 function UpcomingPage() {
-  const upcoming = APPS.filter(a => a.status === "upcoming");
-  const live = APPS.filter(a => a.status === "live");
+  const { data: upcoming = [] } = useUpcomingApps();
+  const { data: live = [] } = useLiveApps();
 
   return (
     <div className="p-6 md:p-8 max-w-6xl">

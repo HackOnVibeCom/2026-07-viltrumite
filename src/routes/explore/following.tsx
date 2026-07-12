@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { Heart } from "lucide-react";
-import { APPS } from "@/data/mock";
+import { useApps } from "@/hooks/useMockDb";
 import { AppCard } from "@/components/explore/AppCard";
 
 export const Route = createFileRoute("/explore/following")({
@@ -9,6 +9,7 @@ export const Route = createFileRoute("/explore/following")({
 });
 
 function FollowingPage() {
+  const { data: apps = [] } = useApps();
   return (
     <div className="p-6 md:p-8 max-w-6xl">
       <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
@@ -23,7 +24,7 @@ function FollowingPage() {
         </div>
       </motion.div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {APPS.slice(0, 6).map((app, i) => <AppCard key={app.id} app={app} index={i} />)}
+        {apps.slice(0, 6).map((app, i) => <AppCard key={app.id} app={app} index={i} />)}
       </div>
     </div>
   );

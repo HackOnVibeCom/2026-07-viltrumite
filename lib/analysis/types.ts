@@ -7,6 +7,16 @@ export type AppProfileInput = {
   launchDate: string;
   platform: string;
   pricing: string;
+  candidateApps?: Array<{
+    id: string;
+    name: string;
+    tagline: string;
+    description: string;
+    category: string;
+    launchDate: string;
+    platform: string;
+    pricing: string;
+  }>;
 };
 
 /** Raw JSON shape returned by the Oxlo model. */

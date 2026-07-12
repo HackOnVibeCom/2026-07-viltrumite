@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { Trophy } from "lucide-react";
-import { APPS } from "@/data/mock";
+import { useTrendingApps } from "@/hooks/useMockDb";
 import { AppCardHorizontal } from "@/components/explore/AppCard";
 
 export const Route = createFileRoute("/explore/top")({
@@ -9,7 +9,7 @@ export const Route = createFileRoute("/explore/top")({
 });
 
 function TopLaunchesPage() {
-  const sorted = [...APPS].sort((a, b) => b.upvotes - a.upvotes);
+  const { data: sorted = [] } = useTrendingApps();
   return (
     <div className="p-6 md:p-8 max-w-4xl">
       <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="mb-8">

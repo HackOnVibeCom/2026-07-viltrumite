@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, X, TrendingUp, Clock, ArrowRight } from "lucide-react";
 import { Link } from "@tanstack/react-router";
-import { APPS, CATEGORIES } from "@/data/mock";
+import { useApps, useCategories } from "@/hooks/useMockDb";
 
 const RECENT = ["NoteMind", "AI productivity", "indie launches"];
 const TRENDING_SEARCHES = ["AI tools", "student apps", "finance tracker", "design systems"];
@@ -10,9 +10,11 @@ const TRENDING_SEARCHES = ["AI tools", "student apps", "finance tracker", "desig
 export function SearchPalette({ open, onClose }: { open: boolean; onClose: () => void }) {
   const [query, setQuery] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
+  const { data: apps = [] } = useApps();
+  const { data: categories = [] } = useCategories();
 
   const results = query.length > 1
-    ? APPS.filter(a =>
+    ? apps.filter(a =>
         a.name.toLowerCase().includes(query.toLowerCase()) ||
         a.tagline.toLowerCase().includes(query.toLowerCase()) ||
         a.category.toLowerCase().includes(query.toLowerCase())
@@ -125,7 +127,7 @@ export function SearchPalette({ open, onClose }: { open: boolean; onClose: () =>
                   <div>
                     <p className="text-[10px] uppercase tracking-widest text-muted-foreground px-2 mb-2">Browse by category</p>
                     <div className="grid grid-cols-4 gap-1.5 px-2 pb-1">
-                      {CATEGORIES.slice(0, 8).map(c => (
+                      {categories.slice(0, 8).map(c => (
                         <button key={c.id} onClick={() => { setQuery(c.label); }}
                           className="text-xs glass px-2 py-2 rounded-xl text-muted-foreground hover:text-foreground flex flex-col items-center gap-0.5 transition-colors">
                           <span className="text-base">{c.icon}</span>

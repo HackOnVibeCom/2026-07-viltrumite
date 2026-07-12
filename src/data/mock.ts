@@ -20,200 +20,26 @@ export type App = {
   solution: string;
 };
 
-export const APPS: App[] = [
-  {
-    id: "notemind",
-    name: "NoteMind",
-    tagline: "AI-powered note-taking that thinks with you",
-    description: "NoteMind transforms your scattered thoughts into a structured knowledge graph. Capture ideas, connect concepts, and let AI surface insights you'd never find manually.",
-    icon: "🧠",
-    category: "Productivity",
-    followers: 4820,
-    launchDate: "2026-07-15",
-    status: "upcoming",
-    founder: { name: "Priya Sharma", avatar: "PS", bio: "Ex-Notion, building the future of knowledge work." },
-    platforms: ["iOS", "Android", "Web"],
-    pricing: "Free / $9/mo",
-    gradient: "from-violet-600 via-purple-600 to-indigo-700",
-    accent: "#8B5CF6",
-    images: [],
-    features: ["AI idea linking", "Voice capture", "Knowledge graph", "Offline first", "Team spaces"],
-    upvotes: 1240,
-    problem: "Your notes are scattered across 5 apps and you never find what you wrote.",
-    solution: "One place, AI-connected, always surfacing the right note at the right time.",
-  },
-  {
-    id: "focusflow",
-    name: "FocusFlow",
-    tagline: "Deep work sessions built around your biology",
-    description: "FocusFlow uses your chronotype and focus patterns to schedule your most important work at your peak cognitive hours. No more fighting your own brain.",
-    icon: "⚡",
-    category: "Productivity",
-    followers: 3210,
-    launchDate: "2026-07-20",
-    status: "upcoming",
-    founder: { name: "Marcus Chen", avatar: "MC", bio: "Neuroscience grad. Building tools that work with your brain." },
-    platforms: ["iOS", "Mac"],
-    pricing: "$12/mo",
-    gradient: "from-cyan-500 via-teal-500 to-emerald-600",
-    accent: "#06B6D4",
-    images: [],
-    features: ["Chronotype analysis", "Deep work timer", "Focus score", "Calendar sync", "Weekly insights"],
-    upvotes: 980,
-    problem: "You're productive for 2 hours then crash. You don't know why.",
-    solution: "Schedule deep work when your brain is actually ready for it.",
-  },
-  {
-    id: "budgetly",
-    name: "Budgetly",
-    tagline: "Your finances, finally honest with you",
-    description: "Budgetly connects all your accounts, predicts your spending patterns, and gently nudges you before you make a decision you'll regret.",
-    icon: "💳",
-    category: "Finance",
-    followers: 6540,
-    launchDate: "2026-07-12",
-    status: "live",
-    founder: { name: "Ana Rodriguez", avatar: "AR", bio: "Fintech founder. Previously at Stripe." },
-    platforms: ["iOS", "Android"],
-    pricing: "Free / $6/mo",
-    gradient: "from-emerald-500 via-green-500 to-teal-600",
-    accent: "#10B981",
-    images: [],
-    features: ["Bank sync", "Spend prediction", "Nudge alerts", "Net worth tracking", "Goal setting"],
-    upvotes: 2100,
-    problem: "You know you overspend but you only realize it at end of month.",
-    solution: "Real-time nudges that catch you before the damage is done.",
-  },
-  {
-    id: "studypal",
-    name: "StudyPal",
-    tagline: "Flashcards that actually stick",
-    description: "StudyPal uses spaced repetition and active recall science to make learning permanent. Import from any source, study with AI-generated quizzes.",
-    icon: "📚",
-    category: "Education",
-    followers: 8910,
-    launchDate: "2026-07-10",
-    status: "live",
-    founder: { name: "Kenji Tanaka", avatar: "KT", bio: "Education researcher. Building the Duolingo for everything." },
-    platforms: ["iOS", "Android", "Web"],
-    pricing: "Free",
-    gradient: "from-orange-500 via-amber-500 to-yellow-500",
-    accent: "#F59E0B",
-    images: [],
-    features: ["Spaced repetition", "AI quiz gen", "Import from PDF", "Study streaks", "Leaderboards"],
-    upvotes: 3400,
-    problem: "You study for 3 hours and forget everything by next week.",
-    solution: "Science-backed repetition schedules that make memories permanent.",
-  },
-  {
-    id: "healthtrack",
-    name: "HealthTrack",
-    tagline: "Your body's data, actually useful",
-    description: "HealthTrack aggregates all your health data — wearables, manual logs, lab results — and turns it into actionable insights your doctor wishes they had time to give you.",
-    icon: "❤️",
-    category: "Health",
-    followers: 5120,
-    launchDate: "2026-07-25",
-    status: "upcoming",
-    founder: { name: "Dr. Sarah Kim", avatar: "SK", bio: "MD turned founder. Healthcare should be proactive." },
-    platforms: ["iOS", "Android"],
-    pricing: "$15/mo",
-    gradient: "from-rose-500 via-pink-500 to-fuchsia-600",
-    accent: "#F43F5E",
-    images: [],
-    features: ["Wearable sync", "Lab import", "Trend analysis", "Doctor export", "Symptom log"],
-    upvotes: 1890,
-    problem: "Your health data is in 6 different apps and means nothing to you.",
-    solution: "One unified view that actually tells you what to do.",
-  },
-  {
-    id: "devpulse",
-    name: "DevPulse",
-    tagline: "GitHub analytics that make you a better engineer",
-    description: "DevPulse analyzes your coding patterns, PR review speed, and productivity trends to give you concrete steps to level up as an engineer.",
-    icon: "🛠️",
-    category: "Developer Tools",
-    followers: 7340,
-    launchDate: "2026-07-08",
-    status: "live",
-    founder: { name: "Alex Park", avatar: "AP", bio: "Staff engineer at Meta. Building tools for engineers." },
-    platforms: ["Web"],
-    pricing: "Free / $8/mo",
-    gradient: "from-slate-600 via-zinc-600 to-gray-700",
-    accent: "#6366F1",
-    images: [],
-    features: ["PR analytics", "Code velocity", "Review insights", "Team benchmarks", "Burnout detection"],
-    upvotes: 2780,
-    problem: "You work hard but don't know if you're actually improving.",
-    solution: "Data-driven insights that show your growth and blind spots.",
-  },
-  {
-    id: "designvault",
-    name: "DesignVault",
-    tagline: "The Figma library that designs itself",
-    description: "DesignVault is an AI design system that generates production-ready components from a simple brand description. Stop rebuilding design systems from scratch.",
-    icon: "🎨",
-    category: "Design",
-    followers: 9200,
-    launchDate: "2026-07-18",
-    status: "upcoming",
-    founder: { name: "Jules Martin", avatar: "JM", bio: "Senior designer at Linear. Obsessed with design systems." },
-    platforms: ["Web", "Figma Plugin"],
-    pricing: "$20/mo",
-    gradient: "from-pink-500 via-rose-500 to-red-500",
-    accent: "#EC4899",
-    images: [],
-    features: ["AI component gen", "Brand tokens", "Figma export", "React export", "Dark mode auto"],
-    upvotes: 4100,
-    problem: "Every new project starts with 2 weeks of design system setup.",
-    solution: "Describe your brand, get a full design system in minutes.",
-  },
-  {
-    id: "gamehub",
-    name: "GameHub",
-    tagline: "Discover indie games before they blow up",
-    description: "GameHub is the Product Hunt for indie games. Discover passion projects from solo developers, wishlist your favorites, and support creators directly.",
-    icon: "🎮",
-    category: "Gaming",
-    followers: 11400,
-    launchDate: "2026-07-05",
-    status: "live",
-    founder: { name: "Ryan Torres", avatar: "RT", bio: "Indie game dev. Building community for indie creators." },
-    platforms: ["Web", "iOS", "Android"],
-    pricing: "Free",
-    gradient: "from-violet-600 via-purple-600 to-fuchsia-600",
-    accent: "#7C3AED",
-    images: [],
-    features: ["Daily drops", "Wishlists", "Dev journals", "Early access", "Creator tips"],
-    upvotes: 5200,
-    problem: "Amazing indie games die in obscurity because nobody discovers them.",
-    solution: "A curated community that champions indie game creators.",
-  },
-];
+export type CategoryItem = {
+  id: string;
+  label: string;
+  icon: string;
+  count: number;
+};
 
-export const CATEGORIES = [
-  { id: "ai", label: "AI", icon: "🤖", count: 142 },
-  { id: "productivity", label: "Productivity", icon: "⚡", count: 98 },
-  { id: "finance", label: "Finance", icon: "💳", count: 67 },
-  { id: "health", label: "Health", icon: "❤️", count: 54 },
-  { id: "education", label: "Education", icon: "📚", count: 89 },
-  { id: "gaming", label: "Gaming", icon: "🎮", count: 113 },
-  { id: "developer", label: "Developer Tools", icon: "🛠️", count: 76 },
-  { id: "design", label: "Design", icon: "🎨", count: 45 },
-];
+export type CollectionItem = {
+  id: string;
+  label: string;
+  icon: string;
+  count: number;
+  gradient: string;
+};
 
-export const COLLECTIONS = [
-  { id: "student", label: "Student Essentials", icon: "🎓", count: 12, gradient: "from-amber-500 to-orange-600" },
-  { id: "ai-builders", label: "AI Builders", icon: "🤖", count: 18, gradient: "from-violet-500 to-purple-700" },
-  { id: "productivity", label: "Best Productivity", icon: "⚡", count: 15, gradient: "from-cyan-500 to-teal-600" },
-  { id: "india", label: "Made in India", icon: "🇮🇳", count: 9, gradient: "from-orange-400 to-green-500" },
-  { id: "indie", label: "Indie Launches", icon: "🚀", count: 24, gradient: "from-pink-500 to-rose-600" },
-];
-
-export const NOTIFICATIONS = [
-  { id: "1", type: "launch", message: "NoteMind just launched! 🚀", time: "2m ago", read: false, appId: "notemind" },
-  { id: "2", type: "follow", message: "Priya Sharma released a new update", time: "1h ago", read: false, appId: "notemind" },
-  { id: "3", type: "comment", message: "Your comment got 12 upvotes", time: "3h ago", read: true, appId: "focusflow" },
-  { id: "4", type: "launch", message: "FocusFlow launches tomorrow! ⏰", time: "5h ago", read: true, appId: "focusflow" },
-  { id: "5", type: "follow", message: "StudyPal hit 10k followers", time: "1d ago", read: true, appId: "studypal" },
-];
+export type ExploreNotification = {
+  id: string;
+  type: string;
+  message: string;
+  time: string;
+  read: boolean;
+  appId: string;
+};

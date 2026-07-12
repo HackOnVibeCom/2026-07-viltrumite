@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { Bell, Rocket, MessageSquare, Heart } from "lucide-react";
-import { NOTIFICATIONS } from "@/data/mock";
+import { useExploreNotifications } from "@/hooks/useMockDb";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/explore/notifications")({
@@ -15,6 +15,7 @@ const ICON_MAP: Record<string, React.ReactNode> = {
 };
 
 function NotificationsPage() {
+  const { data: notifications = [] } = useExploreNotifications();
   return (
     <div className="p-6 md:p-8 max-w-2xl">
       <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
@@ -24,13 +25,13 @@ function NotificationsPage() {
           </div>
           <div>
             <h1 className="text-2xl font-bold">Notifications</h1>
-            <p className="text-sm text-muted-foreground">{NOTIFICATIONS.filter(n => !n.read).length} unread</p>
+            <p className="text-sm text-muted-foreground">{notifications.filter(n => !n.read).length} unread</p>
           </div>
         </div>
       </motion.div>
 
       <div className="space-y-2">
-        {NOTIFICATIONS.map((n, i) => (
+        {notifications.map((n, i) => (
           <motion.div key={n.id}
             initial={{ opacity: 0, x: -12 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.06 }}>
             <Link to={`/explore/app/${n.appId}`}>

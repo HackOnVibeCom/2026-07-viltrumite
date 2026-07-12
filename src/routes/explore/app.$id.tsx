@@ -6,7 +6,8 @@ import {
   CheckCircle2, MessageSquare, ThumbsUp, Star, ChevronRight,
   Sparkles, TrendingUp, Zap, Rocket, Brain, ArrowRight,
 } from "lucide-react";
-import { APPS } from "@/data/mock";
+import type { App } from "@/data/mock";
+import { useApp, useRelatedApps } from "@/hooks/useMockDb";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/explore/app/$id")({
@@ -48,7 +49,7 @@ function ProgressBar({ label, pct, delay }: { label: string; pct: number; delay:
 }
 
 /* ─── AI Growth Opportunities section ─── */
-function AIGrowthOpportunities({ app }: { app: typeof APPS[0] }) {
+function AIGrowthOpportunities({ app }: { app: App }) {
   const partners = [
     {
       icon: "📚", name: "StudyFlow", match: 96, overlap: "84%", installs: "+720",
@@ -262,7 +263,8 @@ function AIGrowthOpportunities({ app }: { app: typeof APPS[0] }) {
 
 function AppDetailPage() {
   const { id } = Route.useParams();
-  const app = APPS.find(a => a.id === id) ?? APPS[0];
+  const { data: app } = useApp(id);
+  const { data: relatedApps = [] } = useRelatedApps(id);
   const [notified, setNotified] = useState(false);
   const [followed, setFollowed] = useState(false);
   const [liked, setLiked] = useState(false);
@@ -283,6 +285,8 @@ function AppDetailPage() {
     { user: "Zara K.", avatar: "ZK", text: "Tried the beta — the onboarding is super smooth. When's iOS launch?", votes: 18, time: "5h ago" },
     { user: "Raj M.", avatar: "RM", text: "Love the concept. Would be great if it integrated with Notion too.", votes: 12, time: "1d ago" },
   ];
+
+  if (!app) return null;
 
   return (
     <div className="max-w-5xl mx-auto">
@@ -530,7 +534,7 @@ function AppDetailPage() {
             <div className="glass-strong rounded-2xl p-5 border border-border/60">
               <h4 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3">Similar Apps</h4>
               <div className="space-y-2.5">
-                {APPS.filter(a => a.id !== app.id && a.category === app.category).slice(0, 3).map(a => (
+                {relatedApps.map(a => (
                   <Link key={a.id} to={`/explore/app/${a.id}`}>
                     <motion.div whileHover={{ x: 3 }}
                       className="flex items-center gap-3 hover:bg-muted rounded-xl p-1.5 transition-colors">

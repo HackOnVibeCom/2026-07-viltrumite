@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { Tag } from "lucide-react";
 import { useState } from "react";
-import { APPS, CATEGORIES } from "@/data/mock";
+import { useApps, useCategories } from "@/hooks/useMockDb";
 import { AppCard } from "@/components/explore/AppCard";
 import { cn } from "@/lib/utils";
 
@@ -12,9 +12,11 @@ export const Route = createFileRoute("/explore/categories")({
 
 function CategoriesPage() {
   const [active, setActive] = useState<string | null>(null);
+  const { data: apps = [] } = useApps();
+  const { data: categories = [] } = useCategories();
   const filtered = active
-    ? APPS.filter(a => a.category.toLowerCase().replace(/\s+/g, "") === active)
-    : APPS;
+    ? apps.filter(a => a.category.toLowerCase().replace(/\s+/g, "") === active)
+    : apps;
 
   return (
     <div className="p-6 md:p-8 max-w-6xl">
@@ -32,7 +34,7 @@ function CategoriesPage() {
 
       {/* Category grid */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
-        {CATEGORIES.map((cat, i) => (
+        {categories.map((cat, i) => (
           <motion.button key={cat.id}
             initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.04 }}
             whileHover={{ y: -3, scale: 1.02 }} whileTap={{ scale: 0.97 }}
@@ -53,7 +55,7 @@ function CategoriesPage() {
       {/* Apps grid */}
       <div>
         <h2 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground mb-4">
-          {active ? CATEGORIES.find(c => c.id === active)?.label : "All Apps"}
+          {active ? categories.find(c => c.id === active)?.label : "All Apps"}
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {filtered.map((app, i) => <AppCard key={app.id} app={app} index={i} />)}

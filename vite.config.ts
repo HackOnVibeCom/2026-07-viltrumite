@@ -19,7 +19,10 @@ function analyzeAppApiPlugin(apiKey: string): Plugin {
     name: "analyze-app-api",
     configureServer(server) {
       server.middlewares.use(async (req, res, next) => {
-        if (req.url !== "/api/analyze-app") {
+        const isAnalyze = req.url === "/api/analyze-app";
+        const isGeneratePact = req.url === "/api/generate-pact";
+
+        if (!isAnalyze && !isGeneratePact) {
           next();
           return;
         }
@@ -32,15 +35,23 @@ function analyzeAppApiPlugin(apiKey: string): Plugin {
         }
 
         try {
-          const { handleAnalyzeAppRequest } = await import("./server/handle-analyze-app");
           const rawBody = await readRequestBody(req);
           const body = rawBody ? JSON.parse(rawBody) : {};
-          const result = await handleAnalyzeAppRequest(body, apiKey);
+          
+          let result;
+          if (isAnalyze) {
+            const { handleAnalyzeAppRequest } = await import("./server/handle-analyze-app");
+            result = await handleAnalyzeAppRequest(body, apiKey);
+          } else {
+            const { handleGeneratePactRequest } = await import("./server/handle-generate-pact");
+            result = await handleGeneratePactRequest(body, apiKey);
+          }
+
           res.statusCode = 200;
           res.setHeader("Content-Type", "application/json");
           res.end(JSON.stringify(result));
         } catch (error) {
-          const message = error instanceof Error ? error.message : "Analysis failed";
+          const message = error instanceof Error ? error.message : "Request failed";
           const status = message.includes("Missing required") ? 400 : 500;
           res.statusCode = status;
           res.setHeader("Content-Type", "application/json");

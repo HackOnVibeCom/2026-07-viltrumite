@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { Flame, TrendingUp } from "lucide-react";
-import { APPS } from "@/data/mock";
+import { useTrendingApps } from "@/hooks/useMockDb";
 import { AppCard } from "@/components/explore/AppCard";
 
 export const Route = createFileRoute("/explore/trending")({
@@ -9,7 +9,7 @@ export const Route = createFileRoute("/explore/trending")({
 });
 
 function TrendingPage() {
-  const trending = [...APPS].sort((a, b) => b.upvotes - a.upvotes);
+  const { data: trending = [] } = useTrendingApps();
   return (
     <div className="p-6 md:p-8 max-w-6xl">
       <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="mb-8">

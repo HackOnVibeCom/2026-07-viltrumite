@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { User, Heart, Bookmark, Bell, Settings } from "lucide-react";
 import { Link } from "@tanstack/react-router";
-import { APPS } from "@/data/mock";
+import { useApps } from "@/hooks/useMockDb";
 import { AppCard } from "@/components/explore/AppCard";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
@@ -13,6 +13,7 @@ export const Route = createFileRoute("/explore/profile")({
 
 function ProfilePage() {
   const [tab, setTab] = useState("following");
+  const { data: apps = [] } = useApps();
   const TABS = [
     { id: "following", label: "Following", icon: Heart },
     { id: "bookmarks", label: "Bookmarks", icon: Bookmark },
@@ -63,12 +64,12 @@ function ProfilePage() {
 
       {tab === "following" && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {APPS.slice(0, 6).map((app, i) => <AppCard key={app.id} app={app} index={i} />)}
+          {apps.slice(0, 6).map((app, i) => <AppCard key={app.id} app={app} index={i} />)}
         </div>
       )}
       {tab === "bookmarks" && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {APPS.slice(2, 5).map((app, i) => <AppCard key={app.id} app={app} index={i} />)}
+          {apps.slice(2, 5).map((app, i) => <AppCard key={app.id} app={app} index={i} />)}
         </div>
       )}
       {tab === "notifications" && (

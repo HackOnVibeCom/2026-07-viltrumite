@@ -19,6 +19,14 @@ function FounderSettingsPage() {
   const [active, setActive] = useState("profile");
   const { profile, updateProfile } = useAppProfile();
 
+  if (!profile) {
+    return (
+      <div className="p-6 md:p-8 flex items-center justify-center min-h-[60vh] text-muted-foreground text-sm">
+        No product launched yet. Create a launch first.
+      </div>
+    );
+  }
+
   return (
     <div className="p-6 md:p-8 max-w-5xl">
       <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="mb-8">

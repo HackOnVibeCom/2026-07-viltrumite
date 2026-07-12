@@ -2,7 +2,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, Bell, MessageSquare, ChevronDown, Zap, Sun, Moon, Menu, ArrowLeft } from "lucide-react";
 import { Link, useLocation } from "@tanstack/react-router";
-import { NOTIFICATIONS } from "@/data/mock";
+import { useExploreNotifications } from "@/hooks/useMockDb";
 import { useTheme } from "@/context/ThemeContext";
 
 function useCountdown(targetDate: string) {
@@ -37,7 +37,8 @@ export function TopNav({ onSearchOpen, onMenuToggle }: { onSearchOpen: () => voi
   const { theme, toggleTheme } = useTheme();
   const { pathname } = useLocation();
   const [showNotifs, setShowNotifs] = useState(false);
-  const unread = NOTIFICATIONS.filter((n) => !n.read).length;
+  const { data: notifications = [] } = useExploreNotifications();
+  const unread = notifications.filter((n) => !n.read).length;
   const { d, h, m } = useCountdown("2026-07-20T00:00:00");
 
   return (
@@ -125,7 +126,7 @@ export function TopNav({ onSearchOpen, onMenuToggle }: { onSearchOpen: () => voi
                   <span className="text-xs text-accent">{unread} new</span>
                 </div>
                 <div className="max-h-80 overflow-y-auto">
-                  {NOTIFICATIONS.map((n) => (
+                  {notifications.map((n) => (
                     <Link key={n.id} to={`/explore/app/${n.appId}`}>
                       <div className={`px-4 py-3 hover:bg-muted transition-colors border-b border-border/30 last:border-0 ${!n.read ? "bg-primary/5" : ""}`}>
                         <p className="text-sm text-foreground">{n.message}</p>

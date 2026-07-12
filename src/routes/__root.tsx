@@ -1,6 +1,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Outlet, Link, createRootRoute } from "@tanstack/react-router";
-import { type ReactNode } from "react";
+import { Outlet, Link, createRootRoute, useLocation, useNavigate } from "@tanstack/react-router";
+import { type ReactNode, useEffect } from "react";
+import { AppProfileProvider } from "@/context/AppProfileContext";
 
 function NotFoundComponent() {
   return (
@@ -31,10 +32,26 @@ export const Route = createRootRoute({
   component: RootComponent,
 });
 
+function RootLayoutContent() {
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const isLoggedIn = localStorage.getItem("lm_is_logged_in") === "true";
+    if (!isLoggedIn && pathname !== "/" && pathname !== "/login") {
+      navigate({ to: "/login" });
+    }
+  }, [pathname, navigate]);
+
+  return <Outlet />;
+}
+
 function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
-      <Outlet />
+      <AppProfileProvider>
+        <RootLayoutContent />
+      </AppProfileProvider>
     </QueryClientProvider>
   );
 }
