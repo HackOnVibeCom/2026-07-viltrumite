@@ -164,9 +164,6 @@ export function PactModal({ isOpen, onClose, partner, onSuccess }: Props) {
           
           {/* Product Comparison Header */}
           <div className="grid grid-cols-3 items-center gap-4 p-4 rounded-2xl glass border border-border/40 relative">
-            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#12121A] border border-border/50 h-8 w-8 rounded-full grid place-items-center z-10 text-[10px] font-bold text-muted-foreground">
-              VS
-            </div>
 
             {/* My App */}
             <div className="text-center space-y-1">
@@ -178,7 +175,10 @@ export function PactModal({ isOpen, onClose, partner, onSuccess }: Props) {
             </div>
 
             {/* Match Affinities */}
-            <div className="text-center space-y-1.5 z-0">
+            <div className="text-center space-y-1.5 z-0 flex flex-col items-center justify-center">
+              <div className="text-[9px] font-bold text-muted-foreground bg-border/40 px-2 py-0.5 rounded-full uppercase tracking-widest mb-1 select-none">
+                VS
+              </div>
               <div className="inline-block px-3 py-1 rounded-full text-xs font-extrabold text-accent border border-accent/20 bg-accent/10">
                 {partner.match}% Match
               </div>
