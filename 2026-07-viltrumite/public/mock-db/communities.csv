@@ -1,0 +1,21 @@
+community_id,community_name,description,category_id,member_count
+CMN-001,AI Builders Hub,"A dedicated circle for discussing growth hacks, strategies, and design paradigms in AI apps.",CAT-001,2360
+CMN-002,Productivity Builders Hub,"A dedicated circle for discussing growth hacks, strategies, and design paradigms in Productivity apps.",CAT-002,2477
+CMN-003,Finance Builders Hub,"A dedicated circle for discussing growth hacks, strategies, and design paradigms in Finance apps.",CAT-003,1118
+CMN-004,Health Builders Hub,"A dedicated circle for discussing growth hacks, strategies, and design paradigms in Health apps.",CAT-004,3230
+CMN-005,Education Builders Hub,"A dedicated circle for discussing growth hacks, strategies, and design paradigms in Education apps.",CAT-005,3352
+CMN-006,Developer Tools Builders Hub,"A dedicated circle for discussing growth hacks, strategies, and design paradigms in Developer Tools apps.",CAT-006,2947
+CMN-007,Design Builders Hub,"A dedicated circle for discussing growth hacks, strategies, and design paradigms in Design apps.",CAT-007,1319
+CMN-008,Gaming Builders Hub,"A dedicated circle for discussing growth hacks, strategies, and design paradigms in Gaming apps.",CAT-008,2499
+CMN-009,Travel Builders Hub,"A dedicated circle for discussing growth hacks, strategies, and design paradigms in Travel apps.",CAT-009,464
+CMN-010,Shopping Builders Hub,"A dedicated circle for discussing growth hacks, strategies, and design paradigms in Shopping apps.",CAT-010,2476
+CMN-011,Security Builders Hub,"A dedicated circle for discussing growth hacks, strategies, and design paradigms in Security apps.",CAT-011,767
+CMN-012,Career Builders Hub,"A dedicated circle for discussing growth hacks, strategies, and design paradigms in Career apps.",CAT-012,2957
+CMN-013,Social Builders Hub,"A dedicated circle for discussing growth hacks, strategies, and design paradigms in Social apps.",CAT-013,3743
+CMN-014,Music Builders Hub,"A dedicated circle for discussing growth hacks, strategies, and design paradigms in Music apps.",CAT-014,2220
+CMN-015,Food Builders Hub,"A dedicated circle for discussing growth hacks, strategies, and design paradigms in Food apps.",CAT-015,4044
+CMN-016,SynapseNote Power Users,Official focus and testing discussions for SynapseNote updates.,CAT-002,269
+CMN-017,TaxBuddy Power Users,Official focus and testing discussions for TaxBuddy updates.,CAT-003,256
+CMN-018,SleepSage Power Users,Official focus and testing discussions for SleepSage updates.,CAT-004,601
+CMN-019,LogBuddy Power Users,Official focus and testing discussions for LogBuddy updates.,CAT-006,327
+CMN-020,ColorWave Power Users,Official focus and testing discussions for ColorWave updates.,CAT-007,625

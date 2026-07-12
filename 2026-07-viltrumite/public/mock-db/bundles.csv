@@ -1,0 +1,11 @@
+bundle_id,bundle_name,app_ids,discount_percentage,created_at,total_purchases
+BND-001,FocusGrid Ultimate Starter Pack,"APP-030,APP-013",33%,2026-08-06,33
+BND-002,PixelForge Ultimate Starter Pack,"APP-021,APP-014",19%,2026-08-25,256
+BND-003,TaskFlow Ultimate Starter Pack,"APP-002,APP-009",27%,2026-07-21,128
+BND-004,AuthLock Ultimate Starter Pack,"APP-011,APP-025,APP-029",27%,2026-07-18,235
+BND-005,LyricLab Ultimate Starter Pack,"APP-027,APP-003,APP-016",15%,2026-08-17,296
+BND-006,ResumeRise Ultimate Starter Pack,"APP-012,APP-008",35%,2026-07-05,40
+BND-007,QuestBound Ultimate Starter Pack,"APP-008,APP-007",15%,2026-08-09,98
+BND-008,CodeSpark Ultimate Starter Pack,"APP-005,APP-016",36%,2026-07-08,131
+BND-009,DealRadar Ultimate Starter Pack,"APP-023,APP-009,APP-025",26%,2026-07-11,78
+BND-010,CartDrop Ultimate Starter Pack,"APP-010,APP-004",33%,2026-07-02,179
