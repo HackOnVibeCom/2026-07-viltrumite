@@ -116,7 +116,7 @@ function FounderLayoutContent() {
     <div className={`min-h-screen bg-background text-foreground transition-colors duration-200 ${theme === "light" ? "light-dashboard" : "dark-dashboard"}`}>
       <FounderSidebar />
       <FounderTopBar />
-      <main className="ml-64 pt-20 min-h-screen">
+      <main className="ml-64 pt-20 min-h-screen" style={{ paddingTop: "80px" }}>
         {hasProduct ? (
           <Outlet />
         ) : (

@@ -27,7 +27,7 @@ function MatchesPage() {
   };
 
   return (
-    <div className="pt-20 md:pt-24 px-6 md:px-8 pb-6 md:pb-8 max-w-6xl">
+    <div className="pt-20 md:pt-24 px-6 md:px-8 pb-6 md:pb-8 max-w-6xl" style={{ paddingTop: "40px" }}>
       <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
         <div className="flex items-center gap-3 mb-2">
           <div className="h-10 w-10 rounded-2xl bg-primary/20 grid place-items-center">
