@@ -89,7 +89,7 @@ export function Sidebar({ open, onClose }: { open: boolean; onClose: () => void 
             
             <div className="relative z-10 space-y-3">
               <div className="flex items-center justify-between">
-                <span className="text-[9px] font-bold text-primary uppercase tracking-wider">Console Workspace</span>
+                <span className="text-[9px] font-bold text-primary uppercase tracking-wider">Founder Workspace</span>
                 <span className="text-[9px] text-muted-foreground font-medium">85% Ready</span>
               </div>
               <div className="h-1.5 w-full bg-muted rounded-full overflow-hidden">
