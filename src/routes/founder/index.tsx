@@ -1,10 +1,11 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import {
   Sparkles, TrendingUp, Users, Zap, ArrowRight, Brain,
   Rocket, BarChart3, CheckCircle2, Bell, Package, Bot,
 } from "lucide-react";
+import { AnalysisModal } from "@/components/founder/AnalysisModal";
 
 export const Route = createFileRoute("/founder/")({
   component: FounderDashboard,
@@ -41,6 +42,8 @@ function StatCard({ icon: Icon, label, value, sub, color, delay }: any) {
 
 function FounderDashboard() {
   const { d, h, m, s } = useCountdown("2026-07-20T00:00:00");
+  const navigate = useNavigate();
+  const [analysisOpen, setAnalysisOpen] = useState(false);
 
   const ACTIVITY = [
     { icon: "🤖", text: "AI generated growth report", time: "2m ago", color: "#6C5CE7" },
@@ -165,18 +168,28 @@ function FounderDashboard() {
           <div className="shrink-0 space-y-2 min-w-[200px]">
             <p className="text-xs text-muted-foreground uppercase tracking-wider mb-3">Quick Actions</p>
             {[
-              { icon: Brain, label: "Analyze My App", to: "/founder/copilot" },
+              { icon: Brain, label: "Analyze My App", action: "analyze" },
               { icon: Zap, label: "Create Growth Pact", to: "/founder/pacts" },
               { icon: BarChart3, label: "View Audience Graph", to: "/founder/audience" },
-            ].map(({ icon: Icon, label, to }) => (
-              <Link key={to} to={to}>
-                <motion.div whileHover={{ x: 4 }}
-                  className="flex items-center gap-3 glass rounded-xl px-4 py-2.5 border border-border/40 hover:border-primary/30 transition-colors cursor-pointer">
+            ].map(({ icon: Icon, label, to, action }: any) => (
+              action === "analyze" ? (
+                <motion.div key={label} whileHover={{ x: 4 }}
+                  onClick={() => setAnalysisOpen(true)}
+                  className="flex items-center gap-3 glass rounded-xl px-4 py-2.5 border border-primary/30 bg-primary/10 hover:border-primary/50 transition-colors cursor-pointer">
                   <Icon className="h-4 w-4 text-primary shrink-0" />
-                  <span className="text-sm font-medium">{label}</span>
-                  <ArrowRight className="h-3.5 w-3.5 text-muted-foreground ml-auto" />
+                  <span className="text-sm font-medium text-primary">{label}</span>
+                  <ArrowRight className="h-3.5 w-3.5 text-primary ml-auto" />
                 </motion.div>
-              </Link>
+              ) : (
+                <Link key={to} to={to}>
+                  <motion.div whileHover={{ x: 4 }}
+                    className="flex items-center gap-3 glass rounded-xl px-4 py-2.5 border border-border/40 hover:border-primary/30 transition-colors cursor-pointer">
+                    <Icon className="h-4 w-4 text-primary shrink-0" />
+                    <span className="text-sm font-medium">{label}</span>
+                    <ArrowRight className="h-3.5 w-3.5 text-muted-foreground ml-auto" />
+                  </motion.div>
+                </Link>
+              )
             ))}
           </div>
         </div>
@@ -279,6 +292,15 @@ function FounderDashboard() {
           ))}
         </div>
       </motion.div>
+
+      {/* AI Analysis Modal */}
+      <AnalysisModal
+        open={analysisOpen}
+        onComplete={() => {
+          setAnalysisOpen(false);
+          navigate({ to: "/founder/analysis" });
+        }}
+      />
     </div>
   );
 }

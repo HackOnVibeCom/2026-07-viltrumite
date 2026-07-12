@@ -21,6 +21,7 @@ import { Route as FounderCopilotRouteImport } from './routes/founder/copilot'
 import { Route as FounderBundlesRouteImport } from './routes/founder/bundles'
 import { Route as FounderAudienceRouteImport } from './routes/founder/audience'
 import { Route as FounderAnalyticsRouteImport } from './routes/founder/analytics'
+import { Route as FounderAnalysisRouteImport } from './routes/founder/analysis'
 import { Route as ExploreUpcomingRouteImport } from './routes/explore/upcoming'
 import { Route as ExploreTrendingRouteImport } from './routes/explore/trending'
 import { Route as ExploreTopRouteImport } from './routes/explore/top'
@@ -92,6 +93,11 @@ const FounderAudienceRoute = FounderAudienceRouteImport.update({
 const FounderAnalyticsRoute = FounderAnalyticsRouteImport.update({
   id: '/analytics',
   path: '/analytics',
+  getParentRoute: () => FounderRoute,
+} as any)
+const FounderAnalysisRoute = FounderAnalysisRouteImport.update({
+  id: '/analysis',
+  path: '/analysis',
   getParentRoute: () => FounderRoute,
 } as any)
 const ExploreUpcomingRoute = ExploreUpcomingRouteImport.update({
@@ -170,6 +176,7 @@ export interface FileRoutesByFullPath {
   '/explore/top': typeof ExploreTopRoute
   '/explore/trending': typeof ExploreTrendingRoute
   '/explore/upcoming': typeof ExploreUpcomingRoute
+  '/founder/analysis': typeof FounderAnalysisRoute
   '/founder/analytics': typeof FounderAnalyticsRoute
   '/founder/audience': typeof FounderAudienceRoute
   '/founder/bundles': typeof FounderBundlesRoute
@@ -194,6 +201,7 @@ export interface FileRoutesByTo {
   '/explore/top': typeof ExploreTopRoute
   '/explore/trending': typeof ExploreTrendingRoute
   '/explore/upcoming': typeof ExploreUpcomingRoute
+  '/founder/analysis': typeof FounderAnalysisRoute
   '/founder/analytics': typeof FounderAnalyticsRoute
   '/founder/audience': typeof FounderAudienceRoute
   '/founder/bundles': typeof FounderBundlesRoute
@@ -221,6 +229,7 @@ export interface FileRoutesById {
   '/explore/top': typeof ExploreTopRoute
   '/explore/trending': typeof ExploreTrendingRoute
   '/explore/upcoming': typeof ExploreUpcomingRoute
+  '/founder/analysis': typeof FounderAnalysisRoute
   '/founder/analytics': typeof FounderAnalyticsRoute
   '/founder/audience': typeof FounderAudienceRoute
   '/founder/bundles': typeof FounderBundlesRoute
@@ -249,6 +258,7 @@ export interface FileRouteTypes {
     | '/explore/top'
     | '/explore/trending'
     | '/explore/upcoming'
+    | '/founder/analysis'
     | '/founder/analytics'
     | '/founder/audience'
     | '/founder/bundles'
@@ -273,6 +283,7 @@ export interface FileRouteTypes {
     | '/explore/top'
     | '/explore/trending'
     | '/explore/upcoming'
+    | '/founder/analysis'
     | '/founder/analytics'
     | '/founder/audience'
     | '/founder/bundles'
@@ -299,6 +310,7 @@ export interface FileRouteTypes {
     | '/explore/top'
     | '/explore/trending'
     | '/explore/upcoming'
+    | '/founder/analysis'
     | '/founder/analytics'
     | '/founder/audience'
     | '/founder/bundles'
@@ -401,6 +413,13 @@ declare module '@tanstack/react-router' {
       path: '/analytics'
       fullPath: '/founder/analytics'
       preLoaderRoute: typeof FounderAnalyticsRouteImport
+      parentRoute: typeof FounderRoute
+    }
+    '/founder/analysis': {
+      id: '/founder/analysis'
+      path: '/analysis'
+      fullPath: '/founder/analysis'
+      preLoaderRoute: typeof FounderAnalysisRouteImport
       parentRoute: typeof FounderRoute
     }
     '/explore/upcoming': {
@@ -526,6 +545,7 @@ const ExploreRouteWithChildren =
   ExploreRoute._addFileChildren(ExploreRouteChildren)
 
 interface FounderRouteChildren {
+  FounderAnalysisRoute: typeof FounderAnalysisRoute
   FounderAnalyticsRoute: typeof FounderAnalyticsRoute
   FounderAudienceRoute: typeof FounderAudienceRoute
   FounderBundlesRoute: typeof FounderBundlesRoute
@@ -537,6 +557,7 @@ interface FounderRouteChildren {
 }
 
 const FounderRouteChildren: FounderRouteChildren = {
+  FounderAnalysisRoute: FounderAnalysisRoute,
   FounderAnalyticsRoute: FounderAnalyticsRoute,
   FounderAudienceRoute: FounderAudienceRoute,
   FounderBundlesRoute: FounderBundlesRoute,
