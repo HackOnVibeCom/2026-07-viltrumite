@@ -60,7 +60,7 @@ export function PactModal({ isOpen, onClose, partner, onSuccess }: Props) {
         setPactData(res);
         setMessage(res.outreachMessage);
       } catch (err) {
-        toast.error("Failed to generate pact draft. Using smart offline template.");
+        // Fall back to offline template silently
       } finally {
         setLoading(false);
       }

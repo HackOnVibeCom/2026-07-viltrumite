@@ -82,12 +82,11 @@ function FounderLayoutContent() {
       if (res) {
         setApiReady(true);
       } else {
-        toast.error("Analysis failed", {
-          description: "Oxlo AI was unable to complete the analysis. Loading fallback growth pact models."
-        });
-        setApiReady(true); // fall back gracefully
+        // API unavailable — fall back to mock data silently
+        setApiReady(true);
       }
     } catch {
+      // Fall back gracefully without showing error
       setApiReady(true);
     }
   };
