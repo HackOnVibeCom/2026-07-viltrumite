@@ -110,6 +110,39 @@ export async function sendSlackMessage(
     throw err;
   }
 
+  let resolvedChannelId = channelId;
+
+  // If it's a name (doesn't start with 'C', 'G', 'U', or 'D' followed by 8-11 alpha-numeric chars)
+  if (!/^[CGUD][A-Z0-9]{8,11}$/.test(channelId)) {
+    try {
+      const listResponse = await fetch("/slack-api/conversations.list?types=public_channel", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const listData = await listResponse.json();
+      if (listData.ok && listData.channels) {
+        const found = listData.channels.find(
+          (c: any) => c.name === channelId || c.name === channelId.replace(/^#/, "")
+        );
+        if (found) {
+          resolvedChannelId = found.id;
+        } else {
+          // Fall back to preferred channel names or the first available channel in list
+          const fallback = listData.channels.find((c: any) => c.name === "all-viltrumite")
+                        || listData.channels.find((c: any) => c.name === "general")
+                        || listData.channels.find((c: any) => c.name === "social")
+                        || listData.channels[0];
+          if (fallback) {
+            resolvedChannelId = fallback.id;
+          }
+        }
+      }
+    } catch (err) {
+      console.warn("Failed to resolve Slack channel name:", err);
+    }
+  }
+
   try {
     const response = await fetch(SLACK_POST_MESSAGE_URL, {
       method: "POST",
@@ -118,7 +151,7 @@ export async function sendSlackMessage(
         Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({
-        channel: channelId,
+        channel: resolvedChannelId,
         text,
       }),
     });
