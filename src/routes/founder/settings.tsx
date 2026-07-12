@@ -1,9 +1,10 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { Settings, User, Bell, Lock, Trash2, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAppProfile } from "@/context/AppProfileContext";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/founder/settings")({
   component: FounderSettingsPage,
@@ -17,7 +18,8 @@ const SECTIONS = [
 
 function FounderSettingsPage() {
   const [active, setActive] = useState("profile");
-  const { profile, updateProfile } = useAppProfile();
+  const { profile, updateProfile, deleteProduct } = useAppProfile();
+  const navigate = useNavigate();
 
   if (!profile) {
     return (
@@ -41,7 +43,7 @@ function FounderSettingsPage() {
         </div>
       </motion.div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-[220px_1fr] gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-[220px_minmax(0,1fr)] gap-6">
         <div className="glass-strong rounded-2xl border border-border/60 p-2 h-fit">
           {SECTIONS.map(({ id, icon: Icon, label, desc }) => (
             <button key={id} onClick={() => setActive(id)} className={cn(
@@ -57,7 +59,16 @@ function FounderSettingsPage() {
             </button>
           ))}
           <div className="border-t border-border/40 mt-2 pt-2">
-            <button className="w-full flex items-center gap-3 px-3 py-3 rounded-xl text-left text-rose-400 hover:bg-rose-500/10 transition-colors">
+            <button 
+              onClick={() => {
+                if (confirm("Are you sure you want to delete this app launch profile? This will reset your founder workspace.")) {
+                  deleteProduct();
+                  toast.success("Launch profile deleted. Workspace reset.");
+                  navigate({ to: "/founder" });
+                }
+              }}
+              className="w-full flex items-center gap-3 px-3 py-3 rounded-xl text-left text-rose-400 hover:bg-rose-500/10 transition-colors cursor-pointer"
+            >
               <Trash2 className="h-4 w-4" />
               <p className="text-sm font-medium">Delete App</p>
             </button>

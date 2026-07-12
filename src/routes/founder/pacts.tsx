@@ -10,6 +10,8 @@ import { useAnalysis } from "@/context/AnalysisContext";
 import { useAppProfile } from "@/context/AppProfileContext";
 import { PactModal } from "@/components/founder/PactModal";
 import { MOCK_ANALYSIS } from "@/data/analysisData";
+import { toast } from "sonner";
+import { dispatchAllIntegrations } from "@/lib/api/integrations";
 
 export const Route = createFileRoute("/founder/pacts")({
   component: PactsPage,
@@ -64,6 +66,29 @@ function PactsPage() {
 
   const handlePactSuccess = () => {
     // Pact saved — the useLivePacts hook will auto-refresh
+  };
+
+  const updatePactStatus = (pactId: string, status: string) => {
+    const stored = localStorage.getItem("lm_pacts");
+    if (stored) {
+      const parsed = JSON.parse(stored);
+      const updated = parsed.map((p: any) => p.pact_id === pactId ? { ...p, status } : p);
+      localStorage.setItem("lm_pacts", JSON.stringify(updated));
+      
+      const targetPact = parsed.find((p: any) => p.pact_id === pactId);
+      const partnerName = targetPact ? targetPact.partnerName : "Partner";
+      
+      // Dispatch notifications
+      const emoji = status === "active" ? "✅" : status === "rejected" ? "❌" : "📝";
+      const statusLabel = status === "active" ? "ACCEPTED" : status === "rejected" ? "REJECTED" : "REVISION REQUESTED";
+      dispatchAllIntegrations(
+        `${emoji} *Partnership Agreement Status Update!*\n\n*Partner:* ${partnerName}\n*New Status:* ${statusLabel}\n\nAll shared campaign items and launch day triggers have been synchronized.`
+      );
+
+      toast.success(`Partnership request with ${partnerName} has been ${status === "active" ? "accepted" : status === "rejected" ? "rejected" : "updated for revision"}!`, {
+        description: status === "active" ? "Shared analytics and joint launch campaign are now active." : undefined
+      });
+    }
   };
 
   const activePacts = livePacts.filter((p) => p.status === "active");
@@ -218,6 +243,84 @@ function PactsPage() {
                       <p className="text-[10px] text-muted-foreground">
                         Sent: {new Date(pact.created_at).toLocaleDateString("en-US", { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" })}
                       </p>
+
+                      {/* Shared Campaign and Analytics when Active */}
+                      {pact.status === "active" && (
+                        <div className="space-y-4 pt-4 border-t border-border/40">
+                          <h4 className="text-xs font-bold text-emerald-400 uppercase tracking-widest flex items-center gap-1.5">
+                            <Handshake className="h-3.5 w-3.5" /> Shared Launch Campaign & Analytics
+                          </h4>
+                          <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
+                            {[
+                              { label: "Clicks", value: "1,420", change: "+12.4%" },
+                              { label: "CTR", value: pact.expectedCtr || "4.2%", change: "+0.8%" },
+                              { label: "Installs Generated", value: `+${pact.expectedInstalls || "450"}`, change: "+15%" },
+                              { label: "Conversions", value: "380", change: "+9.2%" },
+                              { label: "Referral Traffic", value: "2.8k", change: "+18%" }
+                            ].map((metric) => (
+                              <div key={metric.label} className="bg-emerald-500/5 border border-emerald-500/20 rounded-xl p-2.5 text-center">
+                                <p className="text-[9px] text-muted-foreground uppercase">{metric.label}</p>
+                                <p className="text-sm font-extrabold text-white mt-0.5">{metric.value}</p>
+                                <p className="text-[8px] text-emerald-400 mt-0.5 font-bold">{metric.change}</p>
+                              </div>
+                            ))}
+                          </div>
+                          
+                          <div className="bg-white/5 border border-border/40 rounded-xl p-3.5 space-y-2">
+                            <p className="text-[10px] text-muted-foreground uppercase tracking-wider font-semibold">Shared Promotion Campaign</p>
+                            <div className="flex justify-between items-center text-xs">
+                              <span className="text-muted-foreground">Type:</span>
+                              <span className="font-bold text-white">{pact.campaignType || "Cross-promotion newsletter"}</span>
+                            </div>
+                            <div className="flex justify-between items-center text-xs">
+                              <span className="text-muted-foreground">Agreement Status:</span>
+                              <span className="text-emerald-400 font-semibold">Jointly Signed Growth Pact</span>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Simulation Controls for testing partner response */}
+                      {pact.status === "pending" && (
+                        <div className="p-4 bg-primary/10 border border-primary/20 rounded-2xl space-y-2 mt-4">
+                          <p className="text-[11px] font-bold text-accent uppercase tracking-wider flex items-center gap-1.5">
+                            <Zap className="h-3.5 w-3.5 animate-pulse" />
+                            Partner Simulation Hub (Test the workflow)
+                          </p>
+                          <p className="text-xs text-muted-foreground">
+                            Simulate the response of the partner founder ({pact.partnerName}) to see how it dynamically propagates to your dashboard metrics:
+                          </p>
+                          <div className="flex gap-2 mt-2">
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                updatePactStatus(pact.pact_id, "active");
+                              }}
+                              className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold transition-colors cursor-pointer"
+                            >
+                              Accept Request
+                            </button>
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                updatePactStatus(pact.pact_id, "changes");
+                              }}
+                              className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-bold transition-colors cursor-pointer"
+                            >
+                              Request Changes
+                            </button>
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                updatePactStatus(pact.pact_id, "rejected");
+                              }}
+                              className="px-3 py-1.5 bg-rose-600 hover:bg-rose-700 text-white rounded-lg text-xs font-bold transition-colors cursor-pointer"
+                            >
+                              Reject
+                            </button>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </motion.div>
                 )}

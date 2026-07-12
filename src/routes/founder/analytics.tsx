@@ -1,13 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { BarChart3, TrendingUp, Users, Zap, Eye } from "lucide-react";
+import { useAnalysis } from "@/context/AnalysisContext";
+import { useAppProfile } from "@/context/AppProfileContext";
+import { MOCK_ANALYSIS } from "@/data/analysisData";
 
 export const Route = createFileRoute("/founder/analytics")({
   component: AnalyticsPage,
 });
-
-const WEEK_DATA = [40, 55, 48, 70, 62, 88, 95];
-const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
 function MiniBar({ value, max, day, i }: { value: number; max: number; day: string; i: number }) {
   return (
@@ -27,8 +27,46 @@ function MiniBar({ value, max, day, i }: { value: number; max: number; day: stri
   );
 }
 
+const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+
 function AnalyticsPage() {
+  const { result } = useAnalysis();
+  const { profile } = useAppProfile();
+
+  const display = result ?? MOCK_ANALYSIS;
+  const parsedInstalls = parseInt(display.expectedInstalls.replace(/\D/g, "")) || 450;
+
+  const followers = Math.round(parsedInstalls * 7.4);
+  const views = Math.round(parsedInstalls * 20);
+  const weeklyGrowth = Math.round(parsedInstalls * 0.27);
+  const pactInstalls = parsedInstalls;
+
+  const WEEK_DATA = [
+    Math.round(parsedInstalls * 0.08),
+    Math.round(parsedInstalls * 0.12),
+    Math.round(parsedInstalls * 0.1),
+    Math.round(parsedInstalls * 0.15),
+    Math.round(parsedInstalls * 0.13),
+    Math.round(parsedInstalls * 0.19),
+    Math.round(parsedInstalls * 0.23)
+  ];
+  
   const max = Math.max(...WEEK_DATA);
+
+  const stats = [
+    { icon: Users, label: "Total Followers", value: profile ? followers.toLocaleString() : "0", change: "+18%", color: "#6C5CE7" },
+    { icon: Eye, label: "Profile Views", value: profile ? views.toLocaleString() : "0", change: "+32%", color: "#00D4B8" },
+    { icon: TrendingUp, label: "Weekly Growth", value: profile ? `+${weeklyGrowth}` : "0", change: "+12%", color: "#F59E0B" },
+    { icon: Zap, label: "Pact Installs", value: profile ? `+${pactInstalls.toLocaleString()}` : "0", change: "+67%", color: "#EC4899" },
+  ];
+
+  const funnel = [
+    { label: "Profile Views", value: views, pct: 100, color: "#6C5CE7" },
+    { label: "Clicked Notify Me", value: Math.round(parsedInstalls * 7), pct: 35, color: "#8B7CF6" },
+    { label: "Followed", value: Math.round(parsedInstalls * 3.4), pct: 17, color: "#00D4B8" },
+    { label: "Installed", value: parsedInstalls, pct: 5, color: "#00B8A0" },
+  ];
+
   return (
     <div className="p-6 md:p-8 max-w-5xl">
       <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
@@ -45,12 +83,7 @@ function AnalyticsPage() {
 
       {/* Stat cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-        {[
-          { icon: Users, label: "Total Followers", value: "9,200", change: "+18%", color: "#6C5CE7" },
-          { icon: Eye, label: "Profile Views", value: "24,800", change: "+32%", color: "#00D4B8" },
-          { icon: TrendingUp, label: "Weekly Growth", value: "+340", change: "+12%", color: "#F59E0B" },
-          { icon: Zap, label: "Pact Installs", value: "+1,240", change: "+67%", color: "#EC4899" },
-        ].map((s, i) => (
+        {stats.map((s, i) => (
           <motion.div key={s.label}
             initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.07 }}
             whileHover={{ y: -3 }}
@@ -79,21 +112,16 @@ function AnalyticsPage() {
         className="glass-strong rounded-2xl border border-border/60 p-6">
         <h3 className="text-base font-semibold mb-5">Conversion Funnel</h3>
         <div className="space-y-3">
-          {[
-            { label: "Profile Views", value: 24800, pct: 100, color: "#6C5CE7" },
-            { label: "Clicked Notify Me", value: 8640, pct: 35, color: "#8B7CF6" },
-            { label: "Followed", value: 4200, pct: 17, color: "#00D4B8" },
-            { label: "Installed", value: 1240, pct: 5, color: "#00B8A0" },
-          ].map((f, i) => (
+          {funnel.map((f, i) => (
             <div key={f.label} className="space-y-1">
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">{f.label}</span>
-                <span className="font-semibold">{f.value.toLocaleString()} <span className="text-muted-foreground text-xs">({f.pct}%)</span></span>
+                <span className="font-semibold">{profile ? f.value.toLocaleString() : "0"} <span className="text-muted-foreground text-xs">({profile ? f.pct : 0}%)</span></span>
               </div>
               <div className="h-2 w-full rounded-full bg-white/5 overflow-hidden">
                 <motion.div
                   initial={{ width: 0 }}
-                  animate={{ width: `${f.pct}%` }}
+                  animate={{ width: `${profile ? f.pct : 0}%` }}
                   transition={{ duration: 1, delay: 0.35 + i * 0.1 }}
                   className="h-full rounded-full"
                   style={{ background: f.color }}

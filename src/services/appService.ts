@@ -1,7 +1,7 @@
 import type { App } from "@/data/mock";
 import { loadCsv } from "@/lib/mock-db/csvLoader";
 import { buildAppContext, getCsvAppIdBySlug, mapCsvAppToApp } from "@/lib/mock-db/mappers";
-import type { CsvApp } from "@/lib/mock-db/types";
+import type { CsvApp, CsvFounder, CsvCategory } from "@/lib/mock-db/types";
 
 let appsCache: App[] | null = null;
 let csvAppsCache: CsvApp[] | null = null;
@@ -10,8 +10,8 @@ let contextPromise: ReturnType<typeof buildAppContextFromCsv> | null = null;
 async function buildAppContextFromCsv() {
   const [apps, founders, categories] = await Promise.all([
     loadCsv<CsvApp>("apps"),
-    loadCsv("founders"),
-    loadCsv("categories"),
+    loadCsv<CsvFounder>("founders"),
+    loadCsv<CsvCategory>("categories"),
   ]);
   return {
     csvApps: apps,

@@ -2,26 +2,26 @@ import { createFileRoute } from "@tanstack/react-router";
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import { Globe, Users } from "lucide-react";
+import { useAnalysis } from "@/context/AnalysisContext";
+import { useAppProfile } from "@/context/AppProfileContext";
+import { MOCK_ANALYSIS } from "@/data/analysisData";
 
 export const Route = createFileRoute("/founder/audience")({
   component: AudiencePage,
 });
 
-const SEGMENTS = [
-  { label: "Students", pct: 92, color: "#6C5CE7", count: "8,464" },
-  { label: "Developers", pct: 84, color: "#00D4B8", count: "7,728" },
-  { label: "Founders", pct: 71, color: "#F59E0B", count: "6,532" },
-  { label: "Designers", pct: 68, color: "#EC4899", count: "6,256" },
-  { label: "Product Managers", pct: 54, color: "#8B5CF6", count: "4,968" },
-  { label: "Marketers", pct: 41, color: "#06B6D4", count: "3,772" },
-];
-
 const PEAK_HOURS = [8, 22, 35, 28, 45, 62, 88, 95, 78, 55, 40, 30, 25, 35, 48, 62, 75, 90, 95, 88, 72, 58, 42, 18];
 
 function AudiencePage() {
+  const { result } = useAnalysis();
+  const { profile } = useAppProfile();
   const ref = useRef(null);
   const inView = useInView(ref, { once: true });
   const max = Math.max(...PEAK_HOURS);
+
+  const display = result ?? MOCK_ANALYSIS;
+  const segments = display.audienceInsights || [];
+  const matches = display.topPartners || [];
 
   return (
     <div className="p-6 md:p-8 max-w-5xl">
@@ -43,18 +43,18 @@ function AudiencePage() {
         <div className="flex items-center gap-2 mb-5">
           <Users className="h-4 w-4 text-primary" />
           <h3 className="text-base font-semibold">Audience Segments</h3>
-          <span className="ml-auto text-xs text-muted-foreground">Total: 9,200 followers</span>
+          <span className="ml-auto text-xs text-muted-foreground">Total: {profile ? "9,200 followers" : "0 followers"}</span>
         </div>
         <div className="space-y-4">
-          {SEGMENTS.map((s, i) => (
-            <div key={s.label} className="space-y-1.5">
+          {segments.map((s, i) => (
+            <div key={s.segment} className="space-y-1.5">
               <div className="flex items-center justify-between text-sm">
                 <div className="flex items-center gap-2">
                   <div className="h-2.5 w-2.5 rounded-full" style={{ background: s.color }} />
-                  <span className="text-muted-foreground">{s.label}</span>
+                  <span className="text-muted-foreground">{s.segment}</span>
                 </div>
                 <div className="flex items-center gap-3">
-                  <span className="text-xs text-muted-foreground">{s.count}</span>
+                  <span className="text-xs text-muted-foreground">{Math.round(s.pct * 92).toLocaleString()}</span>
                   <span className="font-semibold w-10 text-right">{s.pct}%</span>
                 </div>
               </div>
@@ -101,22 +101,18 @@ function AudiencePage() {
         className="glass-strong rounded-2xl border border-border/60 p-6">
         <h3 className="text-base font-semibold mb-4">Audience Overlap with Top Partners</h3>
         <div className="space-y-3">
-          {[
-            { name: "StudyFlow", overlap: 92, icon: "📚" },
-            { name: "FocusFlow", overlap: 76, icon: "⚡" },
-            { name: "MindMap AI", overlap: 69, icon: "🧠" },
-          ].map((p, i) => (
+          {matches.slice(0, 4).map((p, i) => (
             <div key={p.name} className="flex items-center gap-4">
               <span className="text-xl">{p.icon}</span>
               <div className="flex-1">
                 <div className="flex justify-between text-sm mb-1">
                   <span className="font-medium">{p.name}</span>
-                  <span className="text-accent font-bold">{p.overlap}% overlap</span>
+                  <span className="text-accent font-bold">{p.overlap} overlap</span>
                 </div>
                 <div className="h-2 rounded-full bg-white/5 overflow-hidden">
                   <motion.div
                     initial={{ width: 0 }}
-                    animate={{ width: `${p.overlap}%` }}
+                    animate={{ width: `${p.match}%` }}
                     transition={{ duration: 1, delay: 0.35 + i * 0.1 }}
                     className="h-full rounded-full animated-gradient"
                   />

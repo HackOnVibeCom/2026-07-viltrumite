@@ -7,6 +7,7 @@ import {
   TrendingUp, Users, ShieldCheck, Mail, Edit3, X, Calendar
 } from "lucide-react";
 import { toast } from "sonner";
+import { dispatchAllIntegrations } from "@/lib/api/integrations";
 
 type Props = {
   isOpen: boolean;
@@ -103,6 +104,11 @@ export function PactModal({ isOpen, onClose, partner, onSuccess }: Props) {
 
     localStorage.setItem("lm_pacts", JSON.stringify([...currentPacts, newPact]));
     
+    // Dispatch Slack/Discord/Telegram notifications
+    dispatchAllIntegrations(
+      `🤝 *New LaunchMesh AI Growth Pact Proposal!*\n\n*From:* ${userName} (${profile.appName})\n*Partner:* ${partner.name}\n*Audience Overlap:* ${partner.overlap}\n*Compatibility:* ${partner.match}%\n\n*Outreach Message:* ${message}`
+    );
+
     // Trigger callback if provided
     if (onSuccess) onSuccess();
 
@@ -137,13 +143,10 @@ export function PactModal({ isOpen, onClose, partner, onSuccess }: Props) {
         </div>
 
         {/* Modal Scroll Body */}
-        <div className="flex-1 overflow-y-auto p-6 md:p-8 space-y-6">
+        <div className="flex-1 overflow-y-auto p-6 md:p-8 space-y-6" data-lenis-prevent>
           
           {/* Product Comparison Header */}
-          <div className="grid grid-cols-3 items-center gap-4 p-4 rounded-2xl glass border border-border/40 relative">
-            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#12121A] border border-border/50 h-8 w-8 rounded-full grid place-items-center z-10 text-[10px] font-bold text-muted-foreground">
-              VS
-            </div>
+          <div className="grid grid-cols-3 items-center gap-4 p-4 rounded-2xl glass border border-border/40">
 
             {/* My App */}
             <div className="text-center space-y-1">
@@ -156,10 +159,11 @@ export function PactModal({ isOpen, onClose, partner, onSuccess }: Props) {
 
             {/* Match Affinities */}
             <div className="text-center space-y-1.5 z-0">
+              <span className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest block mb-0.5">VS</span>
               <div className="inline-block px-3 py-1 rounded-full text-xs font-extrabold text-accent border border-accent/20 bg-accent/10">
                 {partner.match}% Match
               </div>
-              <p className="text-[10px] text-muted-foreground">Trust Score: <strong className="text-white">{partner.trustScore}</strong></p>
+              <p className="text-[10px] text-muted-foreground mt-1">Trust Score: <strong className="text-white">{partner.trustScore}</strong></p>
             </div>
 
             {/* Partner App */}
@@ -168,7 +172,7 @@ export function PactModal({ isOpen, onClose, partner, onSuccess }: Props) {
                 {partner.icon}
               </div>
               <p className="text-xs font-bold text-white truncate">{partner.name}</p>
-              <p className="text-[10px] text-muted-foreground uppercase">{partner.tags?.[0] || "Cross-promo"}</p>
+              <p className="text-[10px] text-muted-foreground uppercase">{partner.category || "Cross-promo"}</p>
             </div>
           </div>
 

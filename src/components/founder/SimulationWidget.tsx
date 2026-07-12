@@ -144,18 +144,24 @@ export function SimulationWidget() {
                   </p>
                 </div>
 
-                <div className="grid grid-cols-4 gap-2">
+                {/* Compact Stats Row */}
+                <div className="grid grid-cols-3 gap-2">
                   {[
                     { label: "Compatibility", value: `${selectedPact.compatibility}%` },
                     { label: "Overlap", value: selectedPact.overlap },
                     { label: "Installs", value: `+${selectedPact.expectedInstalls}` },
-                    { label: "Campaign", value: selectedPact.campaignType }
                   ].map((stat) => (
                     <div key={stat.label} className="glass rounded-xl p-2.5 text-center border border-border/40">
                       <p className="text-xs font-bold text-white">{stat.value}</p>
                       <p className="text-[9px] text-muted-foreground mt-0.5 truncate">{stat.label}</p>
                     </div>
                   ))}
+                </div>
+
+                {/* Full-width Campaign Details Card */}
+                <div className="glass rounded-xl p-4 border border-border/40 space-y-1.5">
+                  <p className="text-[10px] text-muted-foreground uppercase tracking-widest font-semibold">Joint Campaign Plan</p>
+                  <p className="text-xs text-white leading-relaxed">{selectedPact.campaignType}</p>
                 </div>
 
                 <div className="flex flex-col gap-2 pt-3">

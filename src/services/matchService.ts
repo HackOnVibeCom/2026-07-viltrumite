@@ -8,7 +8,7 @@ import {
   getPartnerAppId,
   mapMatchToPartner,
 } from "@/lib/mock-db/mappers";
-import type { CsvAiMatch, CsvApp } from "@/lib/mock-db/types";
+import type { CsvAiMatch, CsvApp, CsvFounder, CsvCategory, CsvScreenshot, CsvReview, CsvAnalytics } from "@/lib/mock-db/types";
 import { getCsvApps } from "./appService";
 
 export async function getMatchesForApp(appId: string = CURRENT_FOUNDER_APP_ID) {
@@ -16,11 +16,11 @@ export async function getMatchesForApp(appId: string = CURRENT_FOUNDER_APP_ID) {
     await Promise.all([
       loadCsv<CsvAiMatch>("ai_matches"),
       getCsvApps(),
-      loadCsv("founders"),
-      loadCsv("categories"),
-      loadCsv("screenshots"),
-      loadCsv("reviews"),
-      loadCsv("analytics"),
+      loadCsv<CsvFounder>("founders"),
+      loadCsv<CsvCategory>("categories"),
+      loadCsv<CsvScreenshot>("screenshots"),
+      loadCsv<CsvReview>("reviews"),
+      loadCsv<CsvAnalytics>("analytics"),
     ]);
 
   const appsById = new Map<string, CsvApp>(csvApps.map((a) => [a.app_id, a]));

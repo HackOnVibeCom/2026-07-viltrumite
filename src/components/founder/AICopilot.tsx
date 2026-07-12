@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Bot, X, Send, Sparkles, ChevronDown } from "lucide-react";
+import { useAppProfile } from "@/context/AppProfileContext";
 
 type Message = { role: "user" | "ai"; text: string };
 
@@ -43,10 +44,17 @@ function formatMessage(text: string) {
 }
 
 export function AICopilot() {
+  const { profile } = useAppProfile();
   const [open, setOpen] = useState(false);
-  const [messages, setMessages] = useState<Message[]>([
-    { role: "ai", text: "Hey! I'm your AI growth copilot 🚀\n\nI can help you analyze your app, find the best growth partners, and build your launch strategy. What would you like to do?" },
-  ]);
+  const [messages, setMessages] = useState<Message[]>([]);
+  
+  // Set initial message once profile is loaded
+  useEffect(() => {
+    setMessages([
+      { role: "ai", text: `Hey! I'm your AI growth copilot 🚀\n\n${profile ? `I see you are working on launching **${profile.appName}** in the **${profile.category}** space. ` : ""}How can I help you optimize your launch strategy, find growth partners, or write copy today?` }
+    ]);
+  }, [profile]);
+
   const [input, setInput] = useState("");
   const [typing, setTyping] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
@@ -55,17 +63,39 @@ export function AICopilot() {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, typing]);
 
-  const send = (text: string) => {
+  const send = async (text: string) => {
     if (!text.trim()) return;
-    setMessages(m => [...m, { role: "user", text }]);
+    
+    // Add user message to history
+    const updatedMessages = [...messages, { role: "user" as const, text }];
+    setMessages(updatedMessages);
     setInput("");
     setTyping(true);
-    setTimeout(() => {
-      const key = Object.keys(MOCK_RESPONSES).find(k => text.toLowerCase().includes(k.toLowerCase().split(" ")[0]));
-      const reply = key ? MOCK_RESPONSES[key] : "Great question! Let me analyze that for you...\n\nBased on your app profile, I'd recommend focusing on audience overlap first. Your strongest growth lever right now is a newsletter swap with a complementary app in the productivity space.\n\nWant me to find the top 3 candidates?";
+
+    try {
+      const response = await fetch("/api/copilot-chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          message: text,
+          history: messages.slice(-10), // Send last 10 messages of context
+          profile
+        })
+      });
+
+      const data = await response.json();
       setTyping(false);
-      setMessages(m => [...m, { role: "ai", text: reply }]);
-    }, 1200);
+
+      if (response.ok && data.reply) {
+        setMessages(m => [...m, { role: "ai", text: data.reply }]);
+      } else {
+        const errorMsg = data.error || "Failed to generate AI reply";
+        setMessages(m => [...m, { role: "ai", text: `⚠️ **AI Copilot Connection Error:**\n\n${errorMsg}` }]);
+      }
+    } catch (err: any) {
+      setTyping(false);
+      setMessages(m => [...m, { role: "ai", text: `⚠️ **AI Copilot Connection Error:**\n\nFailed to establish connection. Reverting to local fallback:\n\nBased on your app description, I suggest focusing on initial launch newsletter cross-promotions with matched category apps.` }]);
+    }
   };
 
   return (
@@ -117,7 +147,7 @@ export function AICopilot() {
             </div>
 
             {/* Messages */}
-            <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4">
+            <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4" data-lenis-prevent>
               {messages.map((msg, i) => (
                 <motion.div key={i} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
                   className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>

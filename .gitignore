@@ -11,3 +11,5 @@ tsconfig.tsbuildinfo
 !public/mock-db/*.csv
 !2026-07-viltrumite/public/mock-db/*.csv
 .oxcode-memory/
+.dev.vars
+

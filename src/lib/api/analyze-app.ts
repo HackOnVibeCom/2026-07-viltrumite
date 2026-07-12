@@ -1,5 +1,5 @@
-import type { AppProfileInput } from "../../lib/analysis/types";
-import type { AnalysisResult } from "../../lib/analysis/transform";
+import type { AppProfileInput } from "../../../lib/analysis/types";
+import type { AnalysisResult } from "../../../lib/analysis/transform";
 
 export type { AppProfileInput, AnalysisResult };
 

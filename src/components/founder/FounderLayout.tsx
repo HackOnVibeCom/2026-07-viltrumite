@@ -11,7 +11,6 @@ import { Sun, Moon, LogOut } from "lucide-react";
 import { EmptyState } from "./EmptyState";
 import { CreateLaunchWizard } from "./CreateLaunchWizard";
 import { AIAnalysisScreen } from "./AIAnalysisScreen";
-import { SimulationWidget } from "./SimulationWidget";
 import { toast } from "sonner";
 
 function FounderTopBar() {
@@ -125,7 +124,6 @@ function FounderLayoutContent() {
         )}
       </main>
       <AICopilot />
-      <SimulationWidget />
       <Toaster position="top-right" richColors closeButton />
 
       {/* Product launch wizard modal */}

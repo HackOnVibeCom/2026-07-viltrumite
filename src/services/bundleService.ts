@@ -1,7 +1,7 @@
 import { loadCsv } from "@/lib/mock-db/csvLoader";
 import { COLLECTION_GRADIENTS } from "@/lib/mock-db/constants";
 import { mapBundleApps } from "@/lib/mock-db/mappers";
-import type { CsvApp, CsvBundle } from "@/lib/mock-db/types";
+import type { CsvApp, CsvBundle, CsvFounder, CsvCategory, CsvScreenshot, CsvReview, CsvAnalytics } from "@/lib/mock-db/types";
 import { buildAppContext } from "@/lib/mock-db/mappers";
 import { getCsvApps } from "./appService";
 
@@ -44,11 +44,11 @@ export async function getBundles(): Promise<BundleItem[]> {
     await Promise.all([
       loadCsv<CsvBundle>("bundles"),
       getCsvApps(),
-      loadCsv("founders"),
-      loadCsv("categories"),
-      loadCsv("screenshots"),
-      loadCsv("reviews"),
-      loadCsv("analytics"),
+      loadCsv<CsvFounder>("founders"),
+      loadCsv<CsvCategory>("categories"),
+      loadCsv<CsvScreenshot>("screenshots"),
+      loadCsv<CsvReview>("reviews"),
+      loadCsv<CsvAnalytics>("analytics"),
     ]);
 
   const appsById = new Map(csvApps.map((a) => [a.app_id, a]));

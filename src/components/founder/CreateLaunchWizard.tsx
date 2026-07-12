@@ -125,7 +125,7 @@ export function CreateLaunchWizard({ open, onClose, onStartAnalysis }: Props) {
           <div className="flex items-center justify-between">
             <div>
               <span className="text-xs font-bold text-accent uppercase tracking-widest">Step {step} of 6</span>
-              <h2 className="text-xl font-bold text-white mt-0.5">{stepsInfo[step - 1].title}</h2>
+              <h2 className="text-xl font-bold text-foreground mt-0.5">{stepsInfo[step - 1].title}</h2>
               <p className="text-xs text-muted-foreground">{stepsInfo[step - 1].desc}</p>
             </div>
             <button onClick={onClose} className="h-8 w-8 rounded-lg glass grid place-items-center text-muted-foreground hover:text-foreground cursor-pointer transition-colors">
@@ -153,7 +153,7 @@ export function CreateLaunchWizard({ open, onClose, onStartAnalysis }: Props) {
         </div>
 
         {/* Wizard Body (Scrollable form) */}
-        <div className="flex-1 overflow-y-auto p-6 md:p-8 space-y-6">
+        <div className="flex-1 overflow-y-auto p-6 md:p-8 space-y-6" data-lenis-prevent>
           <AnimatePresence mode="wait">
             <motion.div
               key={step}
@@ -172,7 +172,7 @@ export function CreateLaunchWizard({ open, onClose, onStartAnalysis }: Props) {
                       <input
                         type="text"
                         placeholder="e.g. StudyPal"
-                        className="w-full glass bg-white/5 border border-border/40 focus:border-primary/60 outline-none rounded-xl px-4 py-2.5 text-sm text-white"
+                        className="w-full glass bg-white/5 border border-border/40 focus:border-primary/60 outline-none rounded-xl px-4 py-2.5 text-sm text-foreground"
                         value={appName}
                         onChange={(e) => setAppName(e.target.value)}
                       />
@@ -203,7 +203,7 @@ export function CreateLaunchWizard({ open, onClose, onStartAnalysis }: Props) {
                     <input
                       type="text"
                       placeholder="e.g. AI-powered planner for student growth."
-                      className="w-full glass bg-white/5 border border-border/40 focus:border-primary/60 outline-none rounded-xl px-4 py-2.5 text-sm text-white"
+                      className="w-full glass bg-white/5 border border-border/40 focus:border-primary/60 outline-none rounded-xl px-4 py-2.5 text-sm text-foreground"
                       value={tagline}
                       onChange={(e) => setTagline(e.target.value)}
                     />
@@ -213,12 +213,12 @@ export function CreateLaunchWizard({ open, onClose, onStartAnalysis }: Props) {
                     <div className="space-y-1.5">
                       <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Category</label>
                       <select
-                        className="w-full glass bg-white/5 border border-border/40 focus:border-primary/60 outline-none rounded-xl px-4 py-2.5 text-sm text-white"
+                        className="w-full glass bg-white/5 border border-border/40 focus:border-primary/60 outline-none rounded-xl px-4 py-2.5 text-sm text-foreground"
                         value={category}
                         onChange={(e) => setCategory(e.target.value)}
                       >
                         {CATEGORIES.map((c) => (
-                          <option key={c} value={c} className="bg-[#12121A] text-white">{c}</option>
+                          <option key={c} value={c} className="bg-[#12121A] text-foreground">{c}</option>
                         ))}
                       </select>
                     </div>
@@ -226,12 +226,12 @@ export function CreateLaunchWizard({ open, onClose, onStartAnalysis }: Props) {
                     <div className="space-y-1.5">
                       <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Primary Platform</label>
                       <select
-                        className="w-full glass bg-white/5 border border-border/40 focus:border-primary/60 outline-none rounded-xl px-4 py-2.5 text-sm text-white"
+                        className="w-full glass bg-white/5 border border-border/40 focus:border-primary/60 outline-none rounded-xl px-4 py-2.5 text-sm text-foreground"
                         value={platform}
                         onChange={(e) => setPlatform(e.target.value)}
                       >
                         {PLATFORMS.map((p) => (
-                          <option key={p} value={p} className="bg-[#12121A] text-white">{p}</option>
+                          <option key={p} value={p} className="bg-[#12121A] text-foreground">{p}</option>
                         ))}
                       </select>
                     </div>
@@ -247,7 +247,7 @@ export function CreateLaunchWizard({ open, onClose, onStartAnalysis }: Props) {
                     <textarea
                       placeholder="Give a brief summary of how your app works and who it's for."
                       rows={3}
-                      className="w-full glass bg-white/5 border border-border/40 focus:border-primary/60 outline-none rounded-xl px-4 py-2 text-sm text-white resize-none"
+                      className="w-full glass bg-white/5 border border-border/40 focus:border-primary/60 outline-none rounded-xl px-4 py-2 text-sm text-foreground resize-none"
                       value={longDescription}
                       onChange={(e) => setLongDescription(e.target.value)}
                     />
@@ -259,7 +259,7 @@ export function CreateLaunchWizard({ open, onClose, onStartAnalysis }: Props) {
                       <textarea
                         placeholder="e.g. Students struggle to find study groups and coordinate schedules."
                         rows={2}
-                        className="w-full glass bg-white/5 border border-border/40 focus:border-primary/60 outline-none rounded-xl px-4 py-2 text-sm text-white resize-none"
+                        className="w-full glass bg-white/5 border border-border/40 focus:border-primary/60 outline-none rounded-xl px-4 py-2 text-sm text-foreground resize-none"
                         value={problem}
                         onChange={(e) => setProblem(e.target.value)}
                       />
@@ -270,7 +270,7 @@ export function CreateLaunchWizard({ open, onClose, onStartAnalysis }: Props) {
                       <textarea
                         placeholder="e.g. AI matchmaking that groups students by study patterns and course syllabus."
                         rows={2}
-                        className="w-full glass bg-white/5 border border-border/40 focus:border-primary/60 outline-none rounded-xl px-4 py-2 text-sm text-white resize-none"
+                        className="w-full glass bg-white/5 border border-border/40 focus:border-primary/60 outline-none rounded-xl px-4 py-2 text-sm text-foreground resize-none"
                         value={solution}
                         onChange={(e) => setSolution(e.target.value)}
                       />
@@ -281,12 +281,12 @@ export function CreateLaunchWizard({ open, onClose, onStartAnalysis }: Props) {
                     <div className="space-y-1.5">
                       <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Pricing Model</label>
                       <select
-                        className="w-full glass bg-white/5 border border-border/40 focus:border-primary/60 outline-none rounded-xl px-4 py-2.5 text-sm text-white"
+                        className="w-full glass bg-white/5 border border-border/40 focus:border-primary/60 outline-none rounded-xl px-4 py-2.5 text-sm text-foreground"
                         value={pricing}
                         onChange={(e) => setPricing(e.target.value)}
                       >
                         {PRICING_MODELS.map((p) => (
-                          <option key={p} value={p} className="bg-[#12121A] text-white">{p}</option>
+                          <option key={p} value={p} className="bg-[#12121A] text-foreground">{p}</option>
                         ))}
                       </select>
                     </div>
@@ -296,7 +296,7 @@ export function CreateLaunchWizard({ open, onClose, onStartAnalysis }: Props) {
                       <input
                         type="url"
                         placeholder="https://studypal.ai"
-                        className="w-full glass bg-white/5 border border-border/40 focus:border-primary/60 outline-none rounded-xl px-4 py-2.5 text-sm text-white"
+                        className="w-full glass bg-white/5 border border-border/40 focus:border-primary/60 outline-none rounded-xl px-4 py-2.5 text-sm text-foreground"
                         value={website}
                         onChange={(e) => setWebsite(e.target.value)}
                       />
@@ -314,7 +314,7 @@ export function CreateLaunchWizard({ open, onClose, onStartAnalysis }: Props) {
                       <input
                         type="text"
                         placeholder="e.g. Students, Designers, Academics"
-                        className="w-full glass bg-white/5 border border-border/40 focus:border-primary/60 outline-none rounded-xl px-4 py-2.5 text-sm text-white"
+                        className="w-full glass bg-white/5 border border-border/40 focus:border-primary/60 outline-none rounded-xl px-4 py-2.5 text-sm text-foreground"
                         value={targetAudience}
                         onChange={(e) => setTargetAudience(e.target.value)}
                       />
@@ -323,12 +323,12 @@ export function CreateLaunchWizard({ open, onClose, onStartAnalysis }: Props) {
                     <div className="space-y-1.5">
                       <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Primary Age Group</label>
                       <select
-                        className="w-full glass bg-white/5 border border-border/40 focus:border-primary/60 outline-none rounded-xl px-4 py-2.5 text-sm text-white"
+                        className="w-full glass bg-white/5 border border-border/40 focus:border-primary/60 outline-none rounded-xl px-4 py-2.5 text-sm text-foreground"
                         value={ageGroup}
                         onChange={(e) => setAgeGroup(e.target.value)}
                       >
                         {AGE_GROUPS.map((a) => (
-                          <option key={a} value={a} className="bg-[#12121A] text-white">{a}</option>
+                          <option key={a} value={a} className="bg-[#12121A] text-foreground">{a}</option>
                         ))}
                       </select>
                     </div>
@@ -340,7 +340,7 @@ export function CreateLaunchWizard({ open, onClose, onStartAnalysis }: Props) {
                       <input
                         type="text"
                         placeholder="e.g. United States, Global"
-                        className="w-full glass bg-white/5 border border-border/40 focus:border-primary/60 outline-none rounded-xl px-4 py-2.5 text-sm text-white"
+                        className="w-full glass bg-white/5 border border-border/40 focus:border-primary/60 outline-none rounded-xl px-4 py-2.5 text-sm text-foreground"
                         value={country}
                         onChange={(e) => setCountry(e.target.value)}
                       />
@@ -351,7 +351,7 @@ export function CreateLaunchWizard({ open, onClose, onStartAnalysis }: Props) {
                       <input
                         type="text"
                         placeholder="e.g. Productivity, Niche Hobbies, Learning"
-                        className="w-full glass bg-white/5 border border-border/40 focus:border-primary/60 outline-none rounded-xl px-4 py-2.5 text-sm text-white"
+                        className="w-full glass bg-white/5 border border-border/40 focus:border-primary/60 outline-none rounded-xl px-4 py-2.5 text-sm text-foreground"
                         value={interests}
                         onChange={(e) => setInterests(e.target.value)}
                       />
@@ -363,7 +363,7 @@ export function CreateLaunchWizard({ open, onClose, onStartAnalysis }: Props) {
                     <textarea
                       placeholder="Describe your ideal user in detail (e.g. college freshman looking to excel in STEM courses and find study networks)."
                       rows={3}
-                      className="w-full glass bg-white/5 border border-border/40 focus:border-primary/60 outline-none rounded-xl px-4 py-2 text-sm text-white resize-none"
+                      className="w-full glass bg-white/5 border border-border/40 focus:border-primary/60 outline-none rounded-xl px-4 py-2 text-sm text-foreground resize-none"
                       value={userPersona}
                       onChange={(e) => setUserPersona(e.target.value)}
                     />
@@ -403,7 +403,7 @@ export function CreateLaunchWizard({ open, onClose, onStartAnalysis }: Props) {
                         <input
                           type="text"
                           placeholder="@studypal"
-                          className="w-full bg-transparent border-none outline-none text-xs text-white"
+                          className="w-full bg-transparent border-none outline-none text-xs text-foreground"
                           value={twitter}
                           onChange={(e) => setTwitter(e.target.value)}
                         />
@@ -413,7 +413,7 @@ export function CreateLaunchWizard({ open, onClose, onStartAnalysis }: Props) {
                         <input
                           type="text"
                           placeholder="studypal-app"
-                          className="w-full bg-transparent border-none outline-none text-xs text-white"
+                          className="w-full bg-transparent border-none outline-none text-xs text-foreground"
                           value={github}
                           onChange={(e) => setGithub(e.target.value)}
                         />
@@ -423,7 +423,7 @@ export function CreateLaunchWizard({ open, onClose, onStartAnalysis }: Props) {
                         <input
                           type="text"
                           placeholder="studypal"
-                          className="w-full bg-transparent border-none outline-none text-xs text-white"
+                          className="w-full bg-transparent border-none outline-none text-xs text-foreground"
                           value={linkedin}
                           onChange={(e) => setLinkedin(e.target.value)}
                         />
@@ -441,7 +441,7 @@ export function CreateLaunchWizard({ open, onClose, onStartAnalysis }: Props) {
                       <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Launch Date</label>
                       <input
                         type="date"
-                        className="w-full glass bg-white/5 border border-border/40 focus:border-primary/60 outline-none rounded-xl px-4 py-2.5 text-sm text-white"
+                        className="w-full glass bg-white/5 border border-border/40 focus:border-primary/60 outline-none rounded-xl px-4 py-2.5 text-sm text-foreground"
                         value={launchDate}
                         onChange={(e) => setLaunchDate(e.target.value)}
                       />
@@ -451,7 +451,7 @@ export function CreateLaunchWizard({ open, onClose, onStartAnalysis }: Props) {
                       <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Launch Time</label>
                       <input
                         type="time"
-                        className="w-full glass bg-white/5 border border-border/40 focus:border-primary/60 outline-none rounded-xl px-4 py-2.5 text-sm text-white"
+                        className="w-full glass bg-white/5 border border-border/40 focus:border-primary/60 outline-none rounded-xl px-4 py-2.5 text-sm text-foreground"
                         value={launchTime}
                         onChange={(e) => setLaunchTime(e.target.value)}
                       />
@@ -462,7 +462,7 @@ export function CreateLaunchWizard({ open, onClose, onStartAnalysis }: Props) {
                     <div className="space-y-1.5">
                       <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Timezone</label>
                       <select
-                        className="w-full glass bg-white/5 border border-border/40 focus:border-primary/60 outline-none rounded-xl px-4 py-2.5 text-sm text-white"
+                        className="w-full glass bg-white/5 border border-border/40 focus:border-primary/60 outline-none rounded-xl px-4 py-2.5 text-sm text-foreground"
                         value={timezone}
                         onChange={(e) => setTimezone(e.target.value)}
                       >
@@ -476,12 +476,12 @@ export function CreateLaunchWizard({ open, onClose, onStartAnalysis }: Props) {
                     <div className="space-y-1.5">
                       <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Product Status</label>
                       <select
-                        className="w-full glass bg-white/5 border border-border/40 focus:border-primary/60 outline-none rounded-xl px-4 py-2.5 text-sm text-white"
+                        className="w-full glass bg-white/5 border border-border/40 focus:border-primary/60 outline-none rounded-xl px-4 py-2.5 text-sm text-foreground"
                         value={productStatus}
                         onChange={(e) => setProductStatus(e.target.value as AppProfile["productStatus"])}
                       >
                         {STATUSES.map((s) => (
-                          <option key={s} value={s} className="bg-[#12121A] text-white">{s}</option>
+                          <option key={s} value={s} className="bg-[#12121A] text-foreground">{s}</option>
                         ))}
                       </select>
                     </div>
@@ -505,7 +505,7 @@ export function CreateLaunchWizard({ open, onClose, onStartAnalysis }: Props) {
                       <div className="flex items-center gap-2">
                         <span className="text-2xl">{appIcon}</span>
                         <div>
-                          <p className="text-sm font-bold text-white">{appName || "Unnamed App"}</p>
+                          <p className="text-sm font-bold text-foreground">{appName || "Unnamed App"}</p>
                           <p className="text-[10px] text-muted-foreground">{category} · {platform}</p>
                         </div>
                       </div>
@@ -514,14 +514,14 @@ export function CreateLaunchWizard({ open, onClose, onStartAnalysis }: Props) {
 
                     <div className="glass rounded-xl p-4 border border-border/40 space-y-1">
                       <p className="text-[10px] text-muted-foreground uppercase tracking-wider font-semibold">Audience</p>
-                      <p className="text-xs text-white font-semibold">{targetAudience || "General Public"}</p>
+                      <p className="text-xs text-foreground font-semibold">{targetAudience || "General Public"}</p>
                       <p className="text-[10px] text-muted-foreground">Age: {ageGroup} | Region: {country}</p>
                       <p className="text-[10px] text-muted-foreground truncate">Interests: {interests}</p>
                     </div>
 
                     <div className="glass rounded-xl p-4 border border-border/40 space-y-1 col-span-2">
                       <p className="text-[10px] text-muted-foreground uppercase tracking-wider font-semibold">Launch Schedule</p>
-                      <p className="text-xs text-white">
+                      <p className="text-xs text-foreground">
                         Scheduled for <strong className="text-primary">{launchDate || "Today"}</strong> at <strong className="text-primary">{launchTime} {timezone}</strong>
                       </p>
                       <p className="text-[10px] text-muted-foreground">Status: <span className="text-accent font-semibold">{productStatus}</span> | Pricing: {pricing} | Website: {website || "Not provided"}</p>

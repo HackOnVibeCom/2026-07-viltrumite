@@ -8,7 +8,7 @@ import {
   getPartnerAppId,
   mapPactToUi,
 } from "@/lib/mock-db/mappers";
-import type { CsvAiMatch, CsvApp, CsvGrowthPact } from "@/lib/mock-db/types";
+import type { CsvAiMatch, CsvApp, CsvGrowthPact, CsvFounder, CsvCategory, CsvScreenshot, CsvReview, CsvAnalytics } from "@/lib/mock-db/types";
 import { getCsvApps } from "./appService";
 
 export async function getPactsForFounderApp(appId: string = CURRENT_FOUNDER_APP_ID) {
@@ -17,11 +17,11 @@ export async function getPactsForFounderApp(appId: string = CURRENT_FOUNDER_APP_
       loadCsv<CsvGrowthPact>("growth_pacts"),
       loadCsv<CsvAiMatch>("ai_matches"),
       getCsvApps(),
-      loadCsv("founders"),
-      loadCsv("categories"),
-      loadCsv("screenshots"),
-      loadCsv("reviews"),
-      loadCsv("analytics"),
+      loadCsv<CsvFounder>("founders"),
+      loadCsv<CsvCategory>("categories"),
+      loadCsv<CsvScreenshot>("screenshots"),
+      loadCsv<CsvReview>("reviews"),
+      loadCsv<CsvAnalytics>("analytics"),
     ]);
 
   const matchesById = new Map(matches.map((m) => [m.match_id, m]));

@@ -104,7 +104,7 @@ export function FounderSidebar() {
       </div>
 
       {/* Nav */}
-      <nav className="flex-1 px-3 py-2 space-y-0.5 overflow-y-auto">
+      <nav className="flex-1 px-3 py-2 space-y-0.5 overflow-y-auto" data-lenis-prevent>
         {NAV.map(({ icon: Icon, label, to }) => {
           const active = pathname === to || (to !== "/founder" && pathname.startsWith(to));
           const isLocked = !hasProduct && label !== "Settings";

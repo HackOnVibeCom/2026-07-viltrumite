@@ -1,10 +1,12 @@
 // ─── AI Analysis Results ────────────────────────────────────────────────────
 // Types are shared with the backend transform layer in lib/analysis/transform.ts
 
-export type {
+import type {
   PartnerMatch,
   AnalysisResult,
 } from "../../lib/analysis/transform";
+
+export type { PartnerMatch, AnalysisResult };
 
 export const MOCK_ANALYSIS: AnalysisResult = {
   appName: "DesignVault",

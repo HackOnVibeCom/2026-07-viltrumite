@@ -236,24 +236,26 @@ function HowItWorks() {
               initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-80px" }}
               transition={{ duration: 0.7, delay: 0.05 }}
               className={`relative grid md:grid-cols-2 gap-6 md:gap-16 items-center ${i % 2 ? "md:[&>*:first-child]:order-2" : ""}`}>
+              
+              {/* Timeline circle node centered on division */}
+              <div className="absolute left-[3px] md:left-1/2 top-6 md:top-1/2 -translate-x-0 md:-translate-x-1/2 -translate-y-0 md:-translate-y-1/2 z-20">
+                <div className="relative h-12 w-12 -translate-x-[3px] md:translate-x-0">
+                  <div className="absolute inset-0 rounded-full bg-primary/20 animate-pulse-glow" />
+                  <div className="absolute inset-1.5 rounded-full glass-strong grid place-items-center">
+                    <s.icon className="h-4 w-4 text-accent" />
+                  </div>
+                </div>
+              </div>
+
               <div className={`pl-16 md:pl-0 ${i % 2 ? "md:text-left md:pl-16" : "md:text-right md:pr-16"}`}>
                 <div className="text-xs uppercase tracking-[0.25em] text-accent">Step 0{i + 1}</div>
                 <h3 className="mt-2 text-3xl md:text-4xl font-semibold tracking-tight">{s.title}</h3>
                 <p className="mt-3 text-muted-foreground max-w-md md:inline-block">{s.desc}</p>
               </div>
-              {/* node + illustration */}
-              <div className="relative">
-                <div className="absolute left-[3px] md:left-auto md:right-auto md:-translate-x-1/2 top-6 md:top-1/2 md:-translate-y-1/2 md:left-1/2">
-                  <div className="relative h-12 w-12 -translate-x-[3px]">
-                    <div className="absolute inset-0 rounded-full bg-primary/20 animate-pulse-glow" />
-                    <div className="absolute inset-1.5 rounded-full glass-strong grid place-items-center">
-                      <s.icon className="h-4 w-4 text-accent" />
-                    </div>
-                  </div>
-                </div>
-                <div className="pl-16 md:pl-0">
-                  <StepIllustration index={i} />
-                </div>
+              
+              {/* illustration container */}
+              <div className="pl-16 md:pl-0">
+                <StepIllustration index={i} />
               </div>
             </motion.div>
           ))}

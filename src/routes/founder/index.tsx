@@ -10,6 +10,7 @@ import { useAnalysis } from "@/context/AnalysisContext";
 import { useAppProfile } from "@/context/AppProfileContext";
 import { PactModal } from "@/components/founder/PactModal";
 import { MOCK_ANALYSIS } from "@/data/analysisData";
+import { SimulationWidget } from "@/components/founder/SimulationWidget";
 
 export const Route = createFileRoute("/founder/")({
   component: FounderDashboard,
@@ -436,6 +437,9 @@ function FounderDashboard() {
         onClose={() => setPactOpen(false)}
         partner={selectedPartner}
       />
+
+      {/* Simulation Widget renders only on Dashboard */}
+      <SimulationWidget />
     </div>
   );
 }
