@@ -6,6 +6,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import { toast } from "sonner";
 import { analyzeApp, AnalyzeAppError } from "@/lib/api/analyze-app";
 import type { AnalysisResult } from "@/lib/api/analyze-app";
 import { toAppProfileInput, useAppProfile } from "@/context/AppProfileContext";
@@ -78,6 +79,11 @@ export function AnalysisProvider({ children }: { children: ReactNode }) {
       localStorage.setItem("lm_analysis_result", JSON.stringify(enriched));
       setResult(enriched);
       setStatus("success");
+
+      toast.success("AI analysis completed", {
+        description: `Growth score: ${enriched.growthScore}/100 — ${enriched.topPartners.length} partners found.`,
+      });
+
       return enriched;
     } catch (err) {
       const message =
@@ -88,6 +94,11 @@ export function AnalysisProvider({ children }: { children: ReactNode }) {
             : "Something went wrong during analysis";
       setError(message);
       setStatus("error");
+
+      toast.error("Oxlo request failed", {
+        description: message.slice(0, 120),
+      });
+
       return null;
     }
   }, [profile]);

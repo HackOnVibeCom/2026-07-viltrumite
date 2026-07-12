@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState, useEffect, useRef } from "react";
 import { motion, useInView, useMotionValue, useSpring } from "framer-motion";
 import {

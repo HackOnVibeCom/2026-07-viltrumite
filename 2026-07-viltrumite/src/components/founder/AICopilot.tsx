@@ -1,7 +1,14 @@
+/**
+ * ⚠️ HACKATHON / DEMO ONLY ⚠️
+ * The AI Copilot calls the Oxlo API directly from the browser via
+ * copilotService. The API key is embedded in the client bundle.
+ * Before production, move all AI calls to a secure backend.
+ */
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Bot, X, Send, Sparkles, ChevronDown } from "lucide-react";
 import { useAppProfile } from "../../context/AppProfileContext";
+import { sendCopilotMessage, type CopilotMessage } from "@/services/copilotService";
 
 type Message = { role: "user" | "ai"; text: string };
 
@@ -63,27 +70,22 @@ export function AICopilot() {
     setTyping(true);
     
     try {
-      const conversationHistory = messages.map(msg => ({
-        role: msg.role === "user" ? "user" : "assistant",
+      // Build conversation history in the format expected by copilotService
+      const conversationHistory: CopilotMessage[] = messages.map(msg => ({
+        role: msg.role === "user" ? "user" as const : "assistant" as const,
         content: msg.text,
       }));
 
-      const response = await fetch("/api/copilot-chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          message: text,
-          conversationHistory,
-        }),
-      });
+      // Call Oxlo directly via the copilot service (no backend proxy)
+      const result = await sendCopilotMessage(text, conversationHistory);
 
-      if (!response.ok) {
-        throw new Error(`API error: ${response.status}`);
-      }
-
-      const data = await response.json();
       setTyping(false);
-      setMessages(m => [...m, { role: "ai", text: data.response || "I couldn't generate a response. Please try again." }]);
+
+      if (result.success) {
+        setMessages(m => [...m, { role: "ai", text: result.response || "I couldn't generate a response. Please try again." }]);
+      } else {
+        throw new Error(result.error || "Copilot request failed");
+      }
     } catch (error) {
       setTyping(false);
       const errorMsg = error instanceof Error ? error.message : "Connection error";

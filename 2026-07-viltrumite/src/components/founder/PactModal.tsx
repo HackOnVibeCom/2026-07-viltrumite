@@ -1,7 +1,14 @@
+/**
+ * ⚠️ HACKATHON / DEMO ONLY ⚠️
+ * This component calls the Slack Web API directly from the browser.
+ * The access token is embedded in the client bundle.
+ * Before production, move Slack calls to a secure backend.
+ */
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAppProfile } from "@/context/AppProfileContext";
 import { generatePact, type PactResult } from "@/lib/api/generate-pact";
+import { sendSlackMessage } from "@/lib/slack";
 import {
   Sparkles, Check, Send, AlertTriangle, Loader2,
   TrendingUp, Users, ShieldCheck, Mail, Edit3, X, Calendar
@@ -22,6 +29,7 @@ type Props = {
     reason: string;
     gradient: string;
     category?: string;
+    tags?: string[];
   } | null;
   onSuccess?: () => void;
 };
@@ -109,6 +117,21 @@ export function PactModal({ isOpen, onClose, partner, onSuccess }: Props) {
     toast.success(`Partnership request sent to ${partner.name}!`, {
       description: "You can track their response in the Growth Pacts hub."
     });
+
+    // ⚠️ HACKATHON ONLY: Fire-and-forget Slack notification.
+    // Attempt to post the partnership request to a Slack channel.
+    // Uses the VITE_SLACK_ACCESS_TOKEN from .env. If the token is not set
+    // or is invalid, the Slack client will show its own error toast —
+    // we catch here to avoid breaking the main flow.
+    const slackToken = import.meta.env.VITE_SLACK_ACCESS_TOKEN;
+    if (slackToken && slackToken !== "YOUR_SLACK_BOT_TOKEN") {
+      const slackChannelId = import.meta.env.VITE_SLACK_CHANNEL_ID || "general";
+      const slackText = `🚀 *New LaunchMesh Growth Pact Request*\n\n*From:* ${profile.appName}\n*To:* ${partner.name}\n*Match:* ${partner.match}%\n*Expected Installs:* ${pactData?.expectedInstalls ?? "350"}\n\n${message}`;
+
+      sendSlackMessage(slackChannelId, slackText).catch(() => {
+        // Slack client already shows a toast on failure, no extra handling needed
+      });
+    }
     
     onClose();
   };
