@@ -12,11 +12,6 @@ interface CopilotChatRequest {
   }>;
 }
 
-interface CopilotChatResponse {
-  response: string;
-  success: boolean;
-}
-
 async function callOxloCopilotAPI(
   message: string,
   conversationHistory: Array<{ role: "user" | "assistant"; content: string }> | undefined,
@@ -69,19 +64,28 @@ async function callOxloCopilotAPI(
   return data.choices[0].message.content || "";
 }
 
+export interface CopilotAPIResponse {
+  reply: string;
+  success: boolean;
+  error?: string;
+}
+
 export async function handleCopilotChatRequest(
   body: unknown,
   apiKey: string | undefined,
-): Promise<CopilotChatResponse> {
+): Promise<CopilotAPIResponse> {
   if (!body || typeof body !== "object") {
     throw new Error("Request body must be a JSON object");
   }
 
   const request = body as Record<string, unknown>;
   const message = request.message as string;
-  const conversationHistory = request.conversationHistory as Array<{
-    role: "user" | "assistant";
-    content: string;
+  
+  // Support both conversationHistory and history for compatibility
+  const conversationHistory = (request.conversationHistory || request.history) as Array<{
+    role: "user" | "assistant" | string;
+    content?: string;
+    text?: string;
   }> | undefined;
 
   if (!message || typeof message !== "string" || !message.trim()) {
@@ -89,18 +93,28 @@ export async function handleCopilotChatRequest(
   }
 
   try {
+    // Transform history format to match expected API format
+    const apiHistory = conversationHistory?.map(msg => ({
+      role: msg.role === "user" ? "user" : msg.role === "ai" ? "assistant" : "assistant",
+      content: msg.content || msg.text || "",
+    }));
+
     const response = await callOxloCopilotAPI(
       message,
-      conversationHistory,
+      apiHistory,
       apiKey ?? "",
     );
     return {
-      response,
+      reply: response,
       success: true,
     };
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : "Copilot chat failed";
-    throw new Error(errorMessage);
+    return {
+      reply: "",
+      success: false,
+      error: errorMessage,
+    };
   }
 }
 

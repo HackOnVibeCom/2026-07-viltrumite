@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Bot, X, Send, Sparkles, ChevronDown } from "lucide-react";
+import { useAppProfile } from "../../context/AppProfileContext";
 
 type Message = { role: "user" | "ai"; text: string };
 
@@ -55,17 +56,39 @@ export function AICopilot() {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, typing]);
 
-  const send = (text: string) => {
+  const send = async (text: string) => {
     if (!text.trim()) return;
     setMessages(m => [...m, { role: "user", text }]);
     setInput("");
     setTyping(true);
-    setTimeout(() => {
-      const key = Object.keys(MOCK_RESPONSES).find(k => text.toLowerCase().includes(k.toLowerCase().split(" ")[0]));
-      const reply = key ? MOCK_RESPONSES[key] : "Great question! Let me analyze that for you...\n\nBased on your app profile, I'd recommend focusing on audience overlap first. Your strongest growth lever right now is a newsletter swap with a complementary app in the productivity space.\n\nWant me to find the top 3 candidates?";
+    
+    try {
+      const conversationHistory = messages.map(msg => ({
+        role: msg.role === "user" ? "user" : "assistant",
+        content: msg.text,
+      }));
+
+      const response = await fetch("/api/copilot-chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          message: text,
+          conversationHistory,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`API error: ${response.status}`);
+      }
+
+      const data = await response.json();
       setTyping(false);
-      setMessages(m => [...m, { role: "ai", text: reply }]);
-    }, 1200);
+      setMessages(m => [...m, { role: "ai", text: data.response || "I couldn't generate a response. Please try again." }]);
+    } catch (error) {
+      setTyping(false);
+      const errorMsg = error instanceof Error ? error.message : "Connection error";
+      setMessages(m => [...m, { role: "ai", text: `⚠️ **AI Copilot Connection Error:**\n\n${errorMsg}\n\nFalling back to local suggestions: Based on your app profile, I recommend focusing on audience overlap first. Your strongest growth lever is a newsletter swap with a complementary app.` }]);
+    }
   };
 
   return (
