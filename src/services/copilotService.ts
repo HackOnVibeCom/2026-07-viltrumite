@@ -5,11 +5,7 @@
  * Before production, move this logic to a secure backend.
  */
 
-import { oxloChat, extractContent } from "@/lib/oxlo";
-import {
-  buildCopilotSystemPrompt,
-  buildCopilotUserMessage,
-} from "../../lib/analysis/copilotPrompt";
+// No external AI clients are needed here anymore, routed to local server API proxy.
 
 // ---------------------------------------------------------------------------
 // Types
@@ -42,37 +38,28 @@ export async function sendCopilotMessage(
   conversationHistory?: CopilotMessage[],
 ): Promise<CopilotChatResponse> {
   try {
-    // Build the messages array: system prompt → history → user message
-    const messages: Array<{ role: "system" | "user" | "assistant"; content: string }> = [
-      { role: "system", content: buildCopilotSystemPrompt() },
-    ];
+    const response = await fetch("/api/copilot-chat", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        message,
+        history: conversationHistory?.map(m => ({
+          role: m.role,
+          content: m.content
+        }))
+      })
+    });
 
-    // Append conversation history for multi-turn context
-    if (conversationHistory && conversationHistory.length > 0) {
-      for (const msg of conversationHistory) {
-        messages.push({
-          role: msg.role === "user" ? "user" : "assistant",
-          content: msg.content,
-        });
-      }
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(errorText || "Failed to contact Copilot API");
     }
 
-    // Append the current user message
-    messages.push({
-      role: "user",
-      content: buildCopilotUserMessage(message),
-    });
-
-    const response = await oxloChat(messages, {
-      maxTokens: 1200,
-      temperature: 0.7,
-      silent: true, // AICopilot handles its own error display
-    });
-
-    const reply = extractContent(response);
-
+    const data = await response.json();
     return {
-      response: reply,
+      response: data.reply,
       success: true,
     };
   } catch (error) {

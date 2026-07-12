@@ -124,49 +124,21 @@ export async function generatePact(
 
   const defaultFallback = buildFallback(myApp, partnerApp);
 
-  // If the API key is not configured, silently return the fallback
-  const apiKey = import.meta.env.VITE_OXLO_API_KEY;
-  if (!apiKey) {
-    return defaultFallback;
-  }
-
   try {
-    const response = await oxloChat(
-      [
-        {
-          role: "system",
-          content:
-            "You are LaunchMesh AI, a growth matching strategist. Return only JSON matching the requested schema.",
-        },
-        {
-          role: "user",
-          content: buildPactUserPrompt(myApp, partnerApp),
-        },
-      ],
-      { maxTokens: 800, temperature: 0.7, silent: true },
-    );
+    const response = await fetch("/api/generate-pact", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ myApp, partnerApp }),
+    });
 
-    const content = extractContent(response);
-    const trimmed = content.trim();
-    const fenced = trimmed.match(/^```(?:json)?\s*([\s\S]*?)\s*```$/i);
-    const jsonText = (fenced?.[1] ?? trimmed).trim();
-    const parsed = JSON.parse(jsonText);
+    if (!response.ok) {
+      return defaultFallback;
+    }
 
-    return {
-      compatibility: parsed.compatibility || defaultFallback.compatibility,
-      whyMatch: parsed.whyMatch || defaultFallback.whyMatch,
-      campaignSuggestions:
-        parsed.campaignSuggestions || defaultFallback.campaignSuggestions,
-      timeline: parsed.timeline || defaultFallback.timeline,
-      promotionPlan: parsed.promotionPlan || defaultFallback.promotionPlan,
-      expectedInstalls:
-        parsed.expectedInstalls || defaultFallback.expectedInstalls,
-      expectedCtr: parsed.expectedCtr || defaultFallback.expectedCtr,
-      successProbability:
-        parsed.successProbability || defaultFallback.successProbability,
-      outreachMessage:
-        parsed.outreachMessage || defaultFallback.outreachMessage,
-    };
+    const data = await response.json();
+    return data;
   } catch {
     // On any failure, fall back to context-aware defaults
     return defaultFallback;

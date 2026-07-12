@@ -81,27 +81,24 @@ export async function analyzeApp(
   validateProfile(profile);
 
   try {
-    const response = await oxloChat(
-      [
-        { role: "system", content: SYSTEM_PROMPT },
-        { role: "user", content: buildAnalysisUserPrompt(profile) },
-      ],
-      { maxTokens: 1200, temperature: 0.6, silent: true },
-    );
+    const response = await fetch("/api/analyze-app", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ ...profile, appIcon }),
+    });
 
-    const content = extractContent(response);
-    const parsed = parseAnalysisJson(content);
-    const result = transformToAnalysisResult(profile, parsed, appIcon);
-
-    return result;
-  } catch (err) {
-    if (err instanceof OxloError) {
-      throw new AnalyzeAppError(err.message, err.status);
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(errorText || "Failed to analyze app");
     }
-    throw err instanceof AnalyzeAppError
-      ? err
-      : new AnalyzeAppError(
-          err instanceof Error ? err.message : "Failed to analyze app",
-        );
+
+    const data = await response.json();
+    return data;
+  } catch (err) {
+    throw new AnalyzeAppError(
+      err instanceof Error ? err.message : "Failed to analyze app"
+    );
   }
 }
