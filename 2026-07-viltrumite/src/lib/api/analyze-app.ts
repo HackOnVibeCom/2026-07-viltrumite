@@ -5,10 +5,7 @@
  * Before production, move this logic to a secure backend.
  */
 
-import { oxloChat, extractContent, OxloError } from "@/lib/oxlo";
-import { buildAnalysisUserPrompt } from "../../../lib/analysis/prompt";
-import { parseAnalysisJson } from "../../../lib/analysis/parse-response";
-import { transformToAnalysisResult } from "../../../lib/analysis/transform";
+// Unused client-side AI modules removed. Routed to local server API proxy.
 import type { AppProfileInput } from "../../../lib/analysis/types";
 import type { AnalysisResult } from "../../../lib/analysis/transform";
 

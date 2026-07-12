@@ -5,8 +5,7 @@
  * Before production, move this logic to a secure backend.
  */
 
-import { oxloChat, extractContent, OxloError } from "@/lib/oxlo";
-import { buildPactUserPrompt } from "../../../lib/analysis/pactPrompt";
+// Unused client-side AI modules removed. Routed to local server API proxy.
 
 // ---------------------------------------------------------------------------
 // Types (previously in server/handle-generate-pact.ts)
