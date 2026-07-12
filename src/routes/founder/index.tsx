@@ -1,11 +1,14 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
+import { toast } from "sonner";
 import {
   Sparkles, TrendingUp, Users, Zap, ArrowRight, Brain,
-  Rocket, BarChart3, CheckCircle2, Bell, Package, Bot,
+  Rocket, BarChart3, CheckCircle2, Bell, Bot, Loader2,
 } from "lucide-react";
 import { AnalysisModal } from "@/components/founder/AnalysisModal";
+import { useAnalysis } from "@/context/AnalysisContext";
+import { MOCK_ANALYSIS } from "@/data/analysisData";
 
 export const Route = createFileRoute("/founder/")({
   component: FounderDashboard,
@@ -43,7 +46,34 @@ function StatCard({ icon: Icon, label, value, sub, color, delay }: any) {
 function FounderDashboard() {
   const { d, h, m, s } = useCountdown("2026-07-20T00:00:00");
   const navigate = useNavigate();
+  const { result, status, analyze, reset } = useAnalysis();
   const [analysisOpen, setAnalysisOpen] = useState(false);
+  const [apiComplete, setApiComplete] = useState(false);
+
+  const display = result ?? MOCK_ANALYSIS;
+  const topPartner = display.topPartners[0];
+  const isAnalyzing = status === "loading";
+
+  const runAnalysis = useCallback(async () => {
+    reset();
+    setApiComplete(false);
+    setAnalysisOpen(true);
+
+    const analysisResult = await analyze();
+    if (analysisResult) {
+      setApiComplete(true);
+    } else {
+      setAnalysisOpen(false);
+      toast.error("Analysis failed", {
+        description: "LaunchMesh AI couldn't complete your growth report. Please try again.",
+        action: {
+          label: "Retry",
+          onClick: () => void runAnalysis(),
+        },
+        duration: 8000,
+      });
+    }
+  }, [analyze, reset]);
 
   const ACTIVITY = [
     { icon: "🤖", text: "AI generated growth report", time: "2m ago", color: "#6C5CE7" },
@@ -95,9 +125,9 @@ function FounderDashboard() {
 
       {/* Stats row */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <StatCard icon={TrendingUp} label="Growth Score" value="87/100" sub="↑ 12 pts" color="#6C5CE7" delay={0.05} />
-        <StatCard icon={Users} label="Expected Installs" value="+2,400" sub="This month" color="#00D4B8" delay={0.1} />
-        <StatCard icon={Sparkles} label="AI Confidence" value="94%" sub="High" color="#F59E0B" delay={0.15} />
+        <StatCard icon={TrendingUp} label="Growth Score" value={`${display.growthScore}/100`} sub={result ? "AI live" : "↑ 12 pts"} color="#6C5CE7" delay={0.05} />
+        <StatCard icon={Users} label="Expected Installs" value={display.expectedInstalls} sub="This month" color="#00D4B8" delay={0.1} />
+        <StatCard icon={Sparkles} label="AI Confidence" value={`${display.aiConfidence}%`} sub={result ? "Live" : "High"} color="#F59E0B" delay={0.15} />
         <StatCard icon={BarChart3} label="Active Pacts" value="3" sub="2 pending" color="#EC4899" delay={0.2} />
       </div>
 
@@ -124,21 +154,21 @@ function FounderDashboard() {
             <h2 className="text-2xl font-bold mb-1">Top Partnership Match</h2>
 
             <div className="flex items-center gap-4 mt-4 mb-5">
-              <div className="h-14 w-14 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-500 grid place-items-center text-3xl shrink-0">📚</div>
+              <div className={`h-14 w-14 rounded-2xl bg-gradient-to-br ${topPartner.gradient} grid place-items-center text-3xl shrink-0`}>{topPartner.icon}</div>
               <div>
                 <div className="flex items-center gap-2">
-                  <span className="text-xl font-bold">StudyFlow</span>
-                  <span className="text-sm font-bold text-accent glass px-2.5 py-1 rounded-full border border-accent/30">96% Match</span>
+                  <span className="text-xl font-bold">{topPartner.name}</span>
+                  <span className="text-sm font-bold text-accent glass px-2.5 py-1 rounded-full border border-accent/30">{topPartner.match}% Match</span>
                 </div>
-                <p className="text-sm text-muted-foreground mt-0.5">Both target engineering students preparing for placements.</p>
+                <p className="text-sm text-muted-foreground mt-0.5">{topPartner.reason}</p>
               </div>
             </div>
 
             <div className="grid grid-cols-3 gap-3 mb-5">
               {[
-                { label: "Expected installs", value: "+420" },
-                { label: "Audience overlap", value: "92%" },
-                { label: "Trust score", value: "A+" },
+                { label: "Expected installs", value: topPartner.installs },
+                { label: "Audience overlap", value: topPartner.overlap },
+                { label: "Trust score", value: topPartner.trustScore },
               ].map(s => (
                 <div key={s.label} className="glass rounded-xl p-3 border border-border/40">
                   <p className="text-[10px] text-muted-foreground uppercase tracking-wider">{s.label}</p>
@@ -174,10 +204,18 @@ function FounderDashboard() {
             ].map(({ icon: Icon, label, to, action }: any) => (
               action === "analyze" ? (
                 <motion.div key={label} whileHover={{ x: 4 }}
-                  onClick={() => setAnalysisOpen(true)}
-                  className="flex items-center gap-3 glass rounded-xl px-4 py-2.5 border border-primary/30 bg-primary/10 hover:border-primary/50 transition-colors cursor-pointer">
-                  <Icon className="h-4 w-4 text-primary shrink-0" />
-                  <span className="text-sm font-medium text-primary">{label}</span>
+                  onClick={() => void runAnalysis()}
+                  className={`flex items-center gap-3 glass rounded-xl px-4 py-2.5 border transition-colors cursor-pointer ${
+                    isAnalyzing
+                      ? "border-primary/50 bg-primary/15 opacity-80 pointer-events-none"
+                      : "border-primary/30 bg-primary/10 hover:border-primary/50"
+                  }`}>
+                  {isAnalyzing ? (
+                    <Loader2 className="h-4 w-4 text-primary shrink-0 animate-spin" />
+                  ) : (
+                    <Icon className="h-4 w-4 text-primary shrink-0" />
+                  )}
+                  <span className="text-sm font-medium text-primary">{isAnalyzing ? "Analyzing..." : label}</span>
                   <ArrowRight className="h-3.5 w-3.5 text-primary ml-auto" />
                 </motion.div>
               ) : (
@@ -296,6 +334,7 @@ function FounderDashboard() {
       {/* AI Analysis Modal */}
       <AnalysisModal
         open={analysisOpen}
+        apiComplete={apiComplete}
         onComplete={() => {
           setAnalysisOpen(false);
           navigate({ to: "/founder/analysis" });

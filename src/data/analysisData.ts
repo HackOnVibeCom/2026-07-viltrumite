@@ -1,35 +1,10 @@
-// ─── Mock AI Analysis Results ───────────────────────────────────────────────
-// Replace the MOCK_ANALYSIS object with an API call to wire up a real AI model.
-// The shape of this type is the contract your backend should match.
+// ─── AI Analysis Results ────────────────────────────────────────────────────
+// Types are shared with the backend transform layer in lib/analysis/transform.ts
 
-export type PartnerMatch = {
-  id: string;
-  icon: string;
-  name: string;
-  match: number;
-  overlap: string;
-  installs: string;
-  trustScore: string;
-  reason: string;
-  gradient: string;
-  tags: string[];
-};
-
-export type AnalysisResult = {
-  appName: string;
-  appIcon: string;
-  growthScore: number;
-  aiConfidence: number;
-  expectedInstalls: string;
-  bestLaunchDay: string;
-  recommendedBundle: string;
-  topPartners: PartnerMatch[];
-  audienceInsights: { segment: string; pct: number; color: string }[];
-  launchStrategy: string[];
-  topCommunities: { name: string; size: string; fit: string }[];
-  risks: string[];
-  opportunities: string[];
-};
+export type {
+  PartnerMatch,
+  AnalysisResult,
+} from "../../lib/analysis/transform";
 
 export const MOCK_ANALYSIS: AnalysisResult = {
   appName: "DesignVault",

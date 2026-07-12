@@ -1,8 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import { Settings, User, Bell, Lock, Trash2, ChevronRight } from "lucide-react";
 import { useState } from "react";
+import { Settings, User, Bell, Lock, Trash2, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useAppProfile } from "@/context/AppProfileContext";
 
 export const Route = createFileRoute("/founder/settings")({
   component: FounderSettingsPage,
@@ -16,8 +17,7 @@ const SECTIONS = [
 
 function FounderSettingsPage() {
   const [active, setActive] = useState("profile");
-  const [appName, setAppName] = useState("DesignVault");
-  const [tagline, setTagline] = useState("The Figma library that designs itself");
+  const { profile, updateProfile } = useAppProfile();
 
   return (
     <div className="p-6 md:p-8 max-w-5xl">
@@ -62,17 +62,35 @@ function FounderSettingsPage() {
             <div className="space-y-5">
               <h2 className="text-lg font-semibold">App Profile</h2>
               <div className="flex items-center gap-4">
-                <div className="h-16 w-16 rounded-2xl bg-gradient-to-br from-violet-500 to-purple-700 grid place-items-center text-3xl shrink-0">🎨</div>
+                <div className="h-16 w-16 rounded-2xl bg-gradient-to-br from-violet-500 to-purple-700 grid place-items-center text-3xl shrink-0">{profile.appIcon}</div>
                 <button className="text-sm text-primary hover:underline">Change icon</button>
               </div>
               {[
-                { label: "App Name", value: appName, setter: setAppName },
-                { label: "Tagline", value: tagline, setter: setTagline },
-              ].map(({ label, value, setter }) => (
+                { label: "App Name", key: "appName" as const },
+                { label: "Description", key: "description" as const, multiline: true },
+                { label: "Category", key: "category" as const },
+                { label: "Target Audience", key: "targetAudience" as const },
+                { label: "Launch Date", key: "launchDate" as const, type: "date" },
+                { label: "Platform", key: "platform" as const },
+                { label: "Pricing", key: "pricing" as const },
+              ].map(({ label, key, multiline, type }) => (
                 <div key={label}>
                   <label className="text-sm font-medium text-muted-foreground block mb-1.5">{label}</label>
-                  <input value={value} onChange={e => setter(e.target.value)}
-                    className="w-full bg-background/60 border border-border/60 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-primary/60 transition-colors" />
+                  {multiline ? (
+                    <textarea
+                      value={profile[key]}
+                      onChange={(e) => updateProfile({ [key]: e.target.value })}
+                      rows={3}
+                      className="w-full bg-background/60 border border-border/60 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-primary/60 transition-colors resize-none"
+                    />
+                  ) : (
+                    <input
+                      type={type ?? "text"}
+                      value={profile[key]}
+                      onChange={(e) => updateProfile({ [key]: e.target.value })}
+                      className="w-full bg-background/60 border border-border/60 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-primary/60 transition-colors"
+                    />
+                  )}
                 </div>
               ))}
               <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}

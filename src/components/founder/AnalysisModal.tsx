@@ -1,9 +1,13 @@
 import { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { CheckCircle2, Brain, Sparkles } from "lucide-react";
+import { CheckCircle2, Brain, Sparkles, Loader2 } from "lucide-react";
 import { ANALYSIS_STEPS } from "@/data/analysisData";
 
-type Props = { open: boolean; onComplete: () => void };
+type Props = {
+  open: boolean;
+  apiComplete: boolean;
+  onComplete: () => void;
+};
 
 /* ─── Step 1: Profile checklist ─── */
 function ProfileStep({ active }: { active: boolean }) {
@@ -58,7 +62,6 @@ function NetworkStep({ active }: { active: boolean }) {
     let step = 0;
     const interval = setInterval(() => {
       ctx.clearRect(0, 0, W, H);
-      // Draw lines
       for (let i = 1; i <= Math.min(step, nodes.length - 1); i++) {
         const t = (step - i) / 3;
         const alpha = Math.min(1, t) * 0.6;
@@ -69,10 +72,8 @@ function NetworkStep({ active }: { active: boolean }) {
         ctx.lineTo(nodes[i].x, nodes[i].y);
         ctx.stroke();
       }
-      // Draw nodes
       for (let i = 0; i <= Math.min(step, nodes.length - 1); i++) {
         const n = nodes[i];
-        // glow
         const g = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, n.core ? 30 : 20);
         g.addColorStop(0, n.color + "55");
         g.addColorStop(1, "transparent");
@@ -80,12 +81,10 @@ function NetworkStep({ active }: { active: boolean }) {
         ctx.beginPath();
         ctx.arc(n.x, n.y, n.core ? 30 : 20, 0, Math.PI * 2);
         ctx.fill();
-        // dot
         ctx.fillStyle = n.color;
         ctx.beginPath();
         ctx.arc(n.x, n.y, n.core ? 7 : 5, 0, Math.PI * 2);
         ctx.fill();
-        // label
         ctx.fillStyle = "rgba(255,255,255,0.7)";
         ctx.font = "11px Inter, sans-serif";
         ctx.textAlign = "center";
@@ -147,7 +146,7 @@ function OverlapStep({ active }: { active: boolean }) {
 
 /* ─── Step 4: Typing animation ─── */
 function StrategyStep({ active }: { active: boolean }) {
-  const full = "Generating optimal launch strategy based on audience patterns, competitor timing, and partnership opportunities. Friday launch recommended with 3 simultaneous pacts...";
+  const full = "Generating optimal launch strategy based on audience patterns, competitor timing, and partnership opportunities...";
   const [text, setText] = useState("");
   useEffect(() => {
     if (!active) return;
@@ -170,28 +169,39 @@ function StrategyStep({ active }: { active: boolean }) {
   );
 }
 
-/* ─── Main Modal ─── */
-export function AnalysisModal({ open, onComplete }: Props) {
+export function AnalysisModal({ open, apiComplete, onComplete }: Props) {
   const [currentStep, setCurrentStep] = useState(-1);
-  const [done, setDone] = useState(false);
+  const [animationDone, setAnimationDone] = useState(false);
 
   useEffect(() => {
-    if (!open) { setCurrentStep(-1); setDone(false); return; }
-    // kick off step sequence
+    if (!open) {
+      setCurrentStep(-1);
+      setAnimationDone(false);
+      return;
+    }
+
     let elapsed = 0;
     const timers: ReturnType<typeof setTimeout>[] = [];
     ANALYSIS_STEPS.forEach((step, i) => {
       timers.push(setTimeout(() => setCurrentStep(i), elapsed + 400));
       elapsed += step.duration;
     });
-    timers.push(setTimeout(() => { setDone(true); setTimeout(onComplete, 600); }, elapsed + 500));
+    timers.push(setTimeout(() => setAnimationDone(true), elapsed + 500));
     return () => timers.forEach(clearTimeout);
   }, [open]);
 
-  const totalDuration = ANALYSIS_STEPS.reduce((a, s) => a + s.duration, 0) + 900;
+  useEffect(() => {
+    if (open && animationDone && apiComplete) {
+      const timer = setTimeout(onComplete, 600);
+      return () => clearTimeout(timer);
+    }
+  }, [open, animationDone, apiComplete, onComplete]);
+
   const progress = currentStep >= 0
     ? Math.min(100, Math.round(((currentStep + 1) / ANALYSIS_STEPS.length) * 100))
     : 0;
+
+  const waitingForApi = animationDone && !apiComplete;
 
   return (
     <AnimatePresence>
@@ -203,7 +213,6 @@ export function AnalysisModal({ open, onComplete }: Props) {
           className="fixed inset-0 z-[100] flex items-center justify-center p-4"
           style={{ background: "rgba(10,10,15,0.95)", backdropFilter: "blur(20px)" }}>
 
-          {/* Floating orbs */}
           <div className="absolute top-1/4 left-1/4 h-96 w-96 rounded-full opacity-20 blur-3xl pointer-events-none"
             style={{ background: "radial-gradient(circle, #6C5CE7, transparent 70%)" }} />
           <div className="absolute bottom-1/4 right-1/4 h-64 w-64 rounded-full opacity-15 blur-3xl pointer-events-none"
@@ -217,7 +226,6 @@ export function AnalysisModal({ open, onComplete }: Props) {
             className="relative w-full max-w-xl glass-strong rounded-3xl border border-primary/30 p-8 shadow-elevated"
             style={{ boxShadow: "0 0 80px -20px rgba(108,92,231,0.5)" }}>
 
-            {/* Header */}
             <div className="text-center mb-8">
               <motion.div
                 animate={{ rotate: [0, 10, -10, 0] }}
@@ -229,7 +237,6 @@ export function AnalysisModal({ open, onComplete }: Props) {
               </p>
             </div>
 
-            {/* Overall progress bar */}
             <div className="mb-6">
               <div className="h-1.5 w-full rounded-full bg-white/5 overflow-hidden">
                 <motion.div
@@ -244,11 +251,10 @@ export function AnalysisModal({ open, onComplete }: Props) {
               </div>
             </div>
 
-            {/* Steps */}
             <div className="space-y-5">
               {ANALYSIS_STEPS.map((step, i) => {
                 const isActive = currentStep === i;
-                const isDone = currentStep > i || done;
+                const isDone = currentStep > i || animationDone;
                 return (
                   <motion.div key={step.id}
                     initial={{ opacity: 0.3 }}
@@ -283,7 +289,15 @@ export function AnalysisModal({ open, onComplete }: Props) {
               })}
             </div>
 
-            {done && (
+            {waitingForApi && (
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+                className="mt-6 flex items-center justify-center gap-2 text-sm text-muted-foreground">
+                <Loader2 className="h-4 w-4 animate-spin text-accent" />
+                <span>Waiting for AI response...</span>
+              </motion.div>
+            )}
+
+            {animationDone && apiComplete && (
               <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}
                 className="mt-6 text-center">
                 <div className="flex items-center justify-center gap-2 text-accent">

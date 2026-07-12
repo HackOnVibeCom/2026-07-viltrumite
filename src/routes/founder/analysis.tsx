@@ -2,12 +2,12 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import {
-  Sparkles, TrendingUp, Users, Zap, ArrowRight, Brain,
-  Rocket, CheckCircle2, AlertTriangle, Globe, Calendar,
-  Package, MessageSquare, ChevronRight,
+  Sparkles, Users, ArrowRight, Brain,
+  Rocket, CheckCircle2, AlertTriangle, Globe,
+  Package, MessageSquare, ChevronRight, Loader2,
 } from "lucide-react";
 import { MOCK_ANALYSIS } from "@/data/analysisData";
-import { Link } from "@tanstack/react-router";
+import { useAnalysis } from "@/context/AnalysisContext";
 
 export const Route = createFileRoute("/founder/analysis")({
   component: AnalysisResultsPage,
@@ -88,7 +88,20 @@ function TypedText({ lines }: { lines: string[] }) {
 
 function AnalysisResultsPage() {
   const navigate = useNavigate();
-  const data = MOCK_ANALYSIS; // 🔌 Replace with: const data = useAnalysisStore(s => s.result)
+  const { result, status } = useAnalysis();
+  const data = result ?? MOCK_ANALYSIS;
+  const isLive = Boolean(result);
+
+  if (status === "loading") {
+    return (
+      <div className="flex min-h-[60vh] items-center justify-center p-8">
+        <div className="text-center space-y-4">
+          <Loader2 className="h-10 w-10 animate-spin text-accent mx-auto" />
+          <p className="text-muted-foreground">LaunchMesh AI is analyzing your app...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="p-6 md:p-8 max-w-6xl space-y-8">
@@ -97,7 +110,9 @@ function AnalysisResultsPage() {
       <motion.div initial={{ opacity: 0, y: -16 }} animate={{ opacity: 1, y: 0 }}>
         <div className="flex items-center gap-2 mb-2">
           <Brain className="h-5 w-5 text-accent" />
-          <span className="text-xs font-semibold uppercase tracking-widest text-accent">AI Analysis Complete</span>
+          <span className="text-xs font-semibold uppercase tracking-widest text-accent">
+            {isLive ? "AI Analysis Complete" : "Sample Growth Report"}
+          </span>
         </div>
         <h1 className="text-3xl font-bold">{data.appIcon} {data.appName} — Growth Report</h1>
         <p className="text-muted-foreground mt-1">AI analyzed your app and found significant growth opportunities. Here's everything.</p>
@@ -321,7 +336,7 @@ function AnalysisResultsPage() {
           <div className="text-4xl mb-3">🚀</div>
           <h2 className="text-2xl font-bold text-white mb-2">Ready to grow?</h2>
           <p className="text-muted-foreground text-sm max-w-sm mx-auto mb-6">
-            Your AI analysis is complete. Create your first Growth Pact with StudyFlow and get {data.topPartners[0].installs} projected installs.
+            Your AI analysis is complete. Create your first Growth Pact with {data.topPartners[0]?.name ?? "a top match"} and get {data.topPartners[0]?.installs ?? "projected"} installs.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3">
             <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.97 }}
