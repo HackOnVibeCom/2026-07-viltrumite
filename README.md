@@ -1,7 +1,23 @@
 <div align="center">
 
 <!-- Animated Header -->
-<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=12,20,24&height=200&section=header&text=LaunchMesh&fontSize=80&fontAlignY=35&animation=fadeIn&fontColor=ffffff&desc=AI-Powered%20GTM%20%26%20Co-Marketing%20Network&descAlignY=58&descSize=20" width="100%"/>
+<svg width="100%" viewBox="0 0 900 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f2027"/>
+      <stop offset="50%" style="stop-color:#203a43"/>
+      <stop offset="100%" style="stop-color:#2c5364"/>
+    </linearGradient>
+  </defs>
+  <rect width="900" height="200" fill="url(#g)" rx="0"/>
+  <path d="M0,160 Q225,120 450,150 Q675,180 900,140 L900,200 L0,200 Z" fill="rgba(0,0,0,0.2)"/>
+  <text x="450" y="95" font-family="Arial,sans-serif" font-size="62" font-weight="bold"
+        fill="white" text-anchor="middle" letter-spacing="2">LaunchMesh</text>
+  <text x="450" y="135" font-family="Arial,sans-serif" font-size="17"
+        fill="rgba(255,255,255,0.85)" text-anchor="middle">
+    AI-Powered GTM &amp; Co-Marketing Network
+  </text>
+</svg>
 
 <br/>
 
@@ -23,11 +39,10 @@
 <br/><br/>
 
 > **LaunchMesh turns solo, low-budget mobile and web launches into collaborative, high-reach co-marketing campaigns — in minutes, not months.**
-> 
+>
 > By fusing an AI GTM Copilot, an ASO Auditor, and a partner vector-matching engine, LaunchMesh gives indie founders the audience reach of an agency at a fraction of the cost.
 
 <br/>
-
 </div>
 
 ## 📋 Questionnaire: Hackathon Submission Details
