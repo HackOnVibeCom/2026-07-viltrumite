@@ -70,7 +70,7 @@ LaunchMesh targets startup hubs globally with specific country-level pricing mod
 
 <div align="center">
 
-[![LaunchMesh Demo](https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg)](https://www.youtube.com/watch?v=dQw4w9WgXcQ)
+[![LaunchMesh Demo](https://img.youtube.com/vi/vqc5rid6MRQ/maxresdefault.jpg)](https://youtu.be/vqc5rid6MRQ)
 
 *▶ Click to watch the full product walkthrough — AI Matching, Growth Pacts, ASO Auditing, and the Budget Planner in action.*
 
