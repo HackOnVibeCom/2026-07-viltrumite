@@ -1,6 +1,6 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate, useLocation } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { toast } from "sonner";
 import {
   Sparkles, TrendingUp, Users, Zap, ArrowRight, Brain,
@@ -100,6 +100,18 @@ function FounderDashboard() {
   const [pactOpen, setPactOpen] = useState(false);
   const [activeCount, setActiveCount] = useState(0);
   const [pendingCount, setPendingCount] = useState(0);
+
+  const location = useLocation();
+  const currentHash = location.hash;
+  const plannerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (currentHash === "budget" && plannerRef.current) {
+      setTimeout(() => {
+        plannerRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 100);
+    }
+  }, [currentHash]);
 
   // AI Launch Budget Planner States
   const [plannerBudget, setPlannerBudget] = useState<number>(5000);
@@ -405,6 +417,7 @@ function FounderDashboard() {
 
       {/* AI Launch Budget Planner Card */}
       <motion.div
+        ref={plannerRef}
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.18 }}

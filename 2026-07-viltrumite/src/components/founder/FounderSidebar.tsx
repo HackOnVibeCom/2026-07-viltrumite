@@ -2,7 +2,7 @@ import { Link, useLocation } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import {
   LayoutDashboard, Brain, Globe, Handshake, Package,
-  BarChart3, Bot, Settings, ChevronRight, Zap, Lock
+  BarChart3, Bot, Settings, ChevronRight, Zap, Lock, Coins
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useTheme } from "@/context/ThemeContext";
@@ -17,11 +17,12 @@ const NAV = [
   { icon: Package, label: "Bundle Builder", to: "/founder/bundles" },
   { icon: BarChart3, label: "Analytics", to: "/founder/analytics" },
   { icon: Bot, label: "AI GTM Copilot", to: "/founder/copilot" },
+  { icon: Coins, label: "Launch Budget", to: "/founder", hash: "budget" },
   { icon: Settings, label: "Settings", to: "/founder/settings" },
 ];
 
 export function FounderSidebar() {
-  const { pathname } = useLocation();
+  const { pathname, hash: currentHash } = useLocation();
   const { theme } = useTheme();
   const { profile, hasProduct, analysisComplete } = useAppProfile();
   const { result } = useAnalysis();
@@ -104,13 +105,23 @@ export function FounderSidebar() {
       </div>
 
       {/* Nav */}
-      <nav className="flex-1 px-3 py-2 space-y-0.5 overflow-y-auto">
-        {NAV.map(({ icon: Icon, label, to }) => {
-          const active = pathname === to || (to !== "/founder" && pathname.startsWith(to));
+      <nav className="flex-1 px-3 py-2 space-y-0.5 overflow-y-auto" data-lenis-prevent>
+        {NAV.map(({ icon: Icon, label, to, hash }) => {
+          const active = hash
+            ? pathname === to && currentHash === hash
+            : (to === "/founder" && !hash)
+              ? pathname === to && !currentHash
+              : pathname === to || (to !== "/founder" && pathname.startsWith(to));
           const isLocked = !hasProduct && label !== "Settings";
 
           return (
-            <Link key={to} to={isLocked ? "/founder" : to} disabled={isLocked} className="block">
+            <Link 
+              key={label} 
+              to={isLocked ? "/founder" : to} 
+              hash={hash} 
+              disabled={isLocked} 
+              className="block"
+            >
               <motion.div
                 whileHover={isLocked ? {} : { x: 4 }}
                 className={cn(
