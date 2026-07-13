@@ -4,7 +4,7 @@ import {
   Package, Sparkles, Plus, Zap, X, Trash2, Edit3, ShieldAlert, 
   BadgeCheck, DollarSign, TrendingUp, Users, Percent, HelpCircle, 
   ArrowRight, Share2, Calendar, Layout, BarChart3, Send, CheckCircle,
-  Clock, Shield, Award, AlertCircle, MessageSquare
+  Clock, Shield, Award, AlertCircle, MessageSquare, ClipboardList
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useBundles } from "@/hooks/useMockDb";
