@@ -236,7 +236,7 @@ LaunchMesh addresses this theme directly by combining organic ASO discovery audi
 
 <div align="center">
 
-**Developed with 💜 by [A-VISHAL](https://github.com/A-VISHAL)**
+**Developed with 💜 **
 
 *LaunchMesh — Ship together, grow together.*
 
