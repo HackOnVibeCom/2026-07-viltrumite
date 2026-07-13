@@ -495,7 +495,9 @@ export async function handleLaunchKitRequest(
 
   const config = categoryConfigs[category] || categoryConfigs.brand_kit;
 
-  if (!apiKey) {
+  const hasKey = apiKey && apiKey !== "undefined" && apiKey !== "null" && apiKey.trim() !== "";
+
+  if (!hasKey) {
     // Zero downtime fallback for offline mode or missing API key
     return config.mock;
   }

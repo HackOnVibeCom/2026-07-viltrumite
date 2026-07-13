@@ -16,7 +16,8 @@ type PagesContext = {
 export async function onRequestPost(context: PagesContext): Promise<Response> {
   try {
     const body = await context.request.json();
-    const result = await handleAnalyzeAppRequest(body, context.env.OXLO_API_KEY);
+    const apiKey = context.env?.OXLO_API_KEY || context.env?.GROQ_API_KEY || "";
+    const result = await handleAnalyzeAppRequest(body, apiKey);
     return jsonResponse(result);
   } catch (error) {
     const message = error instanceof Error ? error.message : "Analysis failed";
