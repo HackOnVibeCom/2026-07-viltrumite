@@ -61,26 +61,14 @@ export class SlackError extends Error {
 // Internal helpers
 // ---------------------------------------------------------------------------
 
-function getSlackToken(): string {
-  // Never hardcode – always read from Vite env at runtime.
-  const token = import.meta.env.VITE_SLACK_ACCESS_TOKEN;
-  if (!token || typeof token !== "string" || !token.trim()) {
-    throw new SlackError(
-      "VITE_SLACK_ACCESS_TOKEN is not set. Add it to your .env file.",
-      "missing_token",
-    );
-  }
-  return token.trim();
-}
-
 // ---------------------------------------------------------------------------
 // Main export
 // ---------------------------------------------------------------------------
 
 /**
- * Send a message to a Slack channel using `chat.postMessage`.
+ * Send a message to a Slack channel securely via the server-side API.
  *
- * @param channelId  The Slack channel ID (e.g. `C0123456789`).
+ * @param channelId  The Slack channel ID (e.g. `C0123456789`) or name (e.g. `general`).
  * @param text       The message text to send.
  * @param options    Optional settings.
  * @returns          The parsed Slack API response.
@@ -98,69 +86,29 @@ export async function sendSlackMessage(
 ): Promise<SlackPostMessageResponse> {
   const { silent = false } = options;
 
-  let token: string;
   try {
-    token = getSlackToken();
-  } catch (err) {
-    if (!silent) {
-      toast.error("Slack authentication failed", {
-        description: "VITE_SLACK_ACCESS_TOKEN is not configured.",
-      });
-    }
-    throw err;
-  }
-
-  let resolvedChannelId = channelId;
-
-  // If it's a name (doesn't start with 'C', 'G', 'U', or 'D' followed by 8-11 alpha-numeric chars)
-  if (!/^[CGUD][A-Z0-9]{8,11}$/.test(channelId)) {
-    try {
-      const listResponse = await fetch("/slack-api/conversations.list?types=public_channel", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      const listData = await listResponse.json();
-      if (listData.ok && listData.channels) {
-        const found = listData.channels.find(
-          (c: any) => c.name === channelId || c.name === channelId.replace(/^#/, "")
-        );
-        if (found) {
-          resolvedChannelId = found.id;
-        } else {
-          // Fall back to preferred channel names or the first available channel in list
-          const fallback = listData.channels.find((c: any) => c.name === "all-viltrumite")
-                        || listData.channels.find((c: any) => c.name === "general")
-                        || listData.channels.find((c: any) => c.name === "social")
-                        || listData.channels[0];
-          if (fallback) {
-            resolvedChannelId = fallback.id;
-          }
-        }
-      }
-    } catch (err) {
-      console.warn("Failed to resolve Slack channel name:", err);
-    }
-  }
-
-  try {
-    const response = await fetch(SLACK_POST_MESSAGE_URL, {
+    const response = await fetch("/api/slack-post", {
       method: "POST",
       headers: {
         "Content-Type": "application/json; charset=utf-8",
-        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({
-        channel: resolvedChannelId,
+        channel: channelId,
         text,
       }),
     });
 
     if (!response.ok) {
       const errorText = await response.text().catch(() => "");
-      const error = new SlackError(
-        `Slack HTTP error (${response.status}): ${errorText.slice(0, 200)}`,
-      );
+      let errorMsg = `Slack HTTP error (${response.status})`;
+      try {
+        const errorJson = JSON.parse(errorText);
+        if (errorJson.error) {
+          errorMsg = errorJson.error;
+        }
+      } catch {}
+      
+      const error = new SlackError(errorMsg);
       if (!silent) {
         toast.error("Slack request failed", {
           description: error.message.slice(0, 120),
@@ -169,46 +117,26 @@ export async function sendSlackMessage(
       throw error;
     }
 
-    const data: SlackPostMessageResponse = await response.json();
-
+    const data = await response.json();
     if (!data.ok) {
-      const errorCode = data.error || "unknown_error";
-
-      // Provide user-friendly messages for common errors
-      const friendlyMessages: Record<string, string> = {
-        invalid_auth: "Slack authentication failed. Check your token.",
-        token_revoked: "Slack token has been revoked.",
-        not_in_channel: "Bot is not in the target channel.",
-        channel_not_found: "Slack channel not found.",
-        no_text: "Message text is required.",
-      };
-
-      const message =
-        friendlyMessages[errorCode] ?? `Slack API error: ${errorCode}`;
-      const error = new SlackError(message, errorCode);
-
+      const error = new SlackError(data.error || "Slack request failed", data.error);
       if (!silent) {
-        const isAuthError = ["invalid_auth", "token_revoked", "account_inactive"].includes(errorCode);
-        toast.error(
-          isAuthError ? "Slack authentication failed" : "Slack request failed",
-          { description: message },
-        );
+        toast.error("Slack request failed", {
+          description: error.message.slice(0, 120),
+        });
       }
-
       throw error;
     }
 
     if (!silent) {
       toast.success("Partnership request sent to Slack", {
-        description: `Message posted to channel ${data.channel}`,
+        description: `Message posted to channel ${data.channel || channelId}`,
       });
     }
 
     return data;
   } catch (err) {
-    // Re-throw SlackError as-is; wrap anything else
     if (err instanceof SlackError) throw err;
-
     const message = err instanceof Error ? err.message : "Slack request failed";
     if (!silent) {
       toast.error("Slack request failed", {

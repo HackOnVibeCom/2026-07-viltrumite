@@ -120,18 +120,13 @@ export function PactModal({ isOpen, onClose, partner, onSuccess }: Props) {
 
     // ⚠️ HACKATHON ONLY: Fire-and-forget Slack notification.
     // Attempt to post the partnership request to a Slack channel.
-    // Uses the VITE_SLACK_ACCESS_TOKEN from .env. If the token is not set
-    // or is invalid, the Slack client will show its own error toast —
-    // we catch here to avoid breaking the main flow.
-    const slackToken = import.meta.env.VITE_SLACK_ACCESS_TOKEN;
-    if (slackToken && slackToken !== "YOUR_SLACK_BOT_TOKEN") {
-      const slackChannelId = import.meta.env.VITE_SLACK_CHANNEL_ID || "general";
-      const slackText = `🚀 *New LaunchMesh Growth Pact Request*\n\n*From:* ${profile.appName}\n*To:* ${partner.name}\n*Match:* ${partner.match}%\n*Expected Installs:* ${pactData?.expectedInstalls ?? "350"}\n\n${message}`;
+    // The serverless function will handle Slack credentials securely.
+    const slackChannelId = import.meta.env.VITE_SLACK_CHANNEL_ID || "general";
+    const slackText = `🚀 *New LaunchMesh Growth Pact Request*\n\n*From:* ${profile.appName}\n*To:* ${partner.name}\n*Match:* ${partner.match}%\n*Expected Installs:* ${pactData?.expectedInstalls ?? "350"}\n\n${message}`;
 
-      sendSlackMessage(slackChannelId, slackText).catch(() => {
-        // Slack client already shows a toast on failure, no extra handling needed
-      });
-    }
+    sendSlackMessage(slackChannelId, slackText).catch(() => {
+      // Slack client already shows a toast on failure, no extra handling needed
+    });
     
     onClose();
   };
