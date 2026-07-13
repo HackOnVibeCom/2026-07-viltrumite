@@ -14,7 +14,7 @@ function readRequestBody(req: IncomingMessage): Promise<string> {
   });
 }
 
-function analyzeAppApiPlugin(apiKey: string): Plugin {
+function analyzeAppApiPlugin(apiKey: string, slackToken: string): Plugin {
   return {
     name: "analyze-app-api",
     configureServer(server) {
@@ -23,8 +23,9 @@ function analyzeAppApiPlugin(apiKey: string): Plugin {
         const isGeneratePact = req.url === "/api/generate-pact";
         const isCopilotChat = req.url === "/api/copilot-chat";
         const isLaunchKit = req.url === "/api/launch-kit";
+        const isSlackPost = req.url === "/api/slack-post";
 
-        if (!isAnalyze && !isGeneratePact && !isCopilotChat && !isLaunchKit) {
+        if (!isAnalyze && !isGeneratePact && !isCopilotChat && !isLaunchKit && !isSlackPost) {
           next();
           return;
         }
@@ -50,6 +51,9 @@ function analyzeAppApiPlugin(apiKey: string): Plugin {
           } else if (isLaunchKit) {
             const { handleLaunchKitRequest } = await import("./server/handle-launch-kit");
             result = await handleLaunchKitRequest(body, apiKey);
+          } else if (isSlackPost) {
+            const { handleSlackPostRequest } = await import("./server/handle-slack-post");
+            result = await handleSlackPostRequest(body, slackToken);
           } else {
             const { handleCopilotChatRequest } = await import("./server/handle-copilot-chat");
             result = await handleCopilotChatRequest(body, apiKey);
@@ -73,6 +77,7 @@ function analyzeAppApiPlugin(apiKey: string): Plugin {
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "");
   const apiKey = env.GROQ_API_KEY ?? process.env.GROQ_API_KEY ?? "";
+  const slackToken = env.SLACK_BOT_TOKEN ?? env.SLACK_ACCESS_TOKEN ?? env.VITE_SLACK_ACCESS_TOKEN ?? process.env.SLACK_BOT_TOKEN ?? process.env.SLACK_ACCESS_TOKEN ?? "";
 
   return {
     plugins: [
@@ -80,16 +85,7 @@ export default defineConfig(({ mode }) => {
       react(),
       tailwindcss(),
       tsconfigPaths(),
-      analyzeAppApiPlugin(apiKey),
+      analyzeAppApiPlugin(apiKey, slackToken),
     ],
-    server: {
-      proxy: {
-        "/slack-api": {
-          target: "https://slack.com/api",
-          changeOrigin: true,
-          rewrite: (path) => path.replace(/^\/slack-api/, ""),
-        },
-      },
-    },
   };
 });
