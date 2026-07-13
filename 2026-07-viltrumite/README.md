@@ -28,9 +28,43 @@
 
 <br/>
 
----
-
 </div>
+
+## 📋 Questionnaire: Hackathon Submission Details
+
+> [!TIP]
+> **Our Hackathon Edge:**
+> LaunchMesh does what no other tool in the market does: it combines target audience **Vector Matching** with **Digital Contract Negotiation** and **Pact-Integrated Spend Analytics** to completely bypass paid ad networks, giving founders organic, compound launch distribution for free.
+
+### 1. What does your application/service do?
+LaunchMesh is an end-to-end, AI-powered Go-To-Market (GTM) and co-marketing coordinator designed to solve the two biggest hurdles of promoting a new app: **distribution cold start** and **lack of marketing budget**.
+- **Audience Vector Matching:** Instantly maps your app category and demographics to find high-synergy, non-competing growth partners.
+- **Growth Pact Negotiation:** Auto-drafts digital co-marketing contracts (newsletter swaps, shared banners, push notification redirects) with one-click signing and live Slack sync.
+- **ASO Metadata Auditor:** Scans App Store metadata in real-time to alert developers of character length limits, discoverability keywords, and competitor brand name violations.
+- **AI Spent Optimizer:** Dynamically allocates budgets across 14 channels (Google, Meta, Product Hunt, Influencers, Slack, Reddit) and is the **first-ever tool** to integrate Growth Pacts to lower paid ad requirements, detailing exact marketing cash saved.
+
+### 2. Who is the target audience?
+- **Early-Stage SaaS & Mobile App Founders:** Builders who want to launch their product successfully without thousands of dollars in initial ad capital.
+- **Indie Hackers & Solo Developers:** Developers who need marketing automation and collective launch reach instead of shouting into the void.
+
+### 3. Which countries are the expected buyers of this service?
+LaunchMesh targets startup hubs globally with specific country-level pricing models built in:
+- **North America (United States & Canada):** High average customer acquisition cost (CAC) makes organic co-marketing partnerships highly lucrative.
+- **Europe (United Kingdom & Germany):** High value placed on privacy-first, community-driven organic audience trades.
+- **Asia (India):** Extremely high density of developers and young startups seeking cost-effective bootstrap strategies.
+
+### 4. Who are your competitors?
+- **Standard AI Copywriting Tools (ChatGPT, Copy.ai):** Can generate text, but provide **zero distribution channels** or partnership networks.
+- **Co-Marketing SaaS (Crossbeam, PartnerStack):** Geared exclusively towards enterprise companies with mature sales and business development teams, pricing out early-stage founders.
+- **Manual Networking (Twitter DMs, Indie Hackers):** Extremely slow, high rejection rate, and lacks semantic data matching or legal structure.
+
+### 5. What is your advantage?
+**No other competitor in the market has done this before:**
+1. **Audience Trade over Ad Spend:** Instead of paying ad networks, LaunchMesh enables builders to trade audience attention, effectively using mutual redirects as a currency.
+2. **Pact-Aware Spend Analytics:** Our AI Launch Budget Planner doesn't operate in a vacuum. It directly references your active co-marketing pacts to show exactly how much budget is saved by substituting paid channels with partner campaigns.
+3. **Frictionless Business Deals:** Turning a random outreach message into an active campaign timeline, legal pact draft, and Slack sync takes 10 seconds.
+
+---
 
 ## 📺 Demo Walkthrough
 
